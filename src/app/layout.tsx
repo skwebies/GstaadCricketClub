@@ -1,40 +1,48 @@
 import type { Metadata } from "next";
+import { Playfair_Display, Inter } from "next/font/google";
+import { Toaster } from "sonner";
 import "./globals.css";
+
+const serifFont = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
+  display: "swap",
+});
+
+const sansFont = Inter({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
   title: {
-    default: "Gstaad Cricket Club | Cricket for Our Community",
+    default: "Gstaad Cricket Club | Tradition, Sportsmanship, and Alpine Cricket",
     template: "%s | Gstaad Cricket Club",
   },
   description:
-    "Gstaad Cricket Club welcomes children, adults, families and beginners. Join our free Cricket Festival at Ebnit School on 26 September 2026.",
+    "Gstaad Cricket Club in the Bernese Oberland of Switzerland. Join our annual Alpine Trophy, junior clinics, and community cricket.",
   keywords: [
     "Gstaad Cricket Club",
     "Gstaad Cricket",
+    "Alpine Cricket Trophy",
     "Cricket Switzerland",
-    "Alpine Cricket",
-    "Gstaad Cricket Festival 2026",
-    "Cricket Bernese Oberland",
+    "Alpine Sports Gstaad",
+    "Bernese Oberland Cricket",
     "Sathya Narayanan",
-    "Swiss Cricket Club",
   ],
   authors: [{ name: "Gstaad Cricket Club" }],
   creator: "Gstaad Cricket Club",
   publisher: "Gstaad Cricket Club",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
   openGraph: {
     type: "website",
     locale: "en_CH",
     url: "https://gstaadcricketclub.ch",
     siteName: "Gstaad Cricket Club",
-    title: "Gstaad Cricket Club | Cricket for Our Community",
+    title: "Gstaad Cricket Club | Cricket in the Bernese Oberland",
     description:
-      "A free day of cricket for children, adults, families and complete beginners in Gstaad, Switzerland.",
+      "Tradition, sportsmanship, and high-altitude alpine cricket in Gstaad, Switzerland.",
     images: [
       {
         url: "/gstaad-cricket-club-crest.png",
@@ -46,9 +54,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gstaad Cricket Club | Cricket for Our Community",
+    title: "Gstaad Cricket Club | Alpine Cricket Switzerland",
     description:
-      "A free day of cricket for children, adults, families and complete beginners in Gstaad, Switzerland.",
+      "Tradition, sportsmanship, and cricket in the Swiss Alps.",
     images: ["/gstaad-cricket-club-crest.png"],
   },
   robots: {
@@ -75,10 +83,16 @@ export default function RootLayout({
         "sport": "Cricket",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Ebnitstrasse 28",
+          "streetAddress": "Sportzentrum Gstaad",
           "addressLocality": "Gstaad",
+          "addressRegion": "Bern",
           "postalCode": "3780",
           "addressCountry": "CH"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 46.4746,
+          "longitude": 7.2882
         },
         "memberOf": {
           "@type": "SportsOrganization",
@@ -88,15 +102,15 @@ export default function RootLayout({
       {
         "@type": "SportsEvent",
         "@id": "https://gstaadcricketclub.ch/#festival",
-        "name": "Gstaad Cricket Festival 2026",
-        "description": "A free day of cricket for children, adults, families and complete beginners in Gstaad.",
+        "name": "Gstaad Alpine Cricket Trophy 2026",
+        "description": "Annual alpine cricket festival and tournament in Gstaad, Switzerland.",
         "startDate": "2026-09-26T11:00:00+02:00",
         "endDate": "2026-09-26T18:00:00+02:00",
         "eventStatus": "https://schema.org/EventScheduled",
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {
           "@type": "Place",
-          "name": "Ebnit School",
+          "name": "Ebnit School / Sportzentrum Gstaad",
           "address": {
             "@type": "PostalAddress",
             "streetAddress": "Ebnitstrasse 28",
@@ -114,7 +128,7 @@ export default function RootLayout({
   };
 
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className={`${serifFont.variable} ${sansFont.variable} scroll-smooth`}>
       <head>
         <link rel="icon" href="/gstaad-cricket-club-crest.png" type="image/png" />
         <link rel="preload" href="/gstaad-cricket-club-crest.png" as="image" />
@@ -123,7 +137,8 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="antialiased min-h-screen flex flex-col selection:bg-[var(--gold)] selection:text-[var(--green-dark)]">
+      <body className="antialiased min-h-screen flex flex-col font-sans selection:bg-[var(--gold)] selection:text-[var(--green-dark)]">
+        <Toaster richColors position="top-right" />
         {children}
       </body>
     </html>

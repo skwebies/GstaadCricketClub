@@ -1,32 +1,49 @@
 @import "tailwindcss";
 
 :root {
-  --green: #073f32;
-  --green-dark: #032b22;
-  --cream: #f4efdf;
-  --paper: #fbf8ef;
-  --gold: #cda849;
-  --gold-hover: #b89337;
-  --red: #a62127;
-  --ink: #143027;
-  --muted: #5c6d66;
-  --border: #dcd4c1;
-  --card-bg: #ffffff;
+  /* Alpine Forest Green (Primary) */
+  --green: #0F382A;
+  --green-dark: #0A1C15;
+  --green-alpine: #164E3A;
+
+  /* Swiss Luxury Gold (Accent) */
+  --gold: #C5A059;
+  --gold-hover: #D4AF37;
+  --gold-light: #E9D5A1;
+  --gold-foil: linear-gradient(135deg, #D4AF37 0%, #C5A059 50%, #9B7E36 100%);
+
+  /* Crisp Snow / Cricket Off-White (Surface) */
+  --paper: #FDFCF7;
+  --surface: #FDFCF7;
+  --card-bg: #FFFFFF;
+  --cream: #F4EFDF;
+
+  /* Slate Dark Green (Text / Headings) */
+  --ink: #0A1C15;
+  --text-dark: #0A1C15;
+
+  /* Muted Charcoal */
+  --muted: #4A5568;
+  --border: #E2DDD2;
+  --red: #A62127;
 }
 
 @theme inline {
   --color-green: var(--green);
   --color-green-dark: var(--green-dark);
-  --color-cream: var(--cream);
-  --color-paper: var(--paper);
+  --color-green-alpine: var(--green-alpine);
   --color-gold: var(--gold);
   --color-gold-hover: var(--gold-hover);
-  --color-red: var(--red);
+  --color-gold-light: var(--gold-light);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
   --color-ink: var(--ink);
   --color-muted: var(--muted);
   --color-border: var(--border);
-  --font-serif: Georgia, "Times New Roman", Cambria, serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --color-cream: var(--cream);
+  --color-red: var(--red);
+  --font-serif: var(--font-serif), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-sans), "Inter", -apple-system, sans-serif;
 }
 
 * {
@@ -52,16 +69,16 @@ a {
   text-decoration: none;
 }
 
-/* Typography styles matching reference site */
-h1, h2, h3, .serif-font {
-  font-family: Georgia, "Times New Roman", Cambria, serif;
-  letter-spacing: -0.035em;
-  font-weight: 400;
+/* Luxury Serif Headings */
+h1, h2, h3, h4, .font-serif, .serif-font {
+  font-family: var(--font-serif), "Playfair Display", Georgia, serif;
+  letter-spacing: -0.025em;
+  font-weight: 500;
 }
 
 h1 {
-  font-size: clamp(3.8rem, 7.5vw, 7.8rem);
-  line-height: 0.88;
+  font-size: clamp(3.2rem, 6.5vw, 6.5rem);
+  line-height: 0.94;
 }
 
 h1 em, h2 em, h3 em {
@@ -72,24 +89,13 @@ h1 em, h2 em, h3 em {
 .eyebrow, .section-kicker {
   color: var(--gold);
   text-transform: uppercase;
-  letter-spacing: 0.23em;
-  font-size: 0.78rem;
+  letter-spacing: 0.22em;
+  font-size: 0.76rem;
   font-weight: 800;
   display: block;
 }
 
-.section-kicker.light {
-  color: var(--gold);
-}
-
-.lead {
-  font-family: Georgia, "Times New Roman", Cambria, serif;
-  font-size: 1.65rem;
-  line-height: 1.45;
-  color: var(--ink);
-}
-
-/* Alpine Ball Graphic */
+/* Alpine Ball 3D Graphic */
 .ball-graphic {
   place-items: center;
   display: grid;
@@ -102,7 +108,7 @@ h1 em, h2 em, h3 em {
   width: 265px;
   height: 265px;
   position: relative;
-  box-shadow: inset -28px -18px #701218, 18px 30px 55px #173d2e25;
+  box-shadow: inset -28px -18px #701218, 18px 30px 55px rgba(15, 56, 42, 0.22);
   display: block;
   transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -113,14 +119,14 @@ h1 em, h2 em, h3 em {
 
 .ball-graphic span:before {
   content: "";
-  border-left: 4px dashed #f4efdf;
-  border-right: 4px dashed #f4efdf;
+  border-left: 4px dashed #FDFCF7;
+  border-right: 4px dashed #FDFCF7;
   position: absolute;
   inset: 16px 119px;
   transform: rotate(-38deg);
 }
 
-/* Sponsor logo card styles */
+/* Sponsor Card */
 .sponsor-logo {
   border: 1px solid var(--border);
   place-items: center;
@@ -128,29 +134,29 @@ h1 em, h2 em, h3 em {
   padding: 18px;
   display: grid;
   overflow: hidden;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .sponsor-logo:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 24px rgba(10, 28, 21, 0.08);
 }
 
 .sponsor-logo.light {
-  background: #ffffff;
+  background: #FFFFFF;
 }
 
 .sponsor-logo.dark {
-  background: #1c1c1b;
+  background: #1C1C1B;
 }
 
-/* Halo Effect for Crest */
+/* Crest Halo Pulse */
 .crest-halo {
-  border: 1px solid #d1ad4e35;
+  border: 1px solid rgba(197, 160, 89, 0.35);
   border-radius: 50%;
-  width: 450px;
-  height: 450px;
+  width: 420px;
+  height: 420px;
   position: absolute;
   animation: pulse-halo 4s ease-in-out infinite alternate;
 }
@@ -158,7 +164,7 @@ h1 em, h2 em, h3 em {
 @keyframes pulse-halo {
   0% {
     transform: scale(0.96);
-    opacity: 0.6;
+    opacity: 0.5;
   }
   100% {
     transform: scale(1.04);
@@ -166,8 +172,25 @@ h1 em, h2 em, h3 em {
   }
 }
 
-/* Focus states for 100/100 Accessibility */
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+/* Glassmorphism Header */
+.glass-header {
+  background: rgba(15, 56, 42, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.22);
+}
+
+/* Gold Embroidery Effect */
+.gold-embroidery {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 8px rgba(197, 160, 89, 0.3));
+}
+
+/* Accessible focus rings */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
   outline: 2px solid var(--gold);
   outline-offset: 2px;
 }
