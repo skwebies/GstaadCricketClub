@@ -1,26 +1,173 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --green: #073f32;
+  --green-dark: #032b22;
+  --cream: #f4efdf;
+  --paper: #fbf8ef;
+  --gold: #cda849;
+  --gold-hover: #b89337;
+  --red: #a62127;
+  --ink: #143027;
+  --muted: #5c6d66;
+  --border: #dcd4c1;
+  --card-bg: #ffffff;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-green: var(--green);
+  --color-green-dark: var(--green-dark);
+  --color-cream: var(--cream);
+  --color-paper: var(--paper);
+  --color-gold: var(--gold);
+  --color-gold-hover: var(--gold-hover);
+  --color-red: var(--red);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-serif: Georgia, "Times New Roman", Cambria, serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  margin: 0;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Typography styles matching reference site */
+h1, h2, h3, .serif-font {
+  font-family: Georgia, "Times New Roman", Cambria, serif;
+  letter-spacing: -0.035em;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: clamp(3.8rem, 7.5vw, 7.8rem);
+  line-height: 0.88;
+}
+
+h1 em, h2 em, h3 em {
+  color: var(--gold);
+  font-style: italic;
+}
+
+.eyebrow, .section-kicker {
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.23em;
+  font-size: 0.78rem;
+  font-weight: 800;
+  display: block;
+}
+
+.section-kicker.light {
+  color: var(--gold);
+}
+
+.lead {
+  font-family: Georgia, "Times New Roman", Cambria, serif;
+  font-size: 1.65rem;
+  line-height: 1.45;
+  color: var(--ink);
+}
+
+/* Alpine Ball Graphic */
+.ball-graphic {
+  place-items: center;
+  display: grid;
+  min-height: 380px;
+}
+
+.ball-graphic span {
+  background: var(--red);
+  border-radius: 50%;
+  width: 265px;
+  height: 265px;
+  position: relative;
+  box-shadow: inset -28px -18px #701218, 18px 30px 55px #173d2e25;
+  display: block;
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.ball-graphic:hover span {
+  transform: scale(1.05) rotate(15deg);
+}
+
+.ball-graphic span:before {
+  content: "";
+  border-left: 4px dashed #f4efdf;
+  border-right: 4px dashed #f4efdf;
+  position: absolute;
+  inset: 16px 119px;
+  transform: rotate(-38deg);
+}
+
+/* Sponsor logo card styles */
+.sponsor-logo {
+  border: 1px solid var(--border);
+  place-items: center;
+  min-height: 112px;
+  padding: 18px;
+  display: grid;
+  overflow: hidden;
+  border-radius: 4px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sponsor-logo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+.sponsor-logo.light {
+  background: #ffffff;
+}
+
+.sponsor-logo.dark {
+  background: #1c1c1b;
+}
+
+/* Halo Effect for Crest */
+.crest-halo {
+  border: 1px solid #d1ad4e35;
+  border-radius: 50%;
+  width: 450px;
+  height: 450px;
+  position: absolute;
+  animation: pulse-halo 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-halo {
+  0% {
+    transform: scale(0.96);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.04);
+    opacity: 0.9;
+  }
+}
+
+/* Focus states for 100/100 Accessibility */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
 }
