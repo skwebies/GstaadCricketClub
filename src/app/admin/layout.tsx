@@ -12,7 +12,6 @@ import {
   Mail,
   ShieldAlert,
   Settings,
-  KeyRound,
   ExternalLink,
   LogOut,
   Menu,
@@ -38,7 +37,6 @@ export default function AdminLayout({
     { label: "Club Members", href: "/admin/members", icon: UserCheck },
     { label: "Events Manager", href: "/admin/events", icon: CalendarDays },
     { label: "Inquiries Inbox", href: "/admin/inquiries", icon: Mail },
-    { label: "User & Role Access", href: "/admin/users", icon: KeyRound },
     { label: "Security Audit Logs", href: "/admin/audit-logs", icon: ShieldAlert },
     { label: "Club Settings", href: "/admin/settings", icon: Settings },
   ];
