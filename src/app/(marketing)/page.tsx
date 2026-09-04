@@ -286,17 +286,14 @@ export default function HomePage() {
                 {CLUB_CONFIG.foundingSponsors.map((sponsor) => (
                   <div
                     key={sponsor.name}
-                    className={`sponsor-logo ${sponsor.theme} flex items-center justify-center p-3`}
+                    className={`sponsor-logo ${sponsor.theme}`}
                   >
-                    <div className="relative w-full h-[64px]">
-                      <Image
-                        src={sponsor.logo}
-                        alt={sponsor.name}
-                        fill
-                        sizes="160px"
-                        className="object-contain"
-                      />
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={sponsor.logo}
+                      alt={sponsor.name}
+                      loading="lazy"
+                    />
                   </div>
                 ))}
               </div>
