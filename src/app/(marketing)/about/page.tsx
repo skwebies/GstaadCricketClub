@@ -1,14 +1,20 @@
+"use client";
+
+/**
+ * @file about/page.tsx
+ * @description Trilingual About Us page presenting Sathya Narayanan's cricketing journey,
+ * achievements, and the founding philosophy of the Gstaad Cricket Club.
+ * @module app/(marketing)/about
+ */
+
 import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Award, Trophy, Users, Heart, Mountain } from "lucide-react";
-
-export const metadata = {
-  title: "About Us | Gstaad Cricket Club",
-  description:
-    "Discover Sathya Narayanan’s cricket journey and the community purpose behind Gstaad Cricket Club.",
-};
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function AboutPage() {
+  const { dict } = useLanguage();
+
   return (
     <div className="bg-[var(--paper)]">
       {/* 1. ABOUT HERO */}
@@ -24,19 +30,19 @@ export default function AboutPage() {
             className="back-link inline-flex items-center gap-2.5 text-[#d8d3c5] hover:text-[var(--gold)] uppercase tracking-[0.12em] text-[0.78rem] font-bold mb-12 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            <span>Back to the festival</span>
+            <span>{dict.nav.backToFestival}</span>
           </Link>
 
           <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-            OUR STORY
+            {dict.aboutPage.kicker}
           </span>
           <h1 className="font-serif text-[clamp(3.5rem,7vw,7rem)] leading-[0.9] font-normal text-white mb-6">
-            A lifelong passion.
+            {dict.aboutPage.title}
             <br />
-            <em className="text-[var(--gold)] italic">A local purpose.</em>
+            <em className="text-[var(--gold)] italic">{dict.aboutPage.titleEm}</em>
           </h1>
           <p className="text-[#e8e2d2] font-serif text-[1.35rem] leading-[1.55] max-w-2xl mt-8">
-            Gstaad Cricket Club was founded to give the local community—and especially children—the opportunity to discover, enjoy and grow through cricket.
+            {dict.aboutPage.intro}
           </p>
         </div>
 
@@ -53,7 +59,7 @@ export default function AboutPage() {
           </div>
           <span className="text-[var(--gold)] uppercase tracking-[0.14em] text-[0.76rem] font-bold flex items-center gap-2.5">
             <Mountain className="w-4 h-4" />
-            <span>Born in the Gstaad region</span>
+            <span>{dict.aboutPage.bornInGstaad}</span>
           </span>
         </div>
       </section>
@@ -62,7 +68,7 @@ export default function AboutPage() {
       <section className="founder-section py-24 md:py-32 px-[8vw] grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-[10vw] items-start">
         <div className="founder-title">
           <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-            THE FOUNDER
+            {dict.aboutPage.founderHeading}
           </span>
           <h2 className="font-serif text-[clamp(3.4rem,6vw,6rem)] leading-[0.9] font-normal text-[var(--ink)]">
             Sathya
@@ -73,13 +79,10 @@ export default function AboutPage() {
 
         <div className="founder-story max-w-2xl space-y-6 text-[var(--ink)]">
           <p className="lead font-serif text-[1.75rem] leading-[1.45]">
-            Cricket has been part of Sathya Narayanan’s life from his school days through state-level and national-level competition.
+            {dict.aboutPage.founderBio}
           </p>
           <p className="text-[#56675f] text-[1.05rem] leading-[1.8]">
-            Over the past two decades, Sathya has represented Switzerland in international cricket fixtures and contributed to the development of the sport through both leadership and competition. He previously captained Cossonay Cricket Club and Bern Cricket Club.
-          </p>
-          <p className="text-[#56675f] text-[1.05rem] leading-[1.8]">
-            His commitment also extended beyond the boundary. Sathya created and successfully organised Swiss T20, one of the first T20 cricket tournaments in Switzerland to feature prize money—helping bring fresh energy and visibility to the game.
+            {dict.aboutPage.visionText}
           </p>
 
           <blockquote className="border-l-4 border-[var(--gold)] bg-[var(--cream)] text-[var(--green)] p-8 sm:p-9 font-serif text-[1.35rem] leading-[1.5] mt-10 shadow-xs">
@@ -141,7 +144,7 @@ export default function AboutPage() {
         <Heart className="w-14 h-14 text-[var(--gold)] shrink-0" />
         <div>
           <span className="section-kicker light text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-3 block">
-            WHY GSTAAD CRICKET CLUB
+            {dict.aboutPage.visionHeading}
           </span>
           <h2 className="font-serif text-[clamp(2.8rem,5vw,5rem)] leading-[0.95] font-normal text-white mb-6">
             Passion becomes meaningful
@@ -155,7 +158,7 @@ export default function AboutPage() {
             href="/#register"
             className="primary-button bg-[var(--gold)] text-[var(--green-dark)] hover:bg-[var(--gold-hover)] px-8 py-4 font-extrabold text-sm uppercase tracking-wider inline-flex items-center gap-3 transition-colors"
           >
-            <span>Join the free festival</span>
+            <span>{dict.nav.registerFree}</span>
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

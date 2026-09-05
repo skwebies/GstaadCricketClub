@@ -1,9 +1,19 @@
 "use client";
 
+/**
+ * @file RegistrationForm.tsx
+ * @description Localized festival attendee reservation form with validation,
+ * instant submission to Supabase, error alerts, and trilingual support.
+ * @module shared/components/marketing
+ */
+
 import { useState } from "react";
 import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export function RegistrationForm() {
+  const { dict } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -24,7 +34,7 @@ export function RegistrationForm() {
     setError(null);
 
     try {
-      // Map participant type to registration_type enum
+      // Map participant type to backend registration_type enum
       let registrationType = "spectator";
       if (formData.participantType === "Individual" || formData.participantType === "Group") {
         registrationType = "playing_member";
@@ -63,7 +73,7 @@ export function RegistrationForm() {
         message: "",
       });
     } catch (err: any) {
-      setError(err.message || "An unexpected error occurred. Please try again.");
+      setError(err.message || dict.common.error);
     } finally {
       setLoading(false);
     }
@@ -80,17 +90,17 @@ export function RegistrationForm() {
             <CheckCircle2 className="w-10 h-10" />
           </div>
           <h3 className="font-serif text-3xl text-[var(--green)]">
-            Registration Confirmed
+            {dict.registration.successTitle}
           </h3>
           <p className="text-[var(--muted)] max-w-md mx-auto leading-relaxed">
-            Thank you for registering for the <strong>Gstaad Cricket Festival 2026</strong>! We look forward to welcoming you on Saturday, 26 September 2026 at Ebnit School.
+            {dict.registration.successMsg}
           </p>
           <button
             type="button"
             onClick={() => setSuccess(false)}
             className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--green)] font-extrabold hover:underline"
           >
-            Register another attendee
+            {dict.registration.registerAnother}
           </button>
         </div>
       ) : (
@@ -103,12 +113,12 @@ export function RegistrationForm() {
           )}
 
           <label className="block mb-5 text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-            Full name
+            {dict.registration.nameLabel}
             <input
               required
               type="text"
               name="name"
-              placeholder="Your name"
+              placeholder={dict.registration.namePlaceholder}
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[50px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
@@ -117,12 +127,12 @@ export function RegistrationForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-              Email address
+              {dict.registration.emailLabel}
               <input
                 required
                 type="email"
                 name="email"
-                placeholder="you@example.com"
+                placeholder={dict.registration.emailPlaceholder}
                 value={formData.email}
                 onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[50px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
@@ -130,11 +140,11 @@ export function RegistrationForm() {
             </label>
 
             <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-              Phone number
+              {dict.registration.phoneLabel}
               <input
                 type="tel"
                 name="phone"
-                placeholder="+41"
+                placeholder={dict.registration.phonePlaceholder}
                 value={formData.phone}
                 onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                 className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[50px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
@@ -144,7 +154,7 @@ export function RegistrationForm() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
             <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-              I am registering as
+              {dict.registration.typeLabel}
               <select
                 required
                 name="participantType"
@@ -152,16 +162,15 @@ export function RegistrationForm() {
                 onChange={(e) => setFormData({ ...formData, participantType: e.target.value })}
                 className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[50px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
               >
-                <option value="Individual">Individual</option>
-                <option value="Family">Family</option>
-                <option value="Child with guardian">Child with guardian</option>
-                <option value="Group">Group</option>
-                <option value="VIP Patron">VIP Patron</option>
+                <option value="Individual">{dict.registration.typeIndividual}</option>
+                <option value="Family">{dict.registration.typeFamily}</option>
+                <option value="Child with guardian">{dict.registration.typeChild}</option>
+                <option value="Group">{dict.registration.typeGroup}</option>
               </select>
             </label>
 
             <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-              Number attending
+              {dict.registration.partySizeLabel}
               <input
                 required
                 type="number"
@@ -175,24 +184,12 @@ export function RegistrationForm() {
             </label>
           </div>
 
-          <label className="block mb-5 text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-            Emergency Contact Phone / Name
-            <input
-              type="text"
-              name="emergencyContact"
-              placeholder="Name or phone for emergency contact"
-              value={formData.emergencyContact}
-              onChange={(e) => setFormData({ ...formData, emergencyContact: e.target.value })}
-              className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[50px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
-            />
-          </label>
-
           <label className="block mb-6 text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-            Anything we should know? <span className="font-normal text-[#7d8581] normal-case">(optional)</span>
+            {dict.registration.notesLabel} <span className="font-normal text-[#7d8581] normal-case">{dict.registration.optional}</span>
             <textarea
               name="message"
               rows={3}
-              placeholder="Age group, dietary/accessibility needs or a question"
+              placeholder={dict.registration.notesPlaceholder}
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] p-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)] resize-y"
@@ -207,11 +204,11 @@ export function RegistrationForm() {
             {loading ? (
               <>
                 <Loader2 className="w-5 h-5 animate-spin" />
-                <span>Processing...</span>
+                <span>{dict.registration.submittingBtn}</span>
               </>
             ) : (
               <>
-                <span>Register for free</span>
+                <span>{dict.registration.submitBtn}</span>
                 <ArrowRight className="w-4 h-4" />
               </>
             )}

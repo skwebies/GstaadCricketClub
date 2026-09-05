@@ -57,6 +57,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { LanguageProvider } from "@/shared/i18n/LanguageContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -124,7 +126,9 @@ export default function RootLayout({
         />
       </head>
       <body className="antialiased min-h-screen flex flex-col selection:bg-[var(--gold)] selection:text-[var(--green-dark)]">
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

@@ -1,11 +1,19 @@
 "use client";
 
+/**
+ * @file membership/page.tsx
+ * @description Trilingual Membership page with tier comparison and direct online application form.
+ * @module app/(marketing)/membership
+ */
+
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Check, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
-import { CLUB_CONFIG } from "@/shared/config/club";
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function MembershipPage() {
+  const { dict } = useLanguage();
+
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -44,11 +52,38 @@ export default function MembershipPage() {
         notes: "",
       });
     } catch (err: any) {
-      setError(err.message || "Failed to submit application");
+      setError(err.message || dict.common.error);
     } finally {
       setLoading(false);
     }
   };
+
+  const membershipTiers = [
+    {
+      id: "adult",
+      title: dict.membership.adult,
+      price: dict.membership.adultPrice,
+      period: dict.membership.perYear,
+      description: "Full voting rights and playing privileges.",
+      featured: false,
+    },
+    {
+      id: "family",
+      title: dict.membership.family,
+      price: dict.membership.familyPrice,
+      period: dict.membership.perYear,
+      description: "Includes parents and all junior members under 18.",
+      featured: true,
+    },
+    {
+      id: "junior",
+      title: dict.membership.junior,
+      price: dict.membership.juniorPrice,
+      period: dict.membership.perYear,
+      description: "Coaching clinics, youth fixtures and match ball access.",
+      featured: false,
+    },
+  ];
 
   return (
     <div className="bg-[var(--paper)]">
@@ -58,24 +93,24 @@ export default function MembershipPage() {
           className="back-link inline-flex items-center gap-2.5 text-[#d8d3c5] hover:text-[var(--gold)] uppercase tracking-[0.12em] text-[0.78rem] font-bold mb-14 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to home</span>
+          <span>{dict.nav.backToFestival}</span>
         </Link>
 
         <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-          MEMBERSHIP
+          {dict.membership.kicker}
         </span>
         <h1 className="font-serif text-[clamp(3.5rem,7.5vw,7.5rem)] leading-[0.88] font-normal text-white mb-6">
-          Join <em className="text-[var(--gold)] italic">the club.</em>
+          {dict.membership.title} <em className="text-[var(--gold)] italic">{dict.membership.titleEm}</em>
         </h1>
         <p className="text-[#e4dfd1] font-serif text-[1.35rem] leading-[1.55] max-w-2xl mt-8">
-          Support the development of community cricket in the Bernese Oberland and enjoy club fixtures, coaching sessions, and social events.
+          {dict.membership.intro}
         </p>
       </section>
 
       {/* Membership Tiers Overview */}
       <section className="py-20 px-[8vw] max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-          {CLUB_CONFIG.membershipTiers.map((tier) => (
+          {membershipTiers.map((tier) => (
             <div
               key={tier.id}
               className={`p-8 flex flex-col justify-between border ${
@@ -86,7 +121,7 @@ export default function MembershipPage() {
             >
               {tier.featured && (
                 <span className="absolute -top-3 right-6 bg-[var(--gold)] text-[var(--green-dark)] text-[0.68rem] font-extrabold tracking-widest uppercase px-3 py-1">
-                  Most Popular
+                  Featured
                 </span>
               )}
               <div>
@@ -94,9 +129,9 @@ export default function MembershipPage() {
                   {tier.title}
                 </span>
                 <strong className="font-serif text-4xl block mb-1">
-                  CHF {tier.price}
+                  {tier.price}
                   <span className="font-sans text-xs font-normal ml-2 opacity-80">
-                    / year
+                    / {tier.period}
                   </span>
                 </strong>
                 <p className="text-sm opacity-90 my-4 leading-relaxed">
@@ -107,15 +142,15 @@ export default function MembershipPage() {
               <div className="border-t border-current/15 pt-6 mt-6 space-y-3 text-sm">
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                  <span>Annual General Meeting voting rights</span>
+                  <span>{dict.membership.benefit1}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                  <span>Invitation to Annual Gala Dinner</span>
+                  <span>{dict.membership.benefit2}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
-                  <span>Access to all Club festival events</span>
+                  <span>{dict.membership.benefit3}</span>
                 </div>
               </div>
             </div>
@@ -125,13 +160,13 @@ export default function MembershipPage() {
         {/* Application Form */}
         <div className="bg-white p-8 md:p-14 border-t-4 border-[var(--gold)] shadow-xl max-w-3xl mx-auto">
           <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-3 block">
-            ONLINE APPLICATION
+            {dict.membership.kicker}
           </span>
           <h2 className="font-serif text-3xl md:text-4xl text-[var(--ink)] mb-4 font-normal">
-            Apply for Club Membership
+            {dict.membership.applyButton}
           </h2>
           <p className="text-[var(--muted)] mb-8 text-sm leading-relaxed">
-            Please fill in your details below. Once received, the committee will review your application and send membership confirmation and payment details.
+            {dict.membership.contactNote}
           </p>
 
           {success ? (
@@ -140,17 +175,17 @@ export default function MembershipPage() {
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h3 className="font-serif text-3xl text-[var(--green)]">
-                Application Received
+                {dict.registration.successTitle}
               </h3>
               <p className="text-[var(--muted)] max-w-md mx-auto leading-relaxed text-sm">
-                Thank you for applying to join the Gstaad Cricket Club! Our Secretary will contact you with welcome documentation and membership details.
+                {dict.registration.successMsg}
               </p>
               <button
                 type="button"
                 onClick={() => setSuccess(false)}
                 className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-widest text-[var(--green)] font-extrabold hover:underline"
               >
-                Submit another application
+                {dict.registration.registerAnother}
               </button>
             </div>
           ) : (
@@ -164,7 +199,7 @@ export default function MembershipPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Full Name
+                  {dict.registration.nameLabel}
                   <input
                     required
                     type="text"
@@ -175,7 +210,7 @@ export default function MembershipPage() {
                 </label>
 
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Email Address
+                  {dict.registration.emailLabel}
                   <input
                     required
                     type="email"
@@ -188,7 +223,7 @@ export default function MembershipPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Phone Number
+                  {dict.registration.phoneLabel}
                   <input
                     required
                     type="tel"
@@ -199,37 +234,26 @@ export default function MembershipPage() {
                 </label>
 
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Membership Tier
+                  {dict.membership.kicker}
                   <select
                     value={formData.tier}
                     onChange={(e) => setFormData({ ...formData, tier: e.target.value })}
                     className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[48px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
                   >
-                    <option value="Full Playing">Full Playing (CHF 100/yr)</option>
-                    <option value="Social Member">Social / Family Member (CHF 200/yr)</option>
-                    <option value="Junior">Junior under 18 (CHF 50/yr)</option>
-                    <option value="Patron">Club Patron / Benefactor</option>
+                    <option value="Full Playing">{dict.membership.adult} ({dict.membership.adultPrice})</option>
+                    <option value="Social Member">{dict.membership.family} ({dict.membership.familyPrice})</option>
+                    <option value="Junior">{dict.membership.junior} ({dict.membership.juniorPrice})</option>
                   </select>
                 </label>
               </div>
 
               <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                Cricket Experience or Handicap <span className="font-normal text-[#7d8581] normal-case">(optional)</span>
-                <input
-                  type="text"
-                  placeholder="e.g. beginner, former club batsman, wicket-keeper"
-                  value={formData.handicapOrExperience}
-                  onChange={(e) => setFormData({ ...formData, handicapOrExperience: e.target.value })}
-                  className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[48px] px-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
-                />
-              </label>
-
-              <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                Additional Notes <span className="font-normal text-[#7d8581] normal-case">(optional)</span>
+                {dict.registration.notesLabel} <span className="font-normal text-[#7d8581] normal-case">{dict.registration.optional}</span>
                 <textarea
                   rows={3}
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                  placeholder={dict.registration.notesPlaceholder}
                   className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] p-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
                 />
               </label>
@@ -242,10 +266,10 @@ export default function MembershipPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Submitting Application...</span>
+                    <span>{dict.common.loading}</span>
                   </>
                 ) : (
-                  <span>Submit Membership Application</span>
+                  <span>{dict.membership.applyButton}</span>
                 )}
               </button>
             </form>

@@ -1,11 +1,20 @@
 "use client";
 
+/**
+ * @file contact/page.tsx
+ * @description Trilingual Contact page with committee inquiry form and ground location.
+ * @module app/(marketing)/contact
+ */
+
 import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Mail, MapPin, Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { CLUB_CONFIG } from "@/shared/config/club";
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function ContactPage() {
+  const { dict } = useLanguage();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -35,7 +44,7 @@ export default function ContactPage() {
       setSuccess(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (err: any) {
-      setError(err.message || "Failed to send message. Please try again.");
+      setError(err.message || dict.common.error);
     } finally {
       setLoading(false);
     }
@@ -49,17 +58,17 @@ export default function ContactPage() {
           className="back-link inline-flex items-center gap-2.5 text-[#d8d3c5] hover:text-[var(--gold)] uppercase tracking-[0.12em] text-[0.78rem] font-bold mb-14 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to home</span>
+          <span>{dict.nav.backToFestival}</span>
         </Link>
 
         <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-          GET IN TOUCH
+          {dict.contactPage.kicker}
         </span>
         <h1 className="font-serif text-[clamp(3.5rem,7.5vw,7.5rem)] leading-[0.88] font-normal text-white mb-6">
-          Contact <em className="text-[var(--gold)] italic">the club.</em>
+          {dict.contactPage.title} <em className="text-[var(--gold)] italic">{dict.contactPage.titleEm}</em>
         </h1>
         <p className="text-[#e4dfd1] font-serif text-[1.35rem] leading-[1.55] max-w-2xl mt-8">
-          Whether you have questions about playing, coaching, sponsoring or attending our festival, we’d love to hear from you.
+          {dict.contactPage.intro}
         </p>
       </section>
 
@@ -106,10 +115,10 @@ export default function ContactPage() {
                 <CheckCircle2 className="w-10 h-10" />
               </div>
               <h3 className="font-serif text-3xl text-[var(--green)]">
-                Message Sent
+                {dict.contactPage.successMsg.split(".")[0]}
               </h3>
               <p className="text-[var(--muted)] max-w-md mx-auto leading-relaxed text-sm">
-                Thank you for contacting Gstaad Cricket Club! A member of our committee will get back to you shortly.
+                {dict.contactPage.successMsg}
               </p>
               <button
                 type="button"
@@ -130,7 +139,7 @@ export default function ContactPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Your Name
+                  {dict.registration.nameLabel}
                   <input
                     required
                     type="text"
@@ -141,7 +150,7 @@ export default function ContactPage() {
                 </label>
 
                 <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                  Email Address
+                  {dict.registration.emailLabel}
                   <input
                     required
                     type="email"
@@ -165,7 +174,7 @@ export default function ContactPage() {
               </label>
 
               <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                Message
+                {dict.registration.notesLabel}
                 <textarea
                   required
                   rows={4}
@@ -184,11 +193,11 @@ export default function ContactPage() {
                 {loading ? (
                   <>
                     <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>Sending message...</span>
+                    <span>{dict.contactPage.sendingBtn}</span>
                   </>
                 ) : (
                   <>
-                    <span>Send Message</span>
+                    <span>{dict.contactPage.sendBtn}</span>
                     <Send className="w-4 h-4" />
                   </>
                 )}

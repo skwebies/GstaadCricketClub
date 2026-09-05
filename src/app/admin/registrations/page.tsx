@@ -40,22 +40,17 @@ export default function RegistrationsPage() {
   const fetchRegistrations = async () => {
     setLoading(true);
     try {
-      // In SSR/Client, we can fetch from an internal endpoint or Supabase directly
-      // Let's create an endpoint or fetch from our API
-      const res = await fetch("/api/register?admin=true");
-      if (!res.ok) {
-        // Fallback: fetch via client Supabase or an export
-        throw new Error("Failed to load registrations");
+      const res = await fetch("/api/admin/registrations");
+      if (res.ok) {
+        const data = await res.json();
+        setRegistrations(data.registrations || []);
+      } else {
+        const err = await res.json().catch(() => ({}));
+        throw new Error(err.error || "Failed to load registrations");
       }
-      const data = await res.json();
-      setRegistrations(data.registrations || []);
-    } catch {
-      // Direct fetch fallback
-      const direct = await fetch("/api/admin/registrations");
-      if (direct.ok) {
-        const json = await direct.json();
-        setRegistrations(json.registrations || []);
-      }
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Error loading registrations";
+      setFeedback({ type: "error", message: msg });
     } finally {
       setLoading(false);
     }

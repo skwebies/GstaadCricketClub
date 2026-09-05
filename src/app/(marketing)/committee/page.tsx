@@ -1,13 +1,19 @@
+"use client";
+
+/**
+ * @file committee/page.tsx
+ * @description Trilingual Committee page displaying GCC leadership, roles, and governance values.
+ * @module app/(marketing)/committee
+ */
+
 import Link from "next/link";
 import { ArrowLeft, Shield, UserRoundCog, WalletCards, Megaphone, UsersRound } from "lucide-react";
 import { CLUB_CONFIG } from "@/shared/config/club";
-
-export const metadata = {
-  title: "Committee | Gstaad Cricket Club",
-  description: "Meet the committee of Gstaad Cricket Club.",
-};
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function CommitteePage() {
+  const { dict } = useLanguage();
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "shield":
@@ -34,17 +40,17 @@ export default function CommitteePage() {
           className="back-link inline-flex items-center gap-2.5 text-[#d8d3c5] hover:text-[var(--gold)] uppercase tracking-[0.12em] text-[0.78rem] font-bold mb-14 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to home</span>
+          <span>{dict.nav.backToFestival}</span>
         </Link>
 
         <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-          CLUB LEADERSHIP
+          {dict.committeePage.kicker}
         </span>
         <h1 className="font-serif text-[clamp(3.5rem,7.5vw,7.5rem)] leading-[0.88] font-normal text-white mb-6">
-          Our <em className="text-[var(--gold)] italic">committee.</em>
+          {dict.committeePage.title} <em className="text-[var(--gold)] italic">{dict.committeePage.titleEm}</em>
         </h1>
         <p className="text-[#e4dfd1] font-serif text-[1.35rem] leading-[1.55] max-w-2xl mt-8">
-          A committed local team working together to establish cricket in Gstaad and create welcoming opportunities for the whole community.
+          {dict.committeePage.intro}
         </p>
       </section>
 
@@ -74,7 +80,7 @@ export default function CommitteePage() {
                 {member.bio}
               </p>
               <small className="text-xs text-[#9d9787] mt-auto">
-                Committee member of Gstaad Cricket Club.
+                {dict.footer.legalNotice.split("(")[0]}
               </small>
             </div>
           </article>
@@ -83,7 +89,7 @@ export default function CommitteePage() {
 
       {/* 3. PHOTO NOTE */}
       <section className="photo-note text-center text-[#6a7771] pb-24 px-[6vw] text-sm">
-        <p>Official committee portraits will be added soon.</p>
+        <p>Official committee portraits will be updated following club fixtures.</p>
       </section>
     </div>
   );

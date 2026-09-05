@@ -1,12 +1,18 @@
+"use client";
+
+/**
+ * @file gallery/page.tsx
+ * @description Trilingual Gallery page showcasing moments and future matchday photography.
+ * @module app/(marketing)/gallery
+ */
+
 import Link from "next/link";
 import { ArrowLeft, Camera, Mountain, Image as ImageIcon, Upload } from "lucide-react";
-
-export const metadata = {
-  title: "Gallery | Gstaad Cricket Club",
-  description: "Photographs and memories from Gstaad Cricket Club.",
-};
+import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function GalleryPage() {
+  const { dict } = useLanguage();
+
   return (
     <div className="bg-[var(--paper)]">
       {/* 1. GALLERY HERO */}
@@ -21,19 +27,19 @@ export default function GalleryPage() {
           className="back-link inline-flex items-center gap-2.5 text-[#d8d3c5] hover:text-[var(--gold)] uppercase tracking-[0.12em] text-[0.78rem] font-bold mb-14 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          <span>Back to home</span>
+          <span>{dict.nav.backToFestival}</span>
         </Link>
 
         <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-          CLUB MOMENTS
+          {dict.galleryPage.kicker}
         </span>
         <h1 className="font-serif text-[clamp(3.5rem,7.5vw,7.5rem)] leading-[0.88] font-normal text-white mb-6">
-          Our cricket.
+          {dict.galleryPage.title}
           <br />
-          <em className="text-[var(--gold)] italic">Our community.</em>
+          <em className="text-[var(--gold)] italic">{dict.galleryPage.titleEm}</em>
         </h1>
         <p className="text-[#e4dfd1] font-serif text-[1.35rem] leading-[1.55] max-w-2xl mt-8">
-          This is where we will share the people, matches and memorable moments that shape Gstaad Cricket Club.
+          {dict.galleryPage.intro}
         </p>
       </section>
 
