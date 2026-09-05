@@ -21,6 +21,7 @@ export default function MembershipPage() {
     tier: "Full Playing",
     handicapOrExperience: "",
     notes: "",
+    botField: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -50,6 +51,7 @@ export default function MembershipPage() {
         tier: "Full Playing",
         handicapOrExperience: "",
         notes: "",
+        botField: "",
       });
     } catch (err: any) {
       setError(err.message || dict.common.error);
@@ -190,6 +192,20 @@ export default function MembershipPage() {
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Anti-spam invisible honeypot trap */}
+              <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+                <label htmlFor="member_bot_field">Leave this empty</label>
+                <input
+                  id="member_bot_field"
+                  type="text"
+                  name="bot_field"
+                  tabIndex={-1}
+                  autoComplete="off"
+                  value={formData.botField}
+                  onChange={(e) => setFormData({ ...formData, botField: e.target.value })}
+                />
+              </div>
+
               {error && (
                 <div className="p-4 bg-red-50 border-l-4 border-[var(--red)] text-[var(--red)] text-sm flex items-center gap-3">
                   <AlertCircle className="w-5 h-5 shrink-0" />

@@ -22,6 +22,7 @@ export function RegistrationForm() {
     partySize: 1,
     emergencyContact: "",
     message: "",
+    botField: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -53,6 +54,7 @@ export function RegistrationForm() {
           partySize: Number(formData.partySize) || 1,
           emergencyContact: formData.emergencyContact || formData.phone || "Self / Attendee",
           dietaryRequirements: formData.message || undefined,
+          botField: formData.botField,
         }),
       });
 
@@ -71,6 +73,7 @@ export function RegistrationForm() {
         partySize: 1,
         emergencyContact: "",
         message: "",
+        botField: "",
       });
     } catch (err: any) {
       setError(err.message || dict.common.error);
@@ -111,6 +114,20 @@ export function RegistrationForm() {
               <span>{error}</span>
             </div>
           )}
+
+          {/* Anti-spam invisible honeypot trap */}
+          <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+            <label htmlFor="reg_bot_field">Leave this empty</label>
+            <input
+              id="reg_bot_field"
+              type="text"
+              name="bot_field"
+              tabIndex={-1}
+              autoComplete="off"
+              value={formData.botField}
+              onChange={(e) => setFormData({ ...formData, botField: e.target.value })}
+            />
+          </div>
 
           <label className="block mb-5 text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
             {dict.registration.nameLabel}

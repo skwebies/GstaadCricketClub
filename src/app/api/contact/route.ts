@@ -3,6 +3,9 @@ import { createAdminClient } from "@/infrastructure/supabase/admin";
 import { SupabaseContactRepository } from "@/infrastructure/repositories/SupabaseContactRepository";
 import { SupabaseAuditRepository } from "@/infrastructure/repositories/SupabaseAuditRepository";
 import { SubmitContactMessageUseCase } from "@/application/use-cases/SubmitContactMessageUseCase";
+import { isHoneypotTriggered, getClientIp } from "@/infrastructure/security/anti-spam";
+import { checkRateLimit } from "@/infrastructure/security/rate-limiter";
+import { EmailService } from "@/infrastructure/email/email-service";
 
 export const dynamic = "force-dynamic";
 
@@ -28,10 +31,30 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    const clientIp = getClientIp(request);
 
-    const forwarded = request.headers.get("x-forwarded-for");
-    const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
+    // 1. Invisible Honeypot Trap: Silent drop if bot filled hidden field
+    if (isHoneypotTriggered(body.botField)) {
+      console.warn(`[Anti-Spam] Honeypot triggered in contact form from IP ${clientIp}`);
+      return NextResponse.json({
+        success: true,
+        message: "Thank you for reaching out. A committee member will respond promptly.",
+      });
+    }
 
+    // 2. Sliding Window Rate Limiting (5 requests per 10 minutes)
+    const rateLimit = checkRateLimit(`contact:${clientIp}`, 5, 10 * 60 * 1000);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: `Too many inquiries sent. Please wait ${rateLimit.resetInSeconds} seconds before sending another message.`,
+        },
+        { status: 429 }
+      );
+    }
+
+    // 3. Database Persistence & Domain Logic
     const supabase = createAdminClient();
     const contactRepo = new SupabaseContactRepository(supabase);
     const auditRepo = new SupabaseAuditRepository(supabase);
@@ -45,8 +68,17 @@ export async function POST(request: Request) {
         subject: body.subject,
         message: body.message,
       },
-      ip
+      clientIp
     );
+
+    // 4. SMTP Dual-Dispatch (Admin alert with replyTo + Sender confirmation)
+    await EmailService.sendContactEmails({
+      name: body.name,
+      email: body.email,
+      subject: body.subject,
+      message: body.message,
+      clientIp,
+    });
 
     return NextResponse.json({
       success: true,
