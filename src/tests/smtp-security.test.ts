@@ -15,7 +15,7 @@ import {
   renderContactAdminEmail,
   renderContactUserConfirmation,
 } from "../infrastructure/email/email-templates";
-import { getSmtpConfig, dispatchEmail } from "../infrastructure/email/smtp-client";
+import { getSmtpConfig, dispatchEmail, buildMimeMessage, extractEmailAddress } from "../infrastructure/email/smtp-client";
 
 describe("Anti-Spam & Header Injection Defense", () => {
   it("should strip CRLF characters to prevent SMTP header injection", () => {
@@ -171,6 +171,34 @@ describe("SMTP Client Configuration & Safe Dispatch", () => {
     expect(config.secure).toBe(true);
     expect(config.user).toBe("info@gstaadcricketclub.ch");
     expect(config.adminRecipient).toBe("info@gstaadcricketclub.ch");
+  });
+
+  it("should correctly extract raw email address from formatted strings", () => {
+    expect(extractEmailAddress('"Gstaad Cricket Club" <info@gstaadcricketclub.ch>')).toBe("info@gstaadcricketclub.ch");
+    expect(extractEmailAddress("<contact@alps.ch>")).toBe("contact@alps.ch");
+    expect(extractEmailAddress("member@gstaad.ch")).toBe("member@gstaad.ch");
+  });
+
+  it("should build valid RFC 5322 MIME multipart/alternative messages", () => {
+    const config = getSmtpConfig();
+    const { raw, messageId } = buildMimeMessage(
+      {
+        to: "recipient@alps.ch",
+        subject: "Gstaad Cricket Club Festival 2026",
+        text: "Plain text greeting",
+        html: "<p>HTML greeting</p>",
+        replyTo: "reply@alps.ch",
+      },
+      config
+    );
+
+    expect(messageId).toContain("@gstaadcricketclub.ch");
+    expect(raw).toContain("MIME-Version: 1.0");
+    expect(raw).toContain('Content-Type: multipart/alternative; boundary="');
+    expect(raw).toContain("Reply-To: reply@alps.ch");
+    expect(raw).toContain("Content-Type: text/plain; charset=utf-8");
+    expect(raw).toContain("Content-Type: text/html; charset=utf-8");
+    expect(raw).toContain("Content-Transfer-Encoding: base64");
   });
 
   it("should safely mock dispatch in development / test when SMTP_PASS is unset", async () => {
