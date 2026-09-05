@@ -59,7 +59,7 @@ h1, h2, h3, .serif-font {
   font-weight: 400;
 }
 
-h1 {
+.hero h1, .about-hero h1, .inner-hero h1, .gallery-hero h1 {
   font-size: clamp(3.8rem, 7.5vw, 7.8rem);
   line-height: 0.88;
 }
