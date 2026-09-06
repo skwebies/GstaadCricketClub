@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
+import { normalizeMemberTier } from "@/core/domain/entities/Member";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = createAdminClient();
+    const canonicalTier = normalizeMemberTier(tier);
 
     const { data: member, error } = await supabase
       .from("members")
@@ -42,7 +44,7 @@ export async function POST(request: NextRequest) {
         full_name,
         email: email.toLowerCase().trim(),
         phone,
-        tier,
+        tier: canonicalTier,
         handicap_or_experience: handicap_or_experience || null,
         notes: notes || null,
         status: "active",

@@ -7,6 +7,8 @@
 import { describe, it, expect, vi } from "vitest";
 import { ContactMessageSchema, MemberApplicationSchema } from "../application/validators/schemas";
 import { SubmitContactMessageUseCase } from "../application/use-cases/SubmitContactMessageUseCase";
+import { ManageMembersUseCase } from "../application/use-cases/ManageMembersUseCase";
+import { normalizeMemberTier } from "../core/domain/entities/Member";
 import {
   renderContactAdminEmail,
   renderContactUserConfirmation,
@@ -15,6 +17,7 @@ import {
 } from "../infrastructure/email/email-templates";
 import type { IContactRepository } from "../core/domain/repositories/IContactRepository";
 import type { IAuditRepository } from "../core/domain/repositories/IAuditRepository";
+import type { IMemberRepository } from "../core/domain/repositories/IMemberRepository";
 
 describe("Contact Message Schema Validation", () => {
   it("should validate a correct general contact inquiry", () => {
@@ -232,4 +235,97 @@ describe("Contact Email Templates", () => {
     expect(userEmail.html).toContain("Adult (CHF 100 / year)");
     expect(userEmail.html).toContain("Dear Marc Brand");
   });
+
+  it("should normalize all raw tier inputs and package descriptions to canonical DB tiers", () => {
+    // Adult variations -> Full Playing
+    expect(normalizeMemberTier("Adult")).toBe("Full Playing");
+    expect(normalizeMemberTier("adult")).toBe("Full Playing");
+    expect(normalizeMemberTier("Adult (CHF 100 / year)")).toBe("Full Playing");
+    expect(normalizeMemberTier("Erwachsene (CHF 100 / Jahr)")).toBe("Full Playing");
+    expect(normalizeMemberTier("Adulte (CHF 100 / an)")).toBe("Full Playing");
+    expect(normalizeMemberTier("Full Playing")).toBe("Full Playing");
+    expect(normalizeMemberTier("Full Playing Member")).toBe("Full Playing");
+
+    // Family variations -> Social Member
+    expect(normalizeMemberTier("Family")).toBe("Social Member");
+    expect(normalizeMemberTier("family")).toBe("Social Member");
+    expect(normalizeMemberTier("Family (CHF 200 / year)")).toBe("Social Member");
+    expect(normalizeMemberTier("Familie (CHF 200 / Jahr)")).toBe("Social Member");
+    expect(normalizeMemberTier("Famille (CHF 200 / an)")).toBe("Social Member");
+    expect(normalizeMemberTier("Social Member")).toBe("Social Member");
+
+    // Junior variations -> Junior
+    expect(normalizeMemberTier("Junior")).toBe("Junior");
+    expect(normalizeMemberTier("junior")).toBe("Junior");
+    expect(normalizeMemberTier("Junior (CHF 50 / year)")).toBe("Junior");
+    expect(normalizeMemberTier("Junior Member")).toBe("Junior");
+    expect(normalizeMemberTier("Youth player")).toBe("Junior");
+
+    // Patron variations -> Patron
+    expect(normalizeMemberTier("Patron")).toBe("Patron");
+    expect(normalizeMemberTier("Honorary Patron")).toBe("Patron");
+
+    // Fallbacks
+    expect(normalizeMemberTier(null)).toBe("Full Playing");
+    expect(normalizeMemberTier("")).toBe("Full Playing");
+    expect(normalizeMemberTier("unknown-option")).toBe("Full Playing");
+  });
+
+  it("should ensure ManageMembersUseCase.apply stores canonical tier in repository", async () => {
+    const mockCreatedMember = {
+      id: "mem-uuid-123",
+      fullName: "Sophie de Saanen",
+      email: "sophie@saanen.ch",
+      phone: "+41 33 748 00 00",
+      tier: "Social Member",
+      status: "pending" as const,
+      notes: "Selected Package: Family (CHF 200 / year)\ntesting tesing",
+      handicapOrExperience: "Beginner",
+      createdAt: new Date().toISOString(),
+    };
+
+    const mockMemberRepo: IMemberRepository = {
+      create: vi.fn().mockResolvedValue(mockCreatedMember),
+      findById: vi.fn().mockResolvedValue(null),
+      findByEmail: vi.fn().mockResolvedValue(null),
+      list: vi.fn().mockResolvedValue([]),
+      updateStatus: vi.fn().mockResolvedValue(mockCreatedMember),
+      count: vi.fn().mockResolvedValue(1),
+      delete: vi.fn().mockResolvedValue(true),
+    };
+
+    const mockAuditRepo: IAuditRepository = {
+      record: vi.fn().mockResolvedValue({} as any),
+      list: vi.fn().mockResolvedValue([]),
+    };
+
+    const useCase = new ManageMembersUseCase(mockMemberRepo, mockAuditRepo);
+
+    const created = await useCase.apply({
+      fullName: "Sophie de Saanen",
+      email: "sophie@saanen.ch",
+      phone: "+41 33 748 00 00",
+      tier: "Family (CHF 200 / year)",
+      handicapOrExperience: "Beginner",
+      notes: "Selected Package: Family (CHF 200 / year)\ntesting tesing",
+    });
+
+    expect(created.id).toBe("mem-uuid-123");
+    // Verify memberRepo.create was invoked with canonical tier 'Social Member', satisfying members_tier_check
+    expect(mockMemberRepo.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        tier: "Social Member",
+        email: "sophie@saanen.ch",
+      })
+    );
+    expect(mockAuditRepo.record).toHaveBeenCalledWith(
+      "MEMBER_APPLICATION",
+      "members",
+      "mem-uuid-123",
+      expect.objectContaining({
+        tier: "Social Member",
+      })
+    );
+  });
 });
+

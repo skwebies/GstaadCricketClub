@@ -40,13 +40,24 @@ export async function POST(request: Request) {
 
     const useCase = new ManageMembersUseCase(memberRepo, auditRepo);
 
+    const packageLabel = body.packageLabel || body.tier || "Adult (CHF 100 / year)";
+    const rawTierInput = body.tier || body.packageId || "Full Playing";
+
+    // Preserve the human-readable package label and fee in notes for committee review
+    let applicantNotes = body.notes ? String(body.notes).trim() : "";
+    if (packageLabel && !applicantNotes.toLowerCase().includes("package:")) {
+      applicantNotes = applicantNotes
+        ? `Package: ${packageLabel}\n${applicantNotes}`
+        : `Package: ${packageLabel}`;
+    }
+
     const result = await useCase.apply({
       fullName: body.fullName,
       email: body.email,
       phone: body.phone,
-      tier: body.tier,
+      tier: rawTierInput,
       handicapOrExperience: body.handicapOrExperience,
-      notes: body.notes,
+      notes: applicantNotes,
     });
 
     // 4. SMTP Dual-Dispatch (Admin notification + Applicant confirmation)
@@ -54,9 +65,9 @@ export async function POST(request: Request) {
       fullName: body.fullName,
       email: body.email,
       phone: body.phone,
-      tier: body.tier,
+      tier: packageLabel,
       handicapOrExperience: body.handicapOrExperience,
-      notes: body.notes,
+      notes: applicantNotes,
     });
 
     return NextResponse.json({

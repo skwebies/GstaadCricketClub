@@ -1,7 +1,7 @@
 import type { IMemberRepository } from "@/core/domain/repositories/IMemberRepository";
 import type { IAuditRepository } from "@/core/domain/repositories/IAuditRepository";
 import { MemberApplicationSchema, type MemberApplicationFormData } from "../validators/schemas";
-import type { Member, MemberStatus, MemberTier } from "@/core/domain/entities/Member";
+import { normalizeMemberTier, type Member, type MemberStatus, type MemberTier } from "@/core/domain/entities/Member";
 
 export class ManageMembersUseCase {
   constructor(
@@ -11,12 +11,13 @@ export class ManageMembersUseCase {
 
   async apply(input: MemberApplicationFormData): Promise<Member> {
     const validated = MemberApplicationSchema.parse(input);
+    const canonicalTier = normalizeMemberTier(validated.tier);
 
     const member = await this.memberRepo.create({
       fullName: validated.fullName.trim(),
       email: validated.email.toLowerCase().trim(),
       phone: validated.phone.trim(),
-      tier: validated.tier,
+      tier: canonicalTier,
       handicapOrExperience: validated.handicapOrExperience,
       notes: validated.notes,
       status: "pending",
@@ -25,7 +26,7 @@ export class ManageMembersUseCase {
     if (this.auditRepo) {
       await this.auditRepo.record("MEMBER_APPLICATION", "members", member.id, {
         email: validated.email,
-        tier: validated.tier,
+        tier: canonicalTier,
       });
     }
 

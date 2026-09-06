@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
 import type { Database } from "@/infrastructure/supabase/database.types";
+import { normalizeMemberTier } from "@/core/domain/entities/Member";
 
 export async function PATCH(
   request: NextRequest,
@@ -13,7 +14,7 @@ export async function PATCH(
 
     const allowedUpdates: Database["public"]["Tables"]["members"]["Update"] = {};
     if (body.status !== undefined) allowedUpdates.status = body.status;
-    if (body.tier !== undefined) allowedUpdates.tier = body.tier;
+    if (body.tier !== undefined) allowedUpdates.tier = normalizeMemberTier(body.tier);
     if (body.full_name !== undefined) allowedUpdates.full_name = body.full_name;
     if (body.email !== undefined) allowedUpdates.email = body.email;
     if (body.phone !== undefined) allowedUpdates.phone = body.phone;

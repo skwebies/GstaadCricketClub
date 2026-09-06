@@ -42,7 +42,7 @@ export default function MembersAdminPage() {
     full_name: "",
     email: "",
     phone: "",
-    tier: "Full Playing Member",
+    tier: "Full Playing",
     handicap_or_experience: "",
     notes: "",
   });
@@ -93,7 +93,7 @@ export default function MembersAdminPage() {
           full_name: "",
           email: "",
           phone: "",
-          tier: "Full Playing Member",
+          tier: "Full Playing",
           handicap_or_experience: "",
           notes: "",
         });
@@ -173,7 +173,13 @@ export default function MembersAdminPage() {
       m.phone.toLowerCase().includes(search.toLowerCase());
 
     const matchStatus = statusFilter === "all" || m.status === statusFilter;
-    const matchTier = tierFilter === "all" || m.tier === tierFilter;
+    const matchTier =
+      tierFilter === "all" ||
+      m.tier === tierFilter ||
+      (tierFilter === "Full Playing" && (m.tier === "Full Playing" || m.tier === "Full Playing Member" || m.tier === "Adult")) ||
+      (tierFilter === "Social Member" && (m.tier === "Social Member" || m.tier === "Family")) ||
+      (tierFilter === "Junior" && (m.tier === "Junior" || m.tier === "Junior Member")) ||
+      (tierFilter === "Patron" && (m.tier === "Patron" || m.tier === "Honorary Patron"));
     return matchSearch && matchStatus && matchTier;
   });
 
@@ -307,10 +313,10 @@ export default function MembersAdminPage() {
             className="text-xs bg-[#fdfcf9] border border-gray-300 rounded-md px-3 py-2 font-medium text-gray-700 focus:outline-none focus:border-[var(--green)]"
           >
             <option value="all">All Membership Tiers</option>
-            <option value="Full Playing Member">Full Playing Member</option>
-            <option value="Social Member">Social Member</option>
-            <option value="Junior Member">Junior Member</option>
-            <option value="Honorary Patron">Honorary Patron</option>
+            <option value="Full Playing">Full Playing (Adult)</option>
+            <option value="Social Member">Social Member (Family)</option>
+            <option value="Junior">Junior</option>
+            <option value="Patron">Honorary Patron</option>
           </select>
         </div>
       </div>
@@ -349,6 +355,11 @@ export default function MembersAdminPage() {
                       {m.handicap_or_experience && (
                         <div className="text-[0.72rem] text-gray-500">
                           {m.handicap_or_experience}
+                        </div>
+                      )}
+                      {m.notes && (
+                        <div className="text-[0.72rem] text-amber-900/80 bg-amber-50/70 border border-amber-200/50 rounded px-1.5 py-0.5 mt-1 max-w-xs line-clamp-2" title={m.notes}>
+                          {m.notes}
                         </div>
                       )}
                     </td>
@@ -520,10 +531,10 @@ export default function MembersAdminPage() {
                   }
                   className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md bg-white focus:outline-none focus:border-[var(--green)]"
                 >
-                  <option value="Full Playing Member">Full Playing Member (CHF 350/yr)</option>
-                  <option value="Social Member">Social Member (CHF 150/yr)</option>
-                  <option value="Junior Member">Junior Member (CHF 80/yr)</option>
-                  <option value="Honorary Patron">Honorary Patron (CHF 1,000/yr)</option>
+                  <option value="Full Playing">Full Playing (Adult - CHF 100/yr)</option>
+                  <option value="Social Member">Social Member (Family - CHF 200/yr)</option>
+                  <option value="Junior">Junior (CHF 50/yr)</option>
+                  <option value="Patron">Honorary Patron (CHF 1,000/yr)</option>
                 </select>
               </div>
 

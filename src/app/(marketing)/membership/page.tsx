@@ -171,7 +171,11 @@ function MembershipContent() {
       const res = await fetch("/api/members/apply", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          packageId: selectedPackage,
+          packageLabel: getPackageTierLabel(selectedPackage),
+        }),
       });
 
       const data = await res.json();
