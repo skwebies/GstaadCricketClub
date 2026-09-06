@@ -9,7 +9,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Check, HandHeart, Sparkles } from "lucide-react";
+import { ArrowRight, Check, HandHeart, Sparkles, Building2, Users } from "lucide-react";
 import { EventStrip } from "@/shared/components/marketing/EventStrip";
 import { RegistrationForm } from "@/shared/components/marketing/RegistrationForm";
 import { CLUB_CONFIG } from "@/shared/config/club";
@@ -298,33 +298,46 @@ export function MarketingHomeContent() {
       </section>
 
       {/* 6. SUPPORTERS & DONORS */}
-      <section className="supporters-section bg-[var(--paper)] py-24 md:py-32 px-[8vw]" id="supporters">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-[9vw]">
-          <div className="supporters-heading">
-            <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
-              {dict.supporters.kicker}
-            </span>
-            <h2 className="font-serif text-[clamp(3.2rem,6vw,6rem)] leading-[0.92] font-normal text-[var(--ink)]">
-              {dict.supporters.title}
-              <br />
-              <em className="text-[var(--gold)] italic">{dict.supporters.titleEm}</em>
-            </h2>
+      <section className="supporters-section bg-[var(--paper)] py-20 md:py-28 px-[8vw]" id="supporters">
+        <div className="max-w-7xl mx-auto">
+          {/* Section Header: Title & Lead in Balanced 2-Column Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-16 items-start pb-10 border-b border-[#c7bea7]/60 mb-12">
+            <div className="supporters-heading">
+              <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-3 block">
+                {dict.supporters.kicker}
+              </span>
+              <h2 className="font-serif text-[clamp(2.8rem,5vw,4.8rem)] leading-[0.94] font-normal text-[var(--ink)]">
+                {dict.supporters.title}
+                <br />
+                <em className="text-[var(--gold)] italic">{dict.supporters.titleEm}</em>
+              </h2>
+            </div>
+
+            <div className="supporters-intro space-y-4 pt-1">
+              <p className="lead font-serif text-[1.35rem] sm:text-[1.5rem] leading-[1.4] text-[var(--ink)]">
+                {dict.supporters.lead}
+              </p>
+              <p className="text-[#5c6d66] text-[0.98rem] leading-[1.75]">
+                {dict.supporters.body}
+              </p>
+            </div>
           </div>
 
-          <div className="supporters-content max-w-3xl space-y-6">
-            <p className="lead font-serif text-[1.6rem] leading-[1.45] text-[var(--ink)]">
-              {dict.supporters.lead}
-            </p>
-            <p className="text-[#5c6d66] text-[1.02rem] leading-[1.75]">
-              {dict.supporters.body}
-            </p>
+          {/* 2-Column Content Grid: Left = Founding Sponsors, Right = Community Donors */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 xl:gap-14 items-start">
+            {/* COLUMN 1: FOUNDING SPONSORS */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-[#c7bea7] pb-3">
+                <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
+                  <Building2 className="w-4 h-4 text-[var(--gold)]" />
+                  {dict.supporters.foundingSponsors}
+                </span>
+                <span className="text-[0.68rem] text-[#82785f] uppercase tracking-wider font-semibold">
+                  Official Partners
+                </span>
+              </div>
 
-            {/* Founding Sponsors */}
-            <div className="named-supporters border-t border-[#c7bea7] pt-7 mt-8">
-              <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.7rem] font-extrabold block mb-4">
-                {dict.supporters.foundingSponsors}
-              </span>
-              <div className="supporter-logos grid grid-cols-2 sm:grid-cols-4 gap-3.5">
+              <div className="supporter-logos grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4 gap-3.5">
                 {CLUB_CONFIG.foundingSponsors.map((sponsor) => (
                   <div
                     key={sponsor.name}
@@ -339,28 +352,9 @@ export function MarketingHomeContent() {
                   </div>
                 ))}
               </div>
-            </div>
 
-            {/* Community Donors */}
-            <div className="community-donors border-t border-[#c7bea7] pt-7 mt-8">
-              <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.7rem] font-extrabold block mb-4">
-                {dict.supporters.communityDonors}
-              </span>
-              <div className="donor-names flex flex-wrap gap-2.5">
-                {CLUB_CONFIG.communityDonors.map((donor) => (
-                  <span
-                    key={donor}
-                    className="bg-white text-[var(--green)] border border-[#dcd4c1] px-4 py-2.5 font-serif text-[0.96rem] shadow-xs"
-                  >
-                    {donor}
-                  </span>
-                ))}
-              </div>
-            </div>
-
-            {/* Support Options */}
-            <div className="support-options grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
-              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2">
+              {/* Sponsor Callout Card */}
+              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm">
                 <HandHeart className="w-8 h-8 text-[var(--gold)] mb-2" />
                 <strong className="font-serif text-[1.35rem] block text-white">
                   {dict.supporters.becomeSponsor}
@@ -369,8 +363,34 @@ export function MarketingHomeContent() {
                   {dict.supporters.becomeSponsorDesc}
                 </span>
               </div>
+            </div>
 
-              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2">
+            {/* COLUMN 2: COMMUNITY DONORS */}
+            <div className="space-y-6">
+              <div className="flex items-center justify-between border-b border-[#c7bea7] pb-3">
+                <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
+                  <Users className="w-4 h-4 text-[var(--gold)]" />
+                  {dict.supporters.communityDonors}
+                </span>
+                <span className="text-[0.68rem] text-[#82785f] uppercase tracking-wider font-semibold">
+                  Founding Patrons
+                </span>
+              </div>
+
+              <div className="donor-names grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {CLUB_CONFIG.communityDonors.map((donor) => (
+                  <div
+                    key={donor}
+                    className="bg-white text-[var(--green)] border border-[#dcd4c1] px-4 py-3 font-serif text-[0.96rem] shadow-xs rounded-xs flex items-center gap-2.5 transition-all hover:border-[var(--gold)] hover:shadow-sm"
+                  >
+                    <div className="w-1.5 h-1.5 rounded-full bg-[var(--gold)] shrink-0" />
+                    <span>{donor}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Donation Callout Card */}
+              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm">
                 <Sparkles className="w-8 h-8 text-[var(--gold)] mb-2" />
                 <strong className="font-serif text-[1.35rem] block text-white">
                   {dict.supporters.makeDonation}
@@ -379,11 +399,19 @@ export function MarketingHomeContent() {
                   {dict.supporters.makeDonationDesc}
                 </span>
               </div>
-            </div>
 
-            <p className="support-contact border-l-4 border-[var(--gold)] pl-4 font-bold text-[var(--green)] mt-6">
-              {dict.supporters.contactNote}
-            </p>
+              {/* Contact Note Strip */}
+              <div className="support-contact border-l-4 border-[var(--gold)] bg-white/70 border border-[#e4decf] p-4 text-xs sm:text-sm text-[var(--green-dark)] flex items-center justify-between gap-4 rounded-xs shadow-2xs">
+                <p className="font-semibold text-gray-800">{dict.supporters.contactNote}</p>
+                <a
+                  href="mailto:info@gstaadcricketclub.ch"
+                  className="inline-flex items-center gap-1 text-[var(--gold)] hover:underline font-bold text-xs uppercase tracking-wider whitespace-nowrap shrink-0"
+                >
+                  <span>Contact</span>
+                  <span>&rarr;</span>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </section>

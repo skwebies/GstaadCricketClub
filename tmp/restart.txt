@@ -1,3 +1,1 @@
-# Phusion Passenger restart trigger for Plesk
-# Timestamp updated on every production build / git deployment
-2026-09-06T19:44:00Z
+Sun Sep  6 20:02:31 CEST 2026
