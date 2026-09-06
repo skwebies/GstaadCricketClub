@@ -122,7 +122,7 @@ describe("Email Templates Generator", () => {
 
     const userEmail = renderRegistrationUserConfirmation(regData);
     expect(userEmail.subject).toContain("Reservation Confirmation");
-    expect(userEmail.html).toContain("Ebnit School Pitch");
+    expect(userEmail.html).toContain("OSZ Ebnit Gstaad");
     expect(userEmail.html).toContain("gstaad-cricket-club-crest.png");
     expect(userEmail.text).toContain("DEAR LORD CHARLES SPENCER");
   });

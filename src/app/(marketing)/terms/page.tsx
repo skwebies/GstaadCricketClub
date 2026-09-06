@@ -77,7 +77,7 @@ export default function TermsAndConditionsPage() {
               2. Festival Attendance &amp; Venue Guidelines
             </h2>
             <p className="text-sm text-gray-700">
-              The Gstaad Cricket Festival 2026 is hosted as a free community celebration at the Ebnit School Grounds (Ebnitstrasse 28, 3780 Gstaad). The following rules apply:
+              The Gstaad Cricket Festival 2026 is hosted as a free community celebration at the OSZ Ebnit Grounds (Rumpleregässli 8, 3780 Gstaad). The following rules apply:
             </p>
             <ul className="list-disc pl-5 text-xs sm:text-sm text-gray-700 space-y-2">
               <li>

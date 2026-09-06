@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s | Gstaad Cricket Club",
   },
   description:
-    "Gstaad Cricket Club welcomes children, adults, families and beginners. Join our free Cricket Festival at Ebnit School on 26 September 2026.",
+    "Gstaad Cricket Club welcomes children, adults, families and beginners. Join our free Cricket Festival at OSZ Ebnit Gstaad on 26 September 2026.",
   keywords: [
     "Gstaad Cricket Club",
     "Gstaad Cricket",
@@ -34,22 +34,22 @@ export const metadata: Metadata = {
     siteName: "Gstaad Cricket Club",
     title: "Gstaad Cricket Club | Cricket for Our Community",
     description:
-      "A free day of cricket for children, adults, families and complete beginners in Gstaad, Switzerland.",
+      "A free day of cricket for children, adults, families and complete beginners in Gstaad on 26 September 2026.",
     images: [
       {
-        url: "/gstaad-cricket-club-crest.png",
-        width: 800,
-        height: 800,
-        alt: "Gstaad Cricket Club Official Crest",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Gstaad Cricket Club Crest and Swiss Alps",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Gstaad Cricket Club | Cricket for Our Community",
+    title: "Gstaad Cricket Club",
     description:
-      "A free day of cricket for children, adults, families and complete beginners in Gstaad, Switzerland.",
-    images: ["/gstaad-cricket-club-crest.png"],
+      "A free day of cricket for children, adults, families and complete beginners in Gstaad on 26 September 2026.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
@@ -82,7 +82,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // SportsClub & SportsEvent Structured Data (JSON-LD)
+  // Structured Data (JSON-LD) for Rich Results
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -93,9 +93,10 @@ export default function RootLayout({
         "url": "https://gstaadcricketclub.ch",
         "logo": "https://gstaadcricketclub.ch/gstaad-cricket-club-crest.png",
         "sport": "Cricket",
+        "telephone": "+41 79 786 25 31",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Ebnitstrasse 28",
+          "streetAddress": "Rumpleregässli 8",
           "addressLocality": "Gstaad",
           "postalCode": "3780",
           "addressCountry": "CH"
@@ -116,10 +117,10 @@ export default function RootLayout({
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
         "location": {
           "@type": "Place",
-          "name": "Ebnit School",
+          "name": "OSZ Ebnit Gstaad",
           "address": {
             "@type": "PostalAddress",
-            "streetAddress": "Ebnitstrasse 28",
+            "streetAddress": "Rumpleregässli 8",
             "addressLocality": "Gstaad",
             "postalCode": "3780",
             "addressCountry": "CH"

@@ -15,8 +15,9 @@ export const CLUB_CONFIG = {
     dateDisplay: "26 September 2026",
     dateFormatted: "2026-09-26",
     timeDisplay: "11:00",
-    venueName: "Ebnit School, Gstaad",
-    venueAddress: "Ebnitstrasse 28, 3780 Gstaad, Switzerland",
+    venueName: "OSZ Ebnit Gstaad",
+    venueAddress: "Rumpleregässli 8, 3780 Gstaad, Switzerland",
+    phone: "+41 79 786 25 31",
     entryFee: "Free for everyone",
     kicker: "26 · 09 · 2026",
     headline: "One day. One pitch. A new tradition.",
@@ -116,6 +117,7 @@ export const CLUB_CONFIG = {
   ],
   contact: {
     email: "info@gstaadcricketclub.ch",
-    location: "Gstaad, Bernese Oberland, Switzerland",
+    phone: "+41 79 786 25 31",
+    location: "OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland",
   },
 } as const;

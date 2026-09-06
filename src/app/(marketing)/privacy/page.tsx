@@ -70,7 +70,8 @@ export default function PrivacyPolicyPage() {
             <div className="p-5 bg-white rounded-lg border border-gray-200 font-mono text-xs space-y-1 text-gray-800">
               <div className="font-bold text-sm text-[var(--green-dark)] font-serif">Gstaad Cricket Club (GCC)</div>
               <div>Non-Profit Sporting Association (Verein nach Art. 60ff. ZGB)</div>
-              <div>Ebnit School Grounds, Ebnitstrasse 28, 3780 Gstaad, Switzerland</div>
+              <div>OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland</div>
+              <div>Telephone Contact: <a href="tel:+41797862531" className="text-[var(--gold)] font-bold hover:underline">+41 79 786 25 31</a></div>
               <div>Affiliation: Cricket Switzerland</div>
               <div>Electronic Contact: <a href="mailto:info@gstaadcricketclub.ch" className="text-[var(--gold)] font-bold hover:underline">info@gstaadcricketclub.ch</a></div>
               <div>Official Website: <a href="https://gstaadcricketclub.ch" className="text-[var(--green)] hover:underline">https://gstaadcricketclub.ch</a></div>
@@ -92,7 +93,7 @@ export default function PrivacyPolicyPage() {
                   Festival Reservations
                 </div>
                 <p className="text-xs text-gray-600">
-                  Full name, email address, telephone number, attending party/group size, dietary or accessibility notes, and emergency contact details for attendee safety at Ebnit School Pitch.
+                  Full name, email address, telephone number, attending party/group size, dietary or accessibility notes, and emergency contact details for attendee safety at OSZ Ebnit Gstaad.
                 </p>
               </div>
 

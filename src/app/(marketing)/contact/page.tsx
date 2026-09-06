@@ -804,9 +804,27 @@ export default function ContactPage() {
                 <strong className="block text-[var(--ink)] font-serif text-base mb-1">
                   Home Ground &amp; Pitch
                 </strong>
-                <span className="text-[#5c6d66]">
-                  Ebnit School Pitch, 3780 Gstaad, Switzerland
+                <span className="text-[#5c6d66] block">
+                  OSZ Ebnit Gstaad
                 </span>
+                <span className="text-[#7d8b84] text-xs">
+                  Rumpleregässli 8, 3780 Gstaad, Switzerland
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5 p-5 bg-white border border-[#e4decf] shadow-2xs">
+              <Phone className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+              <div>
+                <strong className="block text-[var(--ink)] font-serif text-base mb-1">
+                  Telephone Contact
+                </strong>
+                <a
+                  href="tel:+41797862531"
+                  className="text-[#5c6d66] hover:text-[var(--gold)] transition-colors font-medium"
+                >
+                  +41 79 786 25 31
+                </a>
               </div>
             </div>
 

@@ -231,7 +231,7 @@ export function wrapHtmlLayout(title: string, content: string): string {
             </tr>
           </table>
           <strong style="color: ${BRAND_COLORS.greenDark}; font-size: 13px; letter-spacing: 0.04em;">Gstaad Cricket Club</strong><br>
-          Ebnit School Pitch, 3780 Gstaad, Switzerland<br>
+          OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland<br>
           <span style="font-size: 12px;">
             <a href="${SITE_URL}" target="_blank" style="color: ${BRAND_COLORS.greenPrimary}; text-decoration: underline; font-weight: 600;">www.gstaadcricketclub.ch</a>
             &nbsp;&bull;&nbsp;
@@ -349,7 +349,7 @@ export function renderRegistrationUserConfirmation(data: RegistrationEmailData) 
         Welcome to Gstaad Cricket
       </h2>
       <p style="margin: 0; font-size: 13px; color: ${BRAND_COLORS.muted};">
-        Saturday, 26 September 2026 &bull; Ebnit School, Gstaad
+        Saturday, 26 September 2026 &bull; OSZ Ebnit Gstaad
       </p>
     </div>
 
@@ -373,8 +373,8 @@ export function renderRegistrationUserConfirmation(data: RegistrationEmailData) 
       <tr>
         <td class="label">Venue</td>
         <td class="value">
-          <strong>Ebnit School Pitch (Schulhaus Ebnit)</strong><br>
-          <span style="font-size: 13px; color: ${BRAND_COLORS.muted};">Ebnitstrasse 28, 3780 Gstaad, Switzerland</span>
+          <strong>OSZ Ebnit Gstaad</strong><br>
+          <span style="font-size: 13px; color: ${BRAND_COLORS.muted};">Rumpleregässli 8, 3780 Gstaad, Switzerland &bull; Tel: +41 79 786 25 31</span>
         </td>
       </tr>
       <tr>
@@ -436,7 +436,7 @@ RESERVATION SUMMARY:
 - Event: Gstaad Cricket Festival 2026
 - Date: Saturday, 26 September 2026
 - Time: 11:00 CEST onwards
-- Venue: Ebnit School Pitch, Ebnitstrasse 28, 3780 Gstaad, Switzerland
+- Venue: OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland (Tel: +41 79 786 25 31)
 - Category: ${data.registrationType}
 - Number Attending: ${data.partySize}
 ${data.phone ? `- Contact Phone: ${data.phone}\n` : ""}${data.dietaryRequirements ? `- Your Notes / Requests: ${data.dietaryRequirements}\n` : ""}- Admission: Free of Charge

@@ -114,6 +114,8 @@ export interface TranslationSchema {
     subtitle: string;
     eventDate: string;
     eventTimeVenue: string;
+    eventAddress: string;
+    eventPhone: string;
     nameLabel: string;
     namePlaceholder: string;
     emailLabel: string;

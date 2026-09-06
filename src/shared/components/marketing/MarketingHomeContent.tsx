@@ -474,14 +474,23 @@ export function MarketingHomeContent() {
             <p className="text-[#5c6d66] text-[1.05rem] leading-[1.7] max-w-md mb-6">
               {dict.registration.subtitle}
             </p>
-            <div className="mini-details space-y-1.5 font-extrabold text-[var(--ink)]">
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[var(--gold)]" />
-                <span>{dict.registration.eventDate}</span>
+            <div className="mini-details space-y-1.5 text-[var(--ink)] font-bold text-[0.95rem]">
+              <div className="text-[var(--ink)] font-extrabold">
+                {dict.registration.eventDate}
               </div>
-              <div className="flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[var(--gold)]" />
-                <span>{dict.registration.eventTimeVenue}</span>
+              <div className="text-[#3c4a44]">
+                {dict.registration.eventTimeVenue}
+              </div>
+              <div className="text-[#5c6d66] font-medium text-sm">
+                {dict.registration.eventAddress}
+              </div>
+              <div className="pt-0.5 text-sm font-semibold">
+                <a
+                  href={`tel:${dict.registration.eventPhone.replace(/\s+/g, "")}`}
+                  className="text-[var(--green-dark)] hover:text-[var(--gold)] transition-colors"
+                >
+                  {dict.registration.eventPhone}
+                </a>
               </div>
             </div>
           </div>

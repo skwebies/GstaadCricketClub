@@ -39,7 +39,7 @@ export const en: TranslationSchema = {
     startLabel: "START",
     startValue: "11:00",
     venueLabel: "VENUE",
-    venueValue: "Ebnit School, Gstaad",
+    venueValue: "OSZ Ebnit Gstaad",
     entryLabel: "ENTRY",
     entryValue: "Free for everyone",
   },
@@ -110,7 +110,9 @@ export const en: TranslationSchema = {
     subtitle:
       "Register your interest for the Gstaad Cricket Festival. Bring your family, your friends—or simply your curiosity.",
     eventDate: "Saturday, 26 September 2026",
-    eventTimeVenue: "11:00 · Ebnit School, Gstaad",
+    eventTimeVenue: "11:00 - OSZ Ebnit Gstaad",
+    eventAddress: "Rumpleregässli 8, 3780 Gstaad",
+    eventPhone: "+41 79 786 25 31",
     nameLabel: "Full name",
     namePlaceholder: "Your name",
     emailLabel: "Email address",
@@ -131,7 +133,7 @@ export const en: TranslationSchema = {
     submittingBtn: "Registering...",
     successTitle: "Registration Confirmed!",
     successMsg:
-      "Thank you for registering. We look forward to welcoming you at Ebnit School in Gstaad on 26 September 2026.",
+      "Thank you for registering. We look forward to welcoming you at OSZ Ebnit in Gstaad on 26 September 2026.",
     registerAnother: "Register Another Person",
     validationNameRequired: "Please enter your full name (minimum 2 characters).",
     validationEmailRequired: "Please enter your email address.",
