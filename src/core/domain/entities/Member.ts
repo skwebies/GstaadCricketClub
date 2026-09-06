@@ -1,4 +1,4 @@
-export type MemberTier = 'Full Playing' | 'Social Member' | 'Junior' | 'Patron';
+export type MemberTier = 'Adult' | 'Family' | 'Junior' | 'Full Playing' | 'Social Member' | 'Patron' | string;
 export type MemberStatus = 'active' | 'pending' | 'inactive';
 
 export interface Member {

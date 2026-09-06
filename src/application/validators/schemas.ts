@@ -75,8 +75,8 @@ export type ContactMessageFormData = z.infer<typeof ContactMessageSchema>;
 export const MemberApplicationSchema = z.object({
   fullName: z.string().min(2, "Name is required").max(100),
   email: z.string().email("Valid email required"),
-  phone: z.string().min(7, "Valid phone number required").max(30),
-  tier: z.enum(["Full Playing", "Social Member", "Junior", "Patron"]),
+  phone: z.string().min(6, "Valid phone number required").max(30),
+  tier: z.string().min(1, "Membership package/tier is required").max(100),
   handicapOrExperience: z.string().max(200).optional().or(z.literal("")),
   notes: z.string().max(500).optional().or(z.literal("")),
 });

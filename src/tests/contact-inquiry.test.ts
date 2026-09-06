@@ -5,11 +5,13 @@
  */
 
 import { describe, it, expect, vi } from "vitest";
-import { ContactMessageSchema } from "../application/validators/schemas";
+import { ContactMessageSchema, MemberApplicationSchema } from "../application/validators/schemas";
 import { SubmitContactMessageUseCase } from "../application/use-cases/SubmitContactMessageUseCase";
 import {
   renderContactAdminEmail,
   renderContactUserConfirmation,
+  renderMembershipAdminEmail,
+  renderMembershipUserConfirmation,
 } from "../infrastructure/email/email-templates";
 import type { IContactRepository } from "../core/domain/repositories/IContactRepository";
 import type { IAuditRepository } from "../core/domain/repositories/IAuditRepository";
@@ -203,5 +205,31 @@ describe("Contact Email Templates", () => {
     expect(userTemplate.html).toContain("Family Package (CHF 200 / year)");
     expect(userTemplate.html).toContain("Dear Thomas Müller");
     expect(userTemplate.html).toContain("gstaad-cricket-club-crest.png");
+  });
+
+  it("should validate and format membership application for Adult, Family, and Junior packages", () => {
+    const adultInput = {
+      fullName: "Marc Brand",
+      email: "marc.brand@gstaad.ch",
+      phone: "+41 33 748 11 22",
+      tier: "Adult (CHF 100 / year)",
+      handicapOrExperience: "Club cricket player for 5 years",
+      notes: "Looking forward to Sunday fixtures.",
+    };
+
+    const parsed = MemberApplicationSchema.parse(adultInput);
+    expect(parsed.fullName).toBe("Marc Brand");
+    expect(parsed.tier).toBe("Adult (CHF 100 / year)");
+
+    const adminEmail = renderMembershipAdminEmail(adultInput);
+    expect(adminEmail.subject).toContain("[GCC Membership] New Application: Marc Brand");
+    expect(adminEmail.html).toContain("Adult (CHF 100 / year)");
+    expect(adminEmail.html).toContain("gstaad-cricket-club-crest.png");
+    expect(adminEmail.text).toContain("Tier: Adult (CHF 100 / year)");
+
+    const userEmail = renderMembershipUserConfirmation(adultInput);
+    expect(userEmail.subject).toBe("Gstaad Cricket Club - Membership Application Received");
+    expect(userEmail.html).toContain("Adult (CHF 100 / year)");
+    expect(userEmail.html).toContain("Dear Marc Brand");
   });
 });
