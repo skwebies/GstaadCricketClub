@@ -272,58 +272,86 @@ function MembershipContent() {
               <div
                 key={tier.id}
                 onClick={() => handleSelectPackage(tier.id)}
-                className={`p-7 lg:p-8 flex flex-col justify-between border transition-all cursor-pointer relative ${
+                className={`p-7 lg:p-8 flex flex-col justify-between border transition-all cursor-pointer relative rounded-xs ${
                   isSelected
-                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-xl -translate-y-1"
-                    : tier.featured
-                    ? "bg-[var(--green)] text-[var(--cream)] border-[#0d3426] shadow-md hover:border-[var(--gold)]"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-xl -translate-y-1.5"
                     : "bg-white text-[var(--ink)] border-[#e4decf] shadow-sm hover:border-[var(--gold)] hover:shadow-md"
                 }`}
               >
                 {isSelected ? (
-                  <span className="absolute -top-3 right-6 bg-[var(--gold)] text-[var(--green-dark)] text-[0.68rem] font-extrabold tracking-widest uppercase px-3 py-1 shadow-xs flex items-center gap-1">
-                    <Check className="w-3 h-3 stroke-[3]" /> Selected Package
+                  <span className="absolute -top-3 right-6 bg-[var(--gold)] text-[var(--green-dark)] text-[0.68rem] font-extrabold tracking-widest uppercase px-3 py-1 shadow-sm flex items-center gap-1.5 rounded-xs">
+                    <Check className="w-3.5 h-3.5 stroke-[3]" /> Selected Package
                   </span>
                 ) : tier.featured ? (
-                  <span className="absolute -top-3 right-6 bg-[var(--gold)] text-[var(--green-dark)] text-[0.68rem] font-extrabold tracking-widest uppercase px-3 py-1 shadow-xs">
-                    Featured
+                  <span className="absolute -top-3 right-6 bg-[#FAF7F0] text-[#716854] border border-[#dcd4c1] text-[0.65rem] font-bold tracking-widest uppercase px-2.5 py-0.5 shadow-2xs rounded-xs">
+                    Popular Tier
                   </span>
                 ) : null}
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="text-xs uppercase font-extrabold tracking-widest block text-[var(--gold)]">
+                    <span
+                      className={`text-xs uppercase font-extrabold tracking-widest block ${
+                        isSelected ? "text-[var(--gold)]" : "text-[#716854]"
+                      }`}
+                    >
                       {tier.title}
                     </span>
                     <tier.icon
                       className={`w-5 h-5 ${
-                        isSelected || tier.featured ? "text-[var(--gold)]" : "text-[#716854]"
+                        isSelected ? "text-[var(--gold)]" : "text-[#82785f]"
                       }`}
                     />
                   </div>
 
                   <strong className="font-serif text-4xl block mb-1">
-                    {tier.price}
-                    <span className="font-sans text-xs font-normal ml-2 opacity-80">
+                    <span className={isSelected ? "text-white" : "text-[var(--ink)]"}>
+                      {tier.price}
+                    </span>
+                    <span
+                      className={`font-sans text-xs font-normal ml-2 ${
+                        isSelected ? "text-[#d8d4c7]" : "text-gray-500"
+                      }`}
+                    >
                       / {tier.period}
                     </span>
                   </strong>
-                  <p className="text-sm opacity-90 my-4 leading-relaxed min-h-[44px]">
+                  <p
+                    className={`text-sm my-4 leading-relaxed min-h-[44px] ${
+                      isSelected ? "text-[#d8d4c7]" : "text-gray-600"
+                    }`}
+                  >
                     {tier.description}
                   </p>
                 </div>
 
-                <div className="border-t border-current/15 pt-5 mt-4 space-y-2.5 text-sm">
+                <div
+                  className={`border-t pt-5 mt-4 space-y-2.5 text-sm ${
+                    isSelected ? "border-white/20 text-[#e4dfd1]" : "border-gray-200 text-gray-700"
+                  }`}
+                >
                   <div className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                    <Check
+                      className={`w-4 h-4 shrink-0 ${
+                        isSelected ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    />
                     <span>{dict.membership.benefit1}</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                    <Check
+                      className={`w-4 h-4 shrink-0 ${
+                        isSelected ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    />
                     <span>{dict.membership.benefit2}</span>
                   </div>
                   <div className="flex items-center gap-2.5">
-                    <Check className="w-4 h-4 text-[var(--gold)] shrink-0" />
+                    <Check
+                      className={`w-4 h-4 shrink-0 ${
+                        isSelected ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    />
                     <span>{dict.membership.benefit3}</span>
                   </div>
                 </div>
@@ -334,12 +362,10 @@ function MembershipContent() {
                     e.stopPropagation();
                     handleSelectPackage(tier.id);
                   }}
-                  className={`mt-7 w-full py-3.5 px-4 text-center text-xs uppercase tracking-widest font-extrabold block transition-colors cursor-pointer ${
+                  className={`mt-7 w-full py-3.5 px-4 text-center text-xs uppercase tracking-widest font-extrabold block transition-colors cursor-pointer rounded-xs ${
                     isSelected
                       ? "bg-[var(--gold)] text-[var(--green-dark)] shadow-sm"
-                      : tier.featured
-                      ? "bg-[var(--gold)] text-[var(--green-dark)] hover:bg-[var(--gold-hover)]"
-                      : "bg-[var(--paper)] text-[var(--green)] hover:bg-[var(--gold)] hover:text-[var(--green-dark)] border border-[#dcd4c1]"
+                      : "bg-[#FAF7F0] text-[var(--green)] hover:bg-[var(--gold)] hover:text-[var(--green-dark)] border border-[#dcd4c1]"
                   }`}
                 >
                   {isSelected ? "Selected — Complete Details Below ↓" : `Choose ${tier.title} ↓`}
