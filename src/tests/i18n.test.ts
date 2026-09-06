@@ -67,4 +67,11 @@ describe("Trilingual Internationalization (i18n) Parity Suite", () => {
     expect(de.eventStrip.dateValue).toContain("2026");
     expect(fr.eventStrip.dateValue).toContain("2026");
   });
+
+  it("should define valid dropdown options for all supported languages", async () => {
+    const { LANGUAGES } = await import("../shared/components/common/LanguageSwitcher");
+    expect(LANGUAGES).toHaveLength(3);
+    expect(LANGUAGES.map((l) => l.code)).toEqual(["en", "de", "fr"]);
+    expect(LANGUAGES.map((l) => l.label)).toEqual(["EN", "DE", "FR"]);
+  });
 });

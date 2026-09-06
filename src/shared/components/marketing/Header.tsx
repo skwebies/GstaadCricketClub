@@ -112,7 +112,7 @@ export function Header() {
 
       {/* Mobile controls: language switcher + toggle button */}
       <div className="lg:hidden flex items-center gap-3">
-        <LanguageSwitcher variant="header" className="scale-90" />
+        <LanguageSwitcher variant="header" />
         <button
           onClick={toggleMenu}
           aria-label="Toggle navigation"

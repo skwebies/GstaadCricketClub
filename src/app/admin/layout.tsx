@@ -211,7 +211,7 @@ function AdminLayoutInner({ children }: { children: React.ReactNode }) {
             <span className="text-[0.7rem] text-white/50 uppercase font-bold tracking-wider">
               {dict.common.languageName}
             </span>
-            <LanguageSwitcher variant="footer" className="scale-80" />
+            <LanguageSwitcher variant="footer" />
           </div>
 
           <Link

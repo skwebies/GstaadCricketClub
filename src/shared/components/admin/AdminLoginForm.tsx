@@ -98,7 +98,7 @@ export function AdminLoginForm({ onSuccess, redirectTo = "/admin" }: AdminLoginF
         <span className="text-[0.65rem] uppercase tracking-widest text-[#7c857f] font-extrabold">
           {dict.admin.portalSubtitle}
         </span>
-        <LanguageSwitcher variant="header" className="scale-90" />
+        <LanguageSwitcher variant="light" className="scale-95" />
       </div>
 
       {/* Header crest and title with reasonable typography */}
