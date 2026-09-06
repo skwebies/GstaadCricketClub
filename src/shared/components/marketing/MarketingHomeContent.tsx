@@ -354,15 +354,23 @@ export function MarketingHomeContent() {
               </div>
 
               {/* Sponsor Callout Card */}
-              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm">
-                <HandHeart className="w-8 h-8 text-[var(--gold)] mb-2" />
-                <strong className="font-serif text-[1.35rem] block text-white">
+              <Link
+                href="/contact?type=sponsor"
+                className="bg-[var(--green)] hover:bg-[#0c2f23] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm block transition-all group border border-transparent hover:border-[var(--gold)]/50 cursor-pointer"
+              >
+                <div className="flex items-center justify-between">
+                  <HandHeart className="w-8 h-8 text-[var(--gold)] mb-1" />
+                  <span className="text-[var(--gold)] font-bold text-xs uppercase tracking-wider group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                    Inquire &rarr;
+                  </span>
+                </div>
+                <strong className="font-serif text-[1.35rem] block text-white group-hover:text-[var(--gold)] transition-colors">
                   {dict.supporters.becomeSponsor}
                 </strong>
                 <span className="text-[#d7d3c6] text-[0.92rem] leading-normal block">
                   {dict.supporters.becomeSponsorDesc}
                 </span>
-              </div>
+              </Link>
             </div>
 
             {/* COLUMN 2: COMMUNITY DONORS */}
@@ -390,26 +398,34 @@ export function MarketingHomeContent() {
               </div>
 
               {/* Donation Callout Card */}
-              <div className="bg-[var(--green)] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm">
-                <Sparkles className="w-8 h-8 text-[var(--gold)] mb-2" />
-                <strong className="font-serif text-[1.35rem] block text-white">
+              <Link
+                href="/contact?type=donor"
+                className="bg-[var(--green)] hover:bg-[#0c2f23] text-[var(--cream)] p-7 space-y-2 rounded-xs shadow-sm block transition-all group border border-transparent hover:border-[var(--gold)]/50 cursor-pointer"
+              >
+                <div className="flex items-center justify-between">
+                  <Sparkles className="w-8 h-8 text-[var(--gold)] mb-1" />
+                  <span className="text-[var(--gold)] font-bold text-xs uppercase tracking-wider group-hover:translate-x-1 transition-transform inline-flex items-center gap-1">
+                    Donate &rarr;
+                  </span>
+                </div>
+                <strong className="font-serif text-[1.35rem] block text-white group-hover:text-[var(--gold)] transition-colors">
                   {dict.supporters.makeDonation}
                 </strong>
                 <span className="text-[#d7d3c6] text-[0.92rem] leading-normal block">
                   {dict.supporters.makeDonationDesc}
                 </span>
-              </div>
+              </Link>
 
               {/* Contact Note Strip */}
               <div className="support-contact border-l-4 border-[var(--gold)] bg-white/70 border border-[#e4decf] p-4 text-xs sm:text-sm text-[var(--green-dark)] flex items-center justify-between gap-4 rounded-xs shadow-2xs">
                 <p className="font-semibold text-gray-800">{dict.supporters.contactNote}</p>
-                <a
-                  href="mailto:info@gstaadcricketclub.ch"
+                <Link
+                  href="/contact?type=support"
                   className="inline-flex items-center gap-1 text-[var(--gold)] hover:underline font-bold text-xs uppercase tracking-wider whitespace-nowrap shrink-0"
                 >
                   <span>Contact</span>
                   <span>&rarr;</span>
-                </a>
+                </Link>
               </div>
             </div>
           </div>

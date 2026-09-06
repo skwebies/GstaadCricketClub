@@ -65,6 +65,9 @@ export async function POST(request: Request) {
       {
         name: body.name,
         email: body.email,
+        phone: body.phone,
+        organization: body.organization,
+        inquiryType: body.inquiryType,
         subject: body.subject,
         message: body.message,
       },
@@ -75,6 +78,9 @@ export async function POST(request: Request) {
     await EmailService.sendContactEmails({
       name: body.name,
       email: body.email,
+      phone: body.phone,
+      organization: body.organization,
+      inquiryType: body.inquiryType,
       subject: body.subject,
       message: body.message,
       clientIp,
@@ -86,7 +92,8 @@ export async function POST(request: Request) {
       message: "Thank you for reaching out. A committee member will respond promptly.",
     });
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "Failed to submit inquiry";
+    const message =
+      error instanceof Error ? error.message : "Failed to submit inquiry";
     console.error("Contact inquiry error:", message);
     return NextResponse.json(
       { success: false, error: message },

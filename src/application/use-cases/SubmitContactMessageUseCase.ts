@@ -12,18 +12,53 @@ export class SubmitContactMessageUseCase {
   async execute(input: ContactMessageFormData, ipHash?: string): Promise<ContactMessage> {
     const validated = ContactMessageSchema.parse(input);
 
+    let prefix = "";
+    if (validated.inquiryType === "sponsor" && !validated.subject.toLowerCase().includes("sponsor")) {
+      prefix = "[Sponsorship] ";
+    } else if (validated.inquiryType === "donor" && !validated.subject.toLowerCase().includes("donor")) {
+      prefix = "[Community Donor] ";
+    } else if (validated.inquiryType === "membership" && !validated.subject.toLowerCase().includes("membership")) {
+      prefix = "[Membership] ";
+    }
+
+    const finalSubject = `${prefix}${validated.subject.trim()}`.slice(0, 150);
+
+    const metadataPrefixes: string[] = [];
+    if (validated.inquiryType && validated.inquiryType !== "general") {
+      const typeMap: Record<string, string> = {
+        sponsor: "Founding Sponsorship & Partnership",
+        donor: "Community Donation & Patronage",
+        membership: "Membership & Youth Cricket",
+        other: "Other Inquiry",
+      };
+      metadataPrefixes.push(`Category: ${typeMap[validated.inquiryType] || validated.inquiryType}`);
+    }
+    if (validated.organization?.trim()) {
+      metadataPrefixes.push(`Organisation: ${validated.organization.trim()}`);
+    }
+    if (validated.phone?.trim()) {
+      metadataPrefixes.push(`Phone: ${validated.phone.trim()}`);
+    }
+
+    const finalMessage = metadataPrefixes.length > 0
+      ? `${metadataPrefixes.join("\n")}\n\n---\n\n${validated.message.trim()}`
+      : validated.message.trim();
+
     const message = await this.contactRepo.create({
       name: validated.name.trim(),
       email: validated.email.toLowerCase().trim(),
-      subject: validated.subject.trim(),
-      message: validated.message.trim(),
+      subject: finalSubject,
+      message: finalMessage,
       ipHash,
     });
 
     if (this.auditRepo) {
       await this.auditRepo.record("SUBMIT_CONTACT_MESSAGE", "contact_messages", message.id, {
         email: validated.email,
-        subject: validated.subject,
+        subject: finalSubject,
+        inquiryType: validated.inquiryType,
+        organization: validated.organization,
+        phone: validated.phone,
       });
     }
 

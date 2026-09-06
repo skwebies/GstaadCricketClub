@@ -214,6 +214,22 @@ export interface TranslationSchema {
     sendBtn: string;
     sendingBtn: string;
     successMsg: string;
+    typeLabel: string;
+    typeSponsor: string;
+    typeDonor: string;
+    typeGeneral: string;
+    companyLabel: string;
+    phoneLabel: string;
+    validationNameRequired: string;
+    validationEmailRequired: string;
+    validationEmailInvalid: string;
+    validationSubjectRequired: string;
+    validationMessageRequired: string;
+    validationMessageMin: string;
+    toastSuccessTitle: string;
+    toastSuccessDesc: string;
+    toastErrorTitle: string;
+    toastErrorDesc: string;
   };
   admin: {
     portalTitle: string;

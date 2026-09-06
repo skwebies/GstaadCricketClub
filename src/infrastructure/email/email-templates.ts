@@ -32,6 +32,9 @@ export interface ContactEmailData {
   email: string;
   subject: string;
   message: string;
+  inquiryType?: string;
+  phone?: string;
+  organization?: string;
   clientIp?: string;
 }
 
@@ -579,7 +582,16 @@ https://gstaadcricketclub.ch
 // ============================================================================
 
 export function renderContactAdminEmail(data: ContactEmailData) {
-  const subject = `[GCC Inquiry] ${sanitizeHeader(data.subject)} - from ${sanitizeHeader(data.name)}`;
+  const typeLabel =
+    data.inquiryType === "sponsor"
+      ? "Founding Sponsorship"
+      : data.inquiryType === "donor"
+      ? "Community Donation & Patronage"
+      : data.inquiryType === "membership"
+      ? "Club Membership"
+      : "General Inquiry";
+
+  const subject = `[GCC Inquiry${data.inquiryType ? ` - ${typeLabel}` : ""}] ${sanitizeHeader(data.subject)} - from ${sanitizeHeader(data.name)}`;
 
   const content = `
     <h2>New Website Inquiry</h2>
@@ -587,13 +599,27 @@ export function renderContactAdminEmail(data: ContactEmailData) {
     
     <table class="info-table" role="presentation">
       <tr>
+        <td class="label">Category</td>
+        <td class="value"><span class="badge">${escapeHtml(typeLabel)}</span></td>
+      </tr>
+      <tr>
         <td class="label">Sender Name</td>
         <td class="value"><strong>${escapeHtml(data.name)}</strong></td>
       </tr>
+      ${data.organization ? `
+      <tr>
+        <td class="label">Organisation</td>
+        <td class="value"><strong>${escapeHtml(data.organization)}</strong></td>
+      </tr>` : ""}
       <tr>
         <td class="label">Sender Email</td>
         <td class="value"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td>
       </tr>
+      ${data.phone ? `
+      <tr>
+        <td class="label">Phone</td>
+        <td class="value"><a href="tel:${escapeHtml(data.phone)}">${escapeHtml(data.phone)}</a></td>
+      </tr>` : ""}
       <tr>
         <td class="label">Subject</td>
         <td class="value"><strong>${escapeHtml(data.subject)}</strong></td>
@@ -621,8 +647,9 @@ ${escapeHtml(data.message)}
 
   const text = `GSTAAD CRICKET CLUB - NEW INQUIRY
 
+Category: ${typeLabel}
 Sender: ${data.name} <${data.email}>
-Subject: ${data.subject}
+${data.organization ? `Organisation: ${data.organization}\n` : ""}${data.phone ? `Phone: ${data.phone}\n` : ""}Subject: ${data.subject}
 Date: ${new Date().toUTCString()}
 ${data.clientIp ? `IP: ${data.clientIp}\n` : ""}
 Message:
@@ -635,16 +662,30 @@ Reply directly to this email to contact the sender.
 }
 
 export function renderContactUserConfirmation(data: ContactEmailData) {
-  const subject = "We have received your message - Gstaad Cricket Club";
+  const isSponsor = data.inquiryType === "sponsor";
+  const isDonor = data.inquiryType === "donor";
+  const categoryTitle = isSponsor
+    ? "sponsorship inquiry"
+    : isDonor
+    ? "donation inquiry"
+    : "message";
+
+  const subject = `We have received your ${categoryTitle} - Gstaad Cricket Club`;
+
+  const introText = isSponsor
+    ? "Thank you for your interest in partnering with <strong>Gstaad Cricket Club</strong> as a sponsor. Your support is instrumental in bringing cricket coaching, fixtures, and community sportsmanship to the Saanenland."
+    : isDonor
+    ? "Thank you for your generous support of <strong>Gstaad Cricket Club</strong>. Community donations enable us to purchase quality gear, develop junior players, and maintain our alpine facilities."
+    : `Thank you for contacting <strong>Gstaad Cricket Club</strong>. We have safely received your inquiry regarding "<em>${escapeHtml(data.subject)}</em>".`;
 
   const content = `
     <h2>Dear ${escapeHtml(data.name)},</h2>
     <p>
-      Thank you for contacting <strong>Gstaad Cricket Club</strong>. We have safely received your inquiry regarding "<em>${escapeHtml(data.subject)}</em>".
+      ${introText}
     </p>
     
     <div style="background-color: #F8F7F4; border-left: 4px solid ${BRAND_COLORS.gold}; padding: 16px; margin: 20px 0; font-size: 14px; line-height: 1.6;">
-      <strong style="color: ${BRAND_COLORS.greenPrimary}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">Your Message:</strong>
+      <strong style="color: ${BRAND_COLORS.greenPrimary}; font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 8px;">Your Message Summary:</strong>
       <div style="white-space: pre-wrap;">${escapeHtml(data.message)}</div>
     </div>
 
@@ -664,7 +705,7 @@ export function renderContactUserConfirmation(data: ContactEmailData) {
 Thank you for contacting Gstaad Cricket Club. We have received your inquiry:
 
 Subject: ${data.subject}
-Your Message:
+${data.organization ? `Organisation: ${data.organization}\n` : ""}${data.phone ? `Phone: ${data.phone}\n` : ""}Your Message:
 ${data.message}
 
 A member of our committee will review your message and reply promptly.

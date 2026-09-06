@@ -42,6 +42,19 @@ export const ContactMessageSchema = z.object({
     .min(2, "Name must be at least 2 characters")
     .max(100, "Name is too long"),
   email: z.string().email("Please provide a valid email address"),
+  phone: z
+    .string()
+    .max(35, "Phone number is too long")
+    .optional()
+    .or(z.literal("")),
+  organization: z
+    .string()
+    .max(100, "Organisation name is too long")
+    .optional()
+    .or(z.literal("")),
+  inquiryType: z
+    .enum(["sponsor", "donor", "general", "membership", "other"])
+    .default("general"),
   subject: z
     .string()
     .min(3, "Subject must be at least 3 characters")
@@ -49,7 +62,7 @@ export const ContactMessageSchema = z.object({
   message: z
     .string()
     .min(10, "Message must be at least 10 characters")
-    .max(2000, "Message is too long"),
+    .max(3000, "Message is too long"),
 });
 
 export type ContactMessageFormData = z.infer<typeof ContactMessageSchema>;
