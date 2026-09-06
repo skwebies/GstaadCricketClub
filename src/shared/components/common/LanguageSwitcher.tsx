@@ -109,7 +109,7 @@ export function LanguageSwitcher({
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
-        aria-label={`Select language. Current: ${activeLang.native}`}
+        aria-label={`Select language. Current: ${activeLang.label}`}
         className={`group inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-bold tracking-wider transition-all duration-200 cursor-pointer focus:outline-none focus:ring-2 focus:ring-[var(--gold)]/60 ${getTriggerStyles()}`}
       >
         <Globe className="w-3.5 h-3.5 text-[var(--gold)] shrink-0 transition-transform duration-200 group-hover:scale-110" />
@@ -126,15 +126,11 @@ export function LanguageSwitcher({
         <div
           role="listbox"
           aria-label="Languages"
-          className={`absolute z-50 w-48 rounded-lg p-1.5 transition-all duration-150 animate-in fade-in zoom-in-95 ${
+          className={`absolute z-50 w-28 rounded-lg p-1.5 transition-all duration-150 animate-in fade-in zoom-in-95 ${
             isDropUp ? "bottom-full mb-2" : "top-full mt-2"
           } ${align === "right" ? "right-0" : "left-0"} ${getMenuStyles()}`}
         >
-          <div className="px-2.5 py-1.5 text-[0.65rem] uppercase tracking-widest font-extrabold text-[var(--gold)] border-b border-white/10 mb-1">
-            Language / Sprache / Langue
-          </div>
-
-          <div className="space-y-0.5">
+          <div className="space-y-1">
             {LANGUAGES.map((item) => {
               const isActive = language === item.code;
               return (
@@ -147,29 +143,15 @@ export function LanguageSwitcher({
                     setLanguage(item.code);
                     setIsOpen(false);
                   }}
-                  className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-md font-medium transition-all duration-150 cursor-pointer text-left ${
+                  className={`w-full flex items-center justify-between px-3 py-2 text-xs rounded-md font-bold tracking-wider transition-all duration-150 cursor-pointer text-left ${
                     isActive
-                      ? "bg-[#C5A059] text-[#0A1C15] font-bold shadow-sm"
+                      ? "bg-[#C5A059] text-[#0A1C15] shadow-xs"
                       : variant === "light"
                       ? "text-[var(--ink)] hover:bg-[#C5A059]/15 hover:text-[#0A1C15]"
-                      : "text-[#FDFCF7]/80 hover:bg-white/10 hover:text-white"
+                      : "text-[#FDFCF7]/85 hover:bg-white/10 hover:text-white"
                   }`}
                 >
-                  <div className="flex items-center gap-2.5">
-                    <span
-                      className={`text-[0.68rem] px-1.5 py-0.5 rounded font-extrabold tracking-wider ${
-                        isActive
-                          ? "bg-[#0A1C15] text-[#C5A059]"
-                          : variant === "light"
-                          ? "bg-gray-100 text-gray-700"
-                          : "bg-white/10 text-[var(--gold)]"
-                      }`}
-                    >
-                      {item.label}
-                    </span>
-                    <span className="text-xs">{item.native}</span>
-                  </div>
-
+                  <span className="text-xs font-bold tracking-widest">{item.label}</span>
                   {isActive && <Check className="w-3.5 h-3.5 text-[#0A1C15] shrink-0" />}
                 </button>
               );
