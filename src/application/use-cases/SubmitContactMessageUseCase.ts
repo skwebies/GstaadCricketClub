@@ -36,6 +36,16 @@ export class SubmitContactMessageUseCase {
     if (validated.organization?.trim()) {
       metadataPrefixes.push(`Organisation: ${validated.organization.trim()}`);
     }
+    if (validated.membershipPackage?.trim()) {
+      const pkgMap: Record<string, string> = {
+        adult: "Adult Package (CHF 100 / year)",
+        family: "Family Package (CHF 200 / year)",
+        junior: "Junior Package (CHF 50 / year)",
+      };
+      const pkgFormatted =
+        pkgMap[validated.membershipPackage.toLowerCase()] || validated.membershipPackage.trim();
+      metadataPrefixes.push(`Selected Membership Package: ${pkgFormatted}`);
+    }
     if (validated.phone?.trim()) {
       metadataPrefixes.push(`Phone: ${validated.phone.trim()}`);
     }
@@ -57,6 +67,7 @@ export class SubmitContactMessageUseCase {
         email: validated.email,
         subject: finalSubject,
         inquiryType: validated.inquiryType,
+        membershipPackage: validated.membershipPackage,
         organization: validated.organization,
         phone: validated.phone,
       });

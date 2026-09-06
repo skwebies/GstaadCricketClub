@@ -155,6 +155,17 @@ export default function MembershipPage() {
                   <span>{dict.membership.benefit3}</span>
                 </div>
               </div>
+
+              <Link
+                href={`/contact?type=membership&package=${tier.id}`}
+                className={`mt-6 w-full py-3 px-4 text-center text-xs uppercase tracking-widest font-extrabold block transition-colors ${
+                  tier.featured
+                    ? "bg-[var(--gold)] text-[var(--green-dark)] hover:bg-[var(--gold-hover)]"
+                    : "bg-[var(--paper)] text-[var(--green)] hover:bg-[var(--gold)] hover:text-[var(--green-dark)] border border-[#dcd4c1]"
+                }`}
+              >
+                Select &amp; Inquire &rarr;
+              </Link>
             </div>
           ))}
         </div>

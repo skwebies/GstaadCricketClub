@@ -55,6 +55,11 @@ export const ContactMessageSchema = z.object({
   inquiryType: z
     .enum(["sponsor", "donor", "general", "membership", "other"])
     .default("general"),
+  membershipPackage: z
+    .string()
+    .max(50, "Package identifier is too long")
+    .optional()
+    .or(z.literal("")),
   subject: z
     .string()
     .min(3, "Subject must be at least 3 characters")

@@ -227,7 +227,7 @@ export function MarketingHomeContent() {
               {dict.membership.intro}
             </p>
             <Link
-              href="/membership"
+              href="/contact?type=membership"
               className="inline-flex items-center gap-2 text-sm font-extrabold uppercase tracking-widest text-[var(--green)] hover:text-[var(--gold-hover)]"
             >
               <span>{dict.membership.applyButton}</span>
@@ -238,22 +238,32 @@ export function MarketingHomeContent() {
           <div className="membership-content space-y-8">
             <div className="membership-plans grid grid-cols-1 sm:grid-cols-3 gap-4">
               {membershipCards.map((plan) => (
-                <article
+                <Link
                   key={plan.id}
-                  className={`p-6 sm:p-7 flex flex-col justify-between transition-transform duration-200 hover:-translate-y-1 ${
+                  href={`/contact?type=membership&package=${plan.id}`}
+                  className={`p-6 sm:p-7 flex flex-col justify-between transition-all duration-200 hover:-translate-y-1 group cursor-pointer rounded-xs shadow-xs ${
                     plan.featured
-                      ? "bg-[var(--green)] text-[var(--cream)] border-t-4 border-[var(--gold)] shadow-lg"
-                      : "bg-white text-[var(--ink)] border-t-4 border-[var(--green)]"
+                      ? "bg-[var(--green)] text-[var(--cream)] border-t-4 border-[var(--gold)] shadow-lg hover:shadow-xl hover:border-[var(--gold)]"
+                      : "bg-white text-[var(--ink)] border-t-4 border-[var(--green)] hover:border-[var(--gold)] hover:shadow-md"
                   }`}
                 >
                   <div>
-                    <span
-                      className={`text-[0.72rem] font-extrabold tracking-[0.16em] uppercase block mb-3 ${
-                        plan.featured ? "text-[var(--gold)]" : "text-[#7c857f]"
-                      }`}
-                    >
-                      {plan.title}
-                    </span>
+                    <div className="flex items-center justify-between mb-3">
+                      <span
+                        className={`text-[0.72rem] font-extrabold tracking-[0.16em] uppercase block ${
+                          plan.featured ? "text-[var(--gold)]" : "text-[#7c857f]"
+                        }`}
+                      >
+                        {plan.title}
+                      </span>
+                      <span
+                        className={`text-[0.68rem] font-bold uppercase tracking-wider opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1 ${
+                          plan.featured ? "text-[var(--gold)]" : "text-[var(--green)]"
+                        }`}
+                      >
+                        Select &rarr;
+                      </span>
+                    </div>
                     <strong className="font-serif text-[2.1rem] font-normal block leading-none mb-1">
                       {plan.price}
                     </strong>
@@ -266,14 +276,24 @@ export function MarketingHomeContent() {
                     </small>
                   </div>
 
-                  <p
-                    className={`text-xs mt-4 leading-relaxed ${
-                      plan.featured ? "text-[#d8d4c7]" : "text-[#6c7973]"
-                    }`}
-                  >
-                    {plan.description}
-                  </p>
-                </article>
+                  <div className="mt-4 pt-3 border-t border-black/5 flex flex-col justify-between">
+                    <p
+                      className={`text-xs leading-relaxed ${
+                        plan.featured ? "text-[#d8d4c7]" : "text-[#6c7973]"
+                      }`}
+                    >
+                      {plan.description}
+                    </p>
+                    <span
+                      className={`mt-3 text-[0.72rem] font-extrabold uppercase tracking-wider inline-flex items-center gap-1 ${
+                        plan.featured ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    >
+                      <span>Choose {plan.title}</span>
+                      <span>&rarr;</span>
+                    </span>
+                  </div>
+                </Link>
               ))}
             </div>
 
@@ -289,9 +309,16 @@ export function MarketingHomeContent() {
                   </li>
                 ))}
               </ul>
-              <p className="text-[#5c6d66] text-sm border-t border-[#e4decf] pt-4">
-                {dict.membership.contactNote}
-              </p>
+              <div className="border-t border-[#e4decf] pt-4 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-sm text-[#5c6d66]">
+                <p>{dict.membership.contactNote}</p>
+                <Link
+                  href="/contact?type=membership"
+                  className="inline-flex items-center gap-1 text-[var(--gold)] hover:underline font-bold text-xs uppercase tracking-wider whitespace-nowrap shrink-0"
+                >
+                  <span>Contact to Join</span>
+                  <span>&rarr;</span>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

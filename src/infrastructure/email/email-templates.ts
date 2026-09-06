@@ -33,6 +33,7 @@ export interface ContactEmailData {
   subject: string;
   message: string;
   inquiryType?: string;
+  membershipPackage?: string;
   phone?: string;
   organization?: string;
   clientIp?: string;
@@ -611,6 +612,19 @@ export function renderContactAdminEmail(data: ContactEmailData) {
         <td class="label">Organisation</td>
         <td class="value"><strong>${escapeHtml(data.organization)}</strong></td>
       </tr>` : ""}
+      ${data.membershipPackage ? `
+      <tr>
+        <td class="label">Requested Package</td>
+        <td class="value"><strong style="color: ${BRAND_COLORS.greenDark};">${escapeHtml(
+          data.membershipPackage === "adult"
+            ? "Adult Package (CHF 100 / year)"
+            : data.membershipPackage === "family"
+            ? "Family Package (CHF 200 / year)"
+            : data.membershipPackage === "junior"
+            ? "Junior Package (CHF 50 / year)"
+            : data.membershipPackage
+        )}</strong></td>
+      </tr>` : ""}
       <tr>
         <td class="label">Sender Email</td>
         <td class="value"><a href="mailto:${escapeHtml(data.email)}">${escapeHtml(data.email)}</a></td>
@@ -648,7 +662,7 @@ ${escapeHtml(data.message)}
   const text = `GSTAAD CRICKET CLUB - NEW INQUIRY
 
 Category: ${typeLabel}
-Sender: ${data.name} <${data.email}>
+${data.membershipPackage ? `Package: ${data.membershipPackage}\n` : ""}Sender: ${data.name} <${data.email}>
 ${data.organization ? `Organisation: ${data.organization}\n` : ""}${data.phone ? `Phone: ${data.phone}\n` : ""}Subject: ${data.subject}
 Date: ${new Date().toUTCString()}
 ${data.clientIp ? `IP: ${data.clientIp}\n` : ""}
@@ -664,11 +678,24 @@ Reply directly to this email to contact the sender.
 export function renderContactUserConfirmation(data: ContactEmailData) {
   const isSponsor = data.inquiryType === "sponsor";
   const isDonor = data.inquiryType === "donor";
+  const isMembership = data.inquiryType === "membership";
   const categoryTitle = isSponsor
     ? "sponsorship inquiry"
     : isDonor
     ? "donation inquiry"
+    : isMembership
+    ? "membership inquiry"
     : "message";
+
+  const pkgFormatted = data.membershipPackage
+    ? data.membershipPackage === "adult"
+      ? "Adult Package (CHF 100 / year)"
+      : data.membershipPackage === "family"
+      ? "Family Package (CHF 200 / year)"
+      : data.membershipPackage === "junior"
+      ? "Junior Package (CHF 50 / year)"
+      : data.membershipPackage
+    : "";
 
   const subject = `We have received your ${categoryTitle} - Gstaad Cricket Club`;
 
@@ -676,6 +703,8 @@ export function renderContactUserConfirmation(data: ContactEmailData) {
     ? "Thank you for your interest in partnering with <strong>Gstaad Cricket Club</strong> as a sponsor. Your support is instrumental in bringing cricket coaching, fixtures, and community sportsmanship to the Saanenland."
     : isDonor
     ? "Thank you for your generous support of <strong>Gstaad Cricket Club</strong>. Community donations enable us to purchase quality gear, develop junior players, and maintain our alpine facilities."
+    : isMembership
+    ? `Thank you for your interest in becoming a member of <strong>Gstaad Cricket Club</strong>${pkgFormatted ? ` with the <strong>${escapeHtml(pkgFormatted)}</strong>` : ""}. We warmly welcome you to our community.`
     : `Thank you for contacting <strong>Gstaad Cricket Club</strong>. We have safely received your inquiry regarding "<em>${escapeHtml(data.subject)}</em>".`;
 
   const content = `

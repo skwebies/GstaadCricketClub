@@ -217,7 +217,12 @@ export interface TranslationSchema {
     typeLabel: string;
     typeSponsor: string;
     typeDonor: string;
+    typeMembership: string;
     typeGeneral: string;
+    packageLabel: string;
+    packageAdult: string;
+    packageFamily: string;
+    packageJunior: string;
     companyLabel: string;
     phoneLabel: string;
     validationNameRequired: string;

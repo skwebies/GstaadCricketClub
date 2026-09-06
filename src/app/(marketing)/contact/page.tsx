@@ -3,8 +3,8 @@
 /**
  * @file contact/page.tsx
  * @description Trilingual Contact page with committee inquiry form, category selection
- * (Founding Sponsors, Community Donors, General), client & server validation,
- * toaster notifications, and ground location.
+ * (Founding Sponsors, Community Donors, Club Membership, General), package selector,
+ * client & server validation, toaster notifications, and ground location.
  * @module app/(marketing)/contact
  */
 
@@ -24,12 +24,14 @@ import {
   MessageSquare,
   Building2,
   Phone,
+  UserCheck,
 } from "lucide-react";
 import { CLUB_CONFIG } from "@/shared/config/club";
 import { useLanguage } from "@/shared/i18n/LanguageContext";
 import { useToast } from "@/shared/components/common/Toast";
 
-type InquiryCategory = "sponsor" | "donor" | "general";
+type InquiryCategory = "sponsor" | "donor" | "membership" | "general";
+type MembershipPackageTier = "adult" | "family" | "junior" | "";
 
 function ContactForm() {
   const { dict } = useLanguage();
@@ -37,6 +39,7 @@ function ContactForm() {
   const searchParams = useSearchParams();
 
   const [inquiryType, setInquiryType] = useState<InquiryCategory>("general");
+  const [membershipPackage, setMembershipPackage] = useState<MembershipPackageTier>("");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,7 +59,29 @@ function ContactForm() {
   // Initialize inquiry type and default subject from URL search params
   useEffect(() => {
     const typeParam = searchParams.get("type");
-    if (typeParam === "sponsor") {
+    const packageParam = searchParams.get("package")?.toLowerCase() as MembershipPackageTier;
+
+    if (packageParam && ["adult", "family", "junior"].includes(packageParam)) {
+      setInquiryType("membership");
+      setMembershipPackage(packageParam);
+      const pkgLabel =
+        packageParam === "adult"
+          ? "Adult Tier (CHF 100/yr)"
+          : packageParam === "family"
+          ? "Family Tier (CHF 200/yr)"
+          : "Junior Tier (CHF 50/yr)";
+      setFormData((prev) => ({
+        ...prev,
+        subject: `Membership Application - ${pkgLabel}`,
+      }));
+    } else if (typeParam === "membership") {
+      setInquiryType("membership");
+      setMembershipPackage("family");
+      setFormData((prev) => ({
+        ...prev,
+        subject: prev.subject || "Membership Application - Family Tier (CHF 200/yr)",
+      }));
+    } else if (typeParam === "sponsor") {
       setInquiryType("sponsor");
       setFormData((prev) => ({
         ...prev,
@@ -79,15 +104,37 @@ function ContactForm() {
 
   const handleCategorySelect = (type: InquiryCategory) => {
     setInquiryType(type);
-    if (!formData.subject || formData.subject.includes("Inquiry")) {
-      if (type === "sponsor") {
-        setFormData((prev) => ({ ...prev, subject: "Founding Sponsorship & Partnership Inquiry" }));
-      } else if (type === "donor") {
-        setFormData((prev) => ({ ...prev, subject: "Community Donation & Patronage Inquiry" }));
-      } else {
-        setFormData((prev) => ({ ...prev, subject: "" }));
-      }
+    if (type === "sponsor") {
+      setFormData((prev) => ({ ...prev, subject: "Founding Sponsorship & Partnership Inquiry" }));
+    } else if (type === "donor") {
+      setFormData((prev) => ({ ...prev, subject: "Community Donation & Patronage Inquiry" }));
+    } else if (type === "membership") {
+      const pkg = membershipPackage || "family";
+      setMembershipPackage(pkg);
+      const pkgLabel =
+        pkg === "adult"
+          ? "Adult Tier (CHF 100/yr)"
+          : pkg === "family"
+          ? "Family Tier (CHF 200/yr)"
+          : "Junior Tier (CHF 50/yr)";
+      setFormData((prev) => ({ ...prev, subject: `Membership Application - ${pkgLabel}` }));
+    } else {
+      setFormData((prev) => ({ ...prev, subject: "" }));
     }
+  };
+
+  const handlePackageSelect = (pkg: MembershipPackageTier) => {
+    setMembershipPackage(pkg);
+    const pkgLabel =
+      pkg === "adult"
+        ? "Adult Tier (CHF 100/yr)"
+        : pkg === "family"
+        ? "Family Tier (CHF 200/yr)"
+        : "Junior Tier (CHF 50/yr)";
+    setFormData((prev) => ({
+      ...prev,
+      subject: `Membership Application - ${pkgLabel}`,
+    }));
   };
 
   const validateField = (field: string, value: string): string | null => {
@@ -210,6 +257,7 @@ function ContactForm() {
         body: JSON.stringify({
           ...formData,
           inquiryType,
+          membershipPackage: inquiryType === "membership" ? membershipPackage : undefined,
         }),
       });
 
@@ -300,28 +348,28 @@ function ContactForm() {
             <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.12em] text-[#716854] mb-3">
               {dict.contactPage.typeLabel}
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
               {/* Option: Sponsor */}
               <button
                 type="button"
                 onClick={() => handleCategorySelect("sponsor")}
-                className={`p-3.5 border text-left rounded-xs transition-all flex items-center gap-3 cursor-pointer ${
+                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
                   inquiryType === "sponsor"
                     ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
                     : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
                 }`}
               >
                 <HandHeart
-                  className={`w-5 h-5 shrink-0 ${
+                  className={`w-4 h-4 shrink-0 ${
                     inquiryType === "sponsor" ? "text-[var(--gold)]" : "text-[#82785f]"
                   }`}
                 />
                 <div className="leading-tight">
-                  <strong className="block text-xs font-bold uppercase tracking-wider">
+                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
                     {dict.contactPage.typeSponsor}
                   </strong>
-                  <span className={`text-[0.72rem] ${inquiryType === "sponsor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    Partner / Sponsor
+                  <span className={`text-[0.68rem] ${inquiryType === "sponsor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
+                    Sponsorship
                   </span>
                 </div>
               </button>
@@ -330,23 +378,48 @@ function ContactForm() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect("donor")}
-                className={`p-3.5 border text-left rounded-xs transition-all flex items-center gap-3 cursor-pointer ${
+                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
                   inquiryType === "donor"
                     ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
                     : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
                 }`}
               >
                 <Sparkles
-                  className={`w-5 h-5 shrink-0 ${
+                  className={`w-4 h-4 shrink-0 ${
                     inquiryType === "donor" ? "text-[var(--gold)]" : "text-[#82785f]"
                   }`}
                 />
                 <div className="leading-tight">
-                  <strong className="block text-xs font-bold uppercase tracking-wider">
+                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
                     {dict.contactPage.typeDonor}
                   </strong>
-                  <span className={`text-[0.72rem] ${inquiryType === "donor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    Patron / Supporter
+                  <span className={`text-[0.68rem] ${inquiryType === "donor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
+                    Community Patron
+                  </span>
+                </div>
+              </button>
+
+              {/* Option: Membership */}
+              <button
+                type="button"
+                onClick={() => handleCategorySelect("membership")}
+                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
+                  inquiryType === "membership"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
+                    : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
+                }`}
+              >
+                <UserCheck
+                  className={`w-4 h-4 shrink-0 ${
+                    inquiryType === "membership" ? "text-[var(--gold)]" : "text-[#82785f]"
+                  }`}
+                />
+                <div className="leading-tight">
+                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
+                    {dict.contactPage.typeMembership}
+                  </strong>
+                  <span className={`text-[0.68rem] ${inquiryType === "membership" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
+                    Become a Member
                   </span>
                 </div>
               </button>
@@ -355,28 +428,130 @@ function ContactForm() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect("general")}
-                className={`p-3.5 border text-left rounded-xs transition-all flex items-center gap-3 cursor-pointer ${
+                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
                   inquiryType === "general"
                     ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
                     : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
                 }`}
               >
                 <MessageSquare
-                  className={`w-5 h-5 shrink-0 ${
+                  className={`w-4 h-4 shrink-0 ${
                     inquiryType === "general" ? "text-[var(--gold)]" : "text-[#82785f]"
                   }`}
                 />
                 <div className="leading-tight">
-                  <strong className="block text-xs font-bold uppercase tracking-wider">
+                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
                     {dict.contactPage.typeGeneral}
                   </strong>
-                  <span className={`text-[0.72rem] ${inquiryType === "general" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    General questions
+                  <span className={`text-[0.68rem] ${inquiryType === "general" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
+                    General Inquiries
                   </span>
                 </div>
               </button>
             </div>
           </div>
+
+          {/* 1.5 Membership Package Selector (Only when Membership is selected) */}
+          {inquiryType === "membership" && (
+            <div className="bg-[#FAF8F3] border border-[#e2dcce] p-4 sm:p-5 rounded-xs space-y-3">
+              <div className="flex items-center justify-between">
+                <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.12em] text-[var(--green-dark)]">
+                  {dict.contactPage.packageLabel}
+                </label>
+                <span className="text-[0.7rem] text-[#82785f] font-semibold">
+                  Click a package to choose
+                </span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {/* Adult */}
+                <button
+                  type="button"
+                  onClick={() => handlePackageSelect("adult")}
+                  className={`p-3.5 border rounded-xs text-left transition-all cursor-pointer ${
+                    membershipPackage === "adult"
+                      ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                      : "bg-white text-[var(--ink)] border-[#dcd4c1] hover:border-[var(--gold)]"
+                  }`}
+                >
+                  <div className="flex justify-between items-baseline mb-1">
+                    <strong className="text-xs font-bold uppercase tracking-wider">Adult</strong>
+                    <span
+                      className={`text-xs font-extrabold ${
+                        membershipPackage === "adult" ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    >
+                      CHF 100
+                    </span>
+                  </div>
+                  <p
+                    className={`text-[0.7rem] leading-snug ${
+                      membershipPackage === "adult" ? "text-[#d8d4c7]" : "text-gray-500"
+                    }`}
+                  >
+                    Full voting rights &amp; playing privileges
+                  </p>
+                </button>
+
+                {/* Family */}
+                <button
+                  type="button"
+                  onClick={() => handlePackageSelect("family")}
+                  className={`p-3.5 border rounded-xs text-left transition-all cursor-pointer ${
+                    membershipPackage === "family"
+                      ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                      : "bg-white text-[var(--ink)] border-[#dcd4c1] hover:border-[var(--gold)]"
+                  }`}
+                >
+                  <div className="flex justify-between items-baseline mb-1">
+                    <strong className="text-xs font-bold uppercase tracking-wider">Family</strong>
+                    <span
+                      className={`text-xs font-extrabold ${
+                        membershipPackage === "family" ? "text-[var(--gold)]" : "text-[var(--gold)]"
+                      }`}
+                    >
+                      CHF 200
+                    </span>
+                  </div>
+                  <p
+                    className={`text-[0.7rem] leading-snug ${
+                      membershipPackage === "family" ? "text-[#d8d4c7]" : "text-gray-500"
+                    }`}
+                  >
+                    Parents &amp; junior members under 18
+                  </p>
+                </button>
+
+                {/* Junior */}
+                <button
+                  type="button"
+                  onClick={() => handlePackageSelect("junior")}
+                  className={`p-3.5 border rounded-xs text-left transition-all cursor-pointer ${
+                    membershipPackage === "junior"
+                      ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                      : "bg-white text-[var(--ink)] border-[#dcd4c1] hover:border-[var(--gold)]"
+                  }`}
+                >
+                  <div className="flex justify-between items-baseline mb-1">
+                    <strong className="text-xs font-bold uppercase tracking-wider">Junior</strong>
+                    <span
+                      className={`text-xs font-extrabold ${
+                        membershipPackage === "junior" ? "text-[var(--gold)]" : "text-[var(--green)]"
+                      }`}
+                    >
+                      CHF 50
+                    </span>
+                  </div>
+                  <p
+                    className={`text-[0.7rem] leading-snug ${
+                      membershipPackage === "junior" ? "text-[#d8d4c7]" : "text-gray-500"
+                    }`}
+                  >
+                    Coaching clinics, youth fixtures &amp; kit
+                  </p>
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* 2. Name & Email */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -423,16 +598,16 @@ function ContactForm() {
             </div>
           </div>
 
-          {/* 3. Organization & Phone (Tailored for Sponsors / Patrons) */}
+          {/* 3. Organization & Phone */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]">
-                {dict.contactPage.companyLabel}
+                {inquiryType === "membership" ? "Postal Address / Residence (Optional)" : dict.contactPage.companyLabel}
                 <div className="relative mt-2">
                   <Building2 className="w-4 h-4 text-gray-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
-                    placeholder="e.g. Acme Sport Group / Foundation"
+                    placeholder={inquiryType === "membership" ? "e.g. 3780 Gstaad, Switzerland" : "e.g. Acme Sport Group / Foundation"}
                     value={formData.organization}
                     onChange={(e) => handleChange("organization", e.target.value)}
                     className="w-full bg-[#fdfcf8] border border-[#c9ccc8] min-h-[48px] pl-10 pr-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)]"
@@ -473,7 +648,7 @@ function ContactForm() {
               Subject <span className="text-[var(--red)]">*</span>
               <input
                 type="text"
-                placeholder="e.g. Festival sponsorship, youth donation, friendly match inquiry"
+                placeholder="e.g. Membership Application, sponsorship inquiry, festival question"
                 value={formData.subject}
                 onChange={(e) => handleChange("subject", e.target.value)}
                 onBlur={() => handleBlur("subject")}
@@ -497,7 +672,9 @@ function ContactForm() {
               <textarea
                 rows={5}
                 placeholder={
-                  inquiryType === "sponsor"
+                  inquiryType === "membership"
+                    ? "Please tell us about your background in cricket, questions regarding fixtures or coaching, or family member details..."
+                    : inquiryType === "sponsor"
                     ? "Please let us know how your organization would like to partner with the club (e.g. kit branding, event sponsorship, equipment partnership)..."
                     : inquiryType === "donor"
                     ? "Tell us how you would like to support the club or if you have specific preferences for your community patron contribution..."
@@ -533,7 +710,7 @@ function ContactForm() {
                 </>
               ) : (
                 <>
-                  <span>{dict.contactPage.sendBtn}</span>
+                  <span>{inquiryType === "membership" ? "Send Membership Details" : dict.contactPage.sendBtn}</span>
                   <Send className="w-4 h-4" />
                 </>
               )}
@@ -611,12 +788,12 @@ export default function ContactPage() {
               </div>
             </div>
 
-            {/* Partnership Note */}
+            {/* Partnership & Membership Note */}
             <div className="p-5 bg-[var(--paper)] border-l-4 border-[var(--gold)] text-xs text-[#5c6d66] leading-relaxed">
               <strong className="block text-[var(--ink)] uppercase tracking-wider font-extrabold mb-1">
-                Sponsors &amp; Donors
+                Memberships &amp; Partnerships
               </strong>
-              If you represent a business or wish to make an individual patron donation, our sponsorship coordinators will provide a personalized proposal and overview.
+              Whether you wish to join as an Adult, Family, or Junior playing member, or support as a patron or sponsor, our committee handles all applications with personal care.
             </div>
           </div>
         </div>

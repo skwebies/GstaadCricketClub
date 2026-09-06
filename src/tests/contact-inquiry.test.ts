@@ -178,4 +178,30 @@ describe("Contact Email Templates", () => {
     expect(template.html).toContain("generous support of <strong>Gstaad Cricket Club</strong>");
     expect(template.text).toContain("DEAR PETER MEIER");
   });
+
+  it("should render membership inquiry with package details in admin email and confirmation", () => {
+    const emailData = {
+      name: "Thomas Müller",
+      email: "thomas@muller.ch",
+      phone: "+41 79 111 22 33",
+      inquiryType: "membership",
+      membershipPackage: "family",
+      subject: "Family Membership Application",
+      message: "We have two children (8 and 11) eager to participate in the youth program.",
+      clientIp: "85.10.20.30",
+    };
+
+    const adminTemplate = renderContactAdminEmail(emailData);
+    expect(adminTemplate.subject).toContain("[GCC Inquiry - Club Membership]");
+    expect(adminTemplate.html).toContain("Family Package (CHF 200 / year)");
+    expect(adminTemplate.html).toContain("Thomas Müller");
+    expect(adminTemplate.html).toContain("+41 79 111 22 33");
+    expect(adminTemplate.text).toContain("Package: family");
+
+    const userTemplate = renderContactUserConfirmation(emailData);
+    expect(userTemplate.subject).toBe("We have received your membership inquiry - Gstaad Cricket Club");
+    expect(userTemplate.html).toContain("Family Package (CHF 200 / year)");
+    expect(userTemplate.html).toContain("Dear Thomas Müller");
+    expect(userTemplate.html).toContain("gstaad-cricket-club-crest.png");
+  });
 });
