@@ -93,13 +93,6 @@ export const CLUB_CONFIG = {
       bio: "Founder of Gstaad Cricket Club. Over two decades representing Switzerland in international cricket, former captain of Cossonay Cricket Club and Bern Cricket Club, and organizer of Swiss T20.",
     },
     {
-      name: "Adam Murfit",
-      initials: "AM",
-      role: "Secretary",
-      icon: "user-round-cog",
-      bio: "Committee Secretary coordinating club operations, governing documentation, and Cricket Switzerland affiliation administration.",
-    },
-    {
       name: "Linda Narayanan",
       initials: "LN",
       role: "Treasurer",
