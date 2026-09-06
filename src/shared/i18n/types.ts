@@ -216,9 +216,13 @@ export interface TranslationSchema {
     successMsg: string;
     typeLabel: string;
     typeSponsor: string;
+    typeDescSponsor: string;
     typeDonor: string;
+    typeDescDonor: string;
     typeMembership: string;
+    typeDescMembership: string;
     typeGeneral: string;
+    typeDescGeneral: string;
     packageLabel: string;
     packageAdult: string;
     packageFamily: string;

@@ -298,7 +298,7 @@ function ContactForm() {
   };
 
   return (
-    <div className="bg-white p-8 md:p-12 border-t-4 border-[var(--gold)] shadow-xl">
+    <div className="bg-white p-6 sm:p-8 md:p-10 border-t-4 border-[var(--gold)] shadow-xl">
       {success ? (
         <div className="py-12 text-center space-y-5">
           <div className="w-16 h-16 bg-[var(--green)]/10 text-[var(--green)] rounded-full flex items-center justify-center mx-auto shadow-inner">
@@ -345,31 +345,39 @@ function ContactForm() {
 
           {/* 1. Category Selector */}
           <div>
-            <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.12em] text-[#716854] mb-3">
+            <label className="block text-[0.74rem] uppercase font-extrabold tracking-[0.14em] text-[#716854] mb-3">
               {dict.contactPage.typeLabel}
             </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
               {/* Option: Sponsor */}
               <button
                 type="button"
                 onClick={() => handleCategorySelect("sponsor")}
-                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
+                className={`p-4 border text-left rounded-xs transition-all flex items-start gap-3.5 cursor-pointer group ${
                   inquiryType === "sponsor"
-                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
-                    : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                    : "bg-[#fdfcf8] text-[#2c3531] border-[#dcd4c1] hover:border-[var(--gold)] hover:bg-white"
                 }`}
               >
-                <HandHeart
-                  className={`w-4 h-4 shrink-0 ${
-                    inquiryType === "sponsor" ? "text-[var(--gold)]" : "text-[#82785f]"
+                <div
+                  className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 transition-colors ${
+                    inquiryType === "sponsor"
+                      ? "bg-[var(--gold)]/20 text-[var(--gold)]"
+                      : "bg-[#f4f0e6] text-[#716854] group-hover:bg-[#ebe3d2]"
                   }`}
-                />
-                <div className="leading-tight">
-                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
+                >
+                  <HandHeart className="w-5 h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <strong className="block text-[0.82rem] sm:text-[0.86rem] font-bold uppercase tracking-wider leading-snug">
                     {dict.contactPage.typeSponsor}
                   </strong>
-                  <span className={`text-[0.68rem] ${inquiryType === "sponsor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    Sponsorship
+                  <span
+                    className={`text-xs block mt-1 leading-normal ${
+                      inquiryType === "sponsor" ? "text-[#ded9cb]" : "text-[#716854]"
+                    }`}
+                  >
+                    {dict.contactPage.typeDescSponsor}
                   </span>
                 </div>
               </button>
@@ -378,23 +386,31 @@ function ContactForm() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect("donor")}
-                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
+                className={`p-4 border text-left rounded-xs transition-all flex items-start gap-3.5 cursor-pointer group ${
                   inquiryType === "donor"
-                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
-                    : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                    : "bg-[#fdfcf8] text-[#2c3531] border-[#dcd4c1] hover:border-[var(--gold)] hover:bg-white"
                 }`}
               >
-                <Sparkles
-                  className={`w-4 h-4 shrink-0 ${
-                    inquiryType === "donor" ? "text-[var(--gold)]" : "text-[#82785f]"
+                <div
+                  className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 transition-colors ${
+                    inquiryType === "donor"
+                      ? "bg-[var(--gold)]/20 text-[var(--gold)]"
+                      : "bg-[#f4f0e6] text-[#716854] group-hover:bg-[#ebe3d2]"
                   }`}
-                />
-                <div className="leading-tight">
-                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
+                >
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <strong className="block text-[0.82rem] sm:text-[0.86rem] font-bold uppercase tracking-wider leading-snug">
                     {dict.contactPage.typeDonor}
                   </strong>
-                  <span className={`text-[0.68rem] ${inquiryType === "donor" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    Community Patron
+                  <span
+                    className={`text-xs block mt-1 leading-normal ${
+                      inquiryType === "donor" ? "text-[#ded9cb]" : "text-[#716854]"
+                    }`}
+                  >
+                    {dict.contactPage.typeDescDonor}
                   </span>
                 </div>
               </button>
@@ -403,23 +419,31 @@ function ContactForm() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect("membership")}
-                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
+                className={`p-4 border text-left rounded-xs transition-all flex items-start gap-3.5 cursor-pointer group ${
                   inquiryType === "membership"
-                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
-                    : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                    : "bg-[#fdfcf8] text-[#2c3531] border-[#dcd4c1] hover:border-[var(--gold)] hover:bg-white"
                 }`}
               >
-                <UserCheck
-                  className={`w-4 h-4 shrink-0 ${
-                    inquiryType === "membership" ? "text-[var(--gold)]" : "text-[#82785f]"
+                <div
+                  className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 transition-colors ${
+                    inquiryType === "membership"
+                      ? "bg-[var(--gold)]/20 text-[var(--gold)]"
+                      : "bg-[#f4f0e6] text-[#716854] group-hover:bg-[#ebe3d2]"
                   }`}
-                />
-                <div className="leading-tight">
-                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
+                >
+                  <UserCheck className="w-5 h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <strong className="block text-[0.82rem] sm:text-[0.86rem] font-bold uppercase tracking-wider leading-snug">
                     {dict.contactPage.typeMembership}
                   </strong>
-                  <span className={`text-[0.68rem] ${inquiryType === "membership" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    Become a Member
+                  <span
+                    className={`text-xs block mt-1 leading-normal ${
+                      inquiryType === "membership" ? "text-[#ded9cb]" : "text-[#716854]"
+                    }`}
+                  >
+                    {dict.contactPage.typeDescMembership}
                   </span>
                 </div>
               </button>
@@ -428,23 +452,31 @@ function ContactForm() {
               <button
                 type="button"
                 onClick={() => handleCategorySelect("general")}
-                className={`p-3 border text-left rounded-xs transition-all flex items-center gap-2.5 cursor-pointer ${
+                className={`p-4 border text-left rounded-xs transition-all flex items-start gap-3.5 cursor-pointer group ${
                   inquiryType === "general"
-                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-1 ring-[var(--gold)] shadow-xs"
-                    : "bg-[#fdfcf8] text-[#4a5550] border-[#dcd4c1] hover:border-[var(--gold)]"
+                    ? "bg-[var(--green)] text-white border-[var(--gold)] ring-2 ring-[var(--gold)] shadow-sm"
+                    : "bg-[#fdfcf8] text-[#2c3531] border-[#dcd4c1] hover:border-[var(--gold)] hover:bg-white"
                 }`}
               >
-                <MessageSquare
-                  className={`w-4 h-4 shrink-0 ${
-                    inquiryType === "general" ? "text-[var(--gold)]" : "text-[#82785f]"
+                <div
+                  className={`w-9 h-9 rounded-xs flex items-center justify-center shrink-0 transition-colors ${
+                    inquiryType === "general"
+                      ? "bg-[var(--gold)]/20 text-[var(--gold)]"
+                      : "bg-[#f4f0e6] text-[#716854] group-hover:bg-[#ebe3d2]"
                   }`}
-                />
-                <div className="leading-tight">
-                  <strong className="block text-[0.76rem] font-bold uppercase tracking-wider">
+                >
+                  <MessageSquare className="w-5 h-5" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <strong className="block text-[0.82rem] sm:text-[0.86rem] font-bold uppercase tracking-wider leading-snug">
                     {dict.contactPage.typeGeneral}
                   </strong>
-                  <span className={`text-[0.68rem] ${inquiryType === "general" ? "text-[#d7d3c6]" : "text-gray-500"}`}>
-                    General Inquiries
+                  <span
+                    className={`text-xs block mt-1 leading-normal ${
+                      inquiryType === "general" ? "text-[#ded9cb]" : "text-[#716854]"
+                    }`}
+                  >
+                    {dict.contactPage.typeDescGeneral}
                   </span>
                 </div>
               </button>
@@ -506,7 +538,7 @@ function ContactForm() {
                     <strong className="text-xs font-bold uppercase tracking-wider">Family</strong>
                     <span
                       className={`text-xs font-extrabold ${
-                        membershipPackage === "family" ? "text-[var(--gold)]" : "text-[var(--gold)]"
+                        membershipPackage === "family" ? "text-[var(--gold)]" : "text-[var(--green)]"
                       }`}
                     >
                       CHF 200
@@ -753,7 +785,7 @@ export default function ContactPage() {
       </section>
 
       {/* Main Content */}
-      <section className="py-24 px-[8vw] max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-12 lg:gap-16 items-start">
+      <section className="py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-[6vw] max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-[330px_1fr] xl:grid-cols-[360px_1fr] gap-8 lg:gap-12 items-start">
         {/* Left Column: Administration Details */}
         <div className="space-y-8">
           <div>
