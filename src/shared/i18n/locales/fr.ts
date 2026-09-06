@@ -133,6 +133,16 @@ export const fr: TranslationSchema = {
     successMsg:
       "Merci pour votre inscription. Nous nous réjouissons de vous accueillir à l’école d’Ebnit à Gstaad le 26 septembre 2026.",
     registerAnother: "Inscrire une autre personne",
+    validationNameRequired: "Veuillez saisir votre nom complet (au moins 2 caractères).",
+    validationEmailRequired: "Veuillez saisir votre adresse e-mail.",
+    validationEmailInvalid: "Veuillez saisir une adresse e-mail valide.",
+    validationPhoneRequired: "Veuillez fournir un numéro de téléphone de contact valide.",
+    validationPhoneInvalid: "Veuillez saisir un numéro de téléphone valide (au moins 8 chiffres).",
+    validationPartySize: "Veuillez indiquer un nombre de participants entre 1 et 20.",
+    toastSuccessTitle: "Inscription confirmée",
+    toastSuccessDesc: "Un e-mail de confirmation avec les détails du festival vous a été envoyé.",
+    toastErrorTitle: "Erreur de soumission",
+    toastErrorDesc: "Veuillez corriger les champs surlignés et soumettre à nouveau.",
   },
   footer: {
     brandTagline: "Développer le cricket à Gstaad et dans la région environnante.",

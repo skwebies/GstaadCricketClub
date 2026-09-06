@@ -3,22 +3,34 @@ import { z } from "zod";
 export const RegistrationSchema = z.object({
   fullName: z
     .string()
+    .trim()
     .min(2, "Full name must be at least 2 characters")
-    .max(100, "Full name is too long"),
-  email: z.string().email("Please provide a valid email address"),
+    .max(100, "Full name is too long")
+    .refine((val) => !/[<>{}\\]/.test(val), {
+      message: "Full name contains invalid characters",
+    }),
+  email: z
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Please provide a valid email address"),
   phone: z
     .string()
-    .min(7, "Please provide a valid phone number")
-    .max(30, "Phone number is too long"),
+    .trim()
+    .min(7, "Please provide a valid phone number (minimum 7 characters)")
+    .max(30, "Phone number is too long")
+    .regex(/^[0-9+\s()./-]+$/, "Please enter a valid phone number format"),
   registrationType: z.enum(["playing_member", "spectator", "vip_patron"], {
     message: "Please choose a valid participation type",
   }),
-  partySize: z.coerce.number().int().min(1).max(20).default(1),
-  dietaryRequirements: z.string().max(300).optional().or(z.literal("")),
+  partySize: z.coerce.number().int().min(1, "Party size must be at least 1").max(20, "Party size cannot exceed 20").default(1),
+  dietaryRequirements: z.string().max(500, "Notes cannot exceed 500 characters").optional().or(z.literal("")),
   emergencyContact: z
     .string()
-    .min(3, "Emergency contact name or phone is required")
-    .max(120),
+    .max(120)
+    .optional()
+    .or(z.literal(""))
+    .transform((val) => (val && val.trim().length >= 3 ? val.trim() : "Self / Attendee")),
   notes: z.string().max(500).optional().or(z.literal("")),
 });
 

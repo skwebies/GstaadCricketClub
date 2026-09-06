@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 };
 
 import { LanguageProvider } from "@/shared/i18n/LanguageContext";
+import { ToastProvider } from "@/shared/components/common/Toast";
 
 export default function RootLayout({
   children,
@@ -127,7 +128,9 @@ export default function RootLayout({
       </head>
       <body className="antialiased min-h-screen flex flex-col selection:bg-[var(--gold)] selection:text-[var(--green-dark)]">
         <LanguageProvider>
-          {children}
+          <ToastProvider>
+            {children}
+          </ToastProvider>
         </LanguageProvider>
       </body>
     </html>

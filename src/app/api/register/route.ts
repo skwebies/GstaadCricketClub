@@ -4,6 +4,7 @@ import { SupabaseRegistrationRepository } from "@/infrastructure/repositories/Su
 import { SupabaseEventRepository } from "@/infrastructure/repositories/SupabaseEventRepository";
 import { SupabaseAuditRepository } from "@/infrastructure/repositories/SupabaseAuditRepository";
 import { RegisterForEventUseCase } from "@/application/use-cases/RegisterForEventUseCase";
+import { RegistrationSchema } from "@/application/validators/schemas";
 import { isHoneypotTriggered, getClientIp } from "@/infrastructure/security/anti-spam";
 import { checkRateLimit } from "@/infrastructure/security/rate-limiter";
 import { EmailService } from "@/infrastructure/email/email-service";
@@ -34,7 +35,60 @@ export async function POST(request: Request) {
       );
     }
 
-    // 3. Database Persistence & Domain Logic
+    // 3. Map participant type to valid domain registrationType
+    let domainRegistrationType: "playing_member" | "spectator" | "vip_patron" = "spectator";
+    const rawType = body.registrationType || body.participantType || "Individual";
+    if (rawType === "VIP Patron" || rawType === "vip_patron") {
+      domainRegistrationType = "vip_patron";
+    } else if (rawType === "Individual" || rawType === "Group" || rawType === "playing_member") {
+      domainRegistrationType = "playing_member";
+    } else {
+      domainRegistrationType = "spectator";
+    }
+
+    // Human-friendly display category for email notifications
+    const displayCategory =
+      body.participantType ||
+      (domainRegistrationType === "vip_patron"
+        ? "VIP Patron"
+        : domainRegistrationType === "playing_member"
+        ? "Playing Member / Individual"
+        : "Spectator / Family");
+
+    // 4. Server-Side Custom Validation with Zod
+    const validationResult = RegistrationSchema.safeParse({
+      fullName: body.fullName || body.name,
+      email: body.email,
+      phone: body.phone,
+      registrationType: domainRegistrationType,
+      partySize: body.partySize ?? 1,
+      dietaryRequirements: body.dietaryRequirements || body.message || "",
+      emergencyContact: body.emergencyContact || body.phone || "Self / Attendee",
+      notes: body.notes || body.message || "",
+    });
+
+    if (!validationResult.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of validationResult.error.issues) {
+        const fieldName = issue.path[0]?.toString() || "form";
+        const clientFieldName = fieldName === "fullName" ? "name" : fieldName;
+        if (!fieldErrors[clientFieldName]) {
+          fieldErrors[clientFieldName] = issue.message;
+        }
+      }
+      return NextResponse.json(
+        {
+          success: false,
+          error: "Validation failed. Please correct the highlighted fields.",
+          fieldErrors,
+        },
+        { status: 400 }
+      );
+    }
+
+    const validatedData = validationResult.data;
+
+    // 5. Database Persistence & Domain Logic
     const supabase = createAdminClient();
     const registrationRepo = new SupabaseRegistrationRepository(supabase);
     const eventRepo = new SupabaseEventRepository(supabase);
@@ -42,27 +96,18 @@ export async function POST(request: Request) {
 
     const useCase = new RegisterForEventUseCase(registrationRepo, eventRepo, auditRepo);
 
-    const result = await useCase.execute({
-      fullName: body.fullName,
-      email: body.email,
-      phone: body.phone,
-      registrationType: body.registrationType,
-      partySize: body.partySize || 1,
-      dietaryRequirements: body.dietaryRequirements,
-      emergencyContact: body.emergencyContact || body.phone || "Self / Attendee",
-      notes: body.notes,
-    });
+    const result = await useCase.execute(validatedData);
 
-    // 4. SMTP Dual-Dispatch (Admin notification + User confirmation)
+    // 6. SMTP Dual-Dispatch (Admin alert to info@gstaadcricketclub.ch + Registrant confirmation)
     await EmailService.sendRegistrationEmails({
-      fullName: body.fullName,
-      email: body.email,
-      phone: body.phone,
-      registrationType: body.registrationType,
-      partySize: body.partySize || 1,
-      dietaryRequirements: body.dietaryRequirements,
-      emergencyContact: body.emergencyContact,
-      notes: body.notes,
+      fullName: validatedData.fullName,
+      email: validatedData.email,
+      phone: validatedData.phone,
+      registrationType: displayCategory,
+      partySize: validatedData.partySize,
+      dietaryRequirements: validatedData.dietaryRequirements,
+      emergencyContact: validatedData.emergencyContact,
+      notes: validatedData.notes,
     });
 
     return NextResponse.json({
@@ -79,3 +124,4 @@ export async function POST(request: Request) {
     );
   }
 }
+

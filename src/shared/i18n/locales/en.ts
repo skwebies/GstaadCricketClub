@@ -133,6 +133,16 @@ export const en: TranslationSchema = {
     successMsg:
       "Thank you for registering. We look forward to welcoming you at Ebnit School in Gstaad on 26 September 2026.",
     registerAnother: "Register Another Person",
+    validationNameRequired: "Please enter your full name (minimum 2 characters).",
+    validationEmailRequired: "Please enter your email address.",
+    validationEmailInvalid: "Please enter a valid email address.",
+    validationPhoneRequired: "Please provide a contact phone number.",
+    validationPhoneInvalid: "Please enter a valid telephone number (minimum 8 digits).",
+    validationPartySize: "Please enter an attending party size between 1 and 20.",
+    toastSuccessTitle: "Registration Confirmed",
+    toastSuccessDesc: "A confirmation email with festival details has been dispatched to your inbox.",
+    toastErrorTitle: "Submission Error",
+    toastErrorDesc: "Please correct the highlighted fields and try submitting again.",
   },
   footer: {
     brandTagline: "Developing cricket in Gstaad and the surrounding region.",

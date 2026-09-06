@@ -133,6 +133,16 @@ export const de: TranslationSchema = {
     successMsg:
       "Vielen Dank für Ihre Anmeldung! Wir freuen uns, Sie am 26. September 2026 im Ebnit Schulhaus in Gstaad begrüssen zu dürfen.",
     registerAnother: "Weitere Person anmelden",
+    validationNameRequired: "Bitte geben Sie Ihren vollständigen Namen ein (mindestens 2 Zeichen).",
+    validationEmailRequired: "Bitte geben Sie Ihre E-Mail-Adresse ein.",
+    validationEmailInvalid: "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+    validationPhoneRequired: "Bitte geben Sie eine Kontakttelefonnummer an.",
+    validationPhoneInvalid: "Bitte geben Sie eine gültige Telefonnummer ein (mindestens 8 Ziffern).",
+    validationPartySize: "Bitte geben Sie eine Personenanzahl zwischen 1 und 20 ein.",
+    toastSuccessTitle: "Anmeldung bestätigt",
+    toastSuccessDesc: "Eine Bestätigungs-E-Mail mit den Festival-Details wurde an Ihren Posteingang gesendet.",
+    toastErrorTitle: "Fehler beim Absenden",
+    toastErrorDesc: "Bitte korrigieren Sie die markierten Felder und versuchen Sie es erneut.",
   },
   footer: {
     brandTagline: "Förderung und Pflege des Cricketsports in Gstaad und im Saanenland.",

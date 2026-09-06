@@ -135,6 +135,16 @@ export interface TranslationSchema {
     successTitle: string;
     successMsg: string;
     registerAnother: string;
+    validationNameRequired: string;
+    validationEmailRequired: string;
+    validationEmailInvalid: string;
+    validationPhoneRequired: string;
+    validationPhoneInvalid: string;
+    validationPartySize: string;
+    toastSuccessTitle: string;
+    toastSuccessDesc: string;
+    toastErrorTitle: string;
+    toastErrorDesc: string;
   };
   footer: {
     brandTagline: string;

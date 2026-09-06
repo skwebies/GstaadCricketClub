@@ -16,6 +16,7 @@ import {
   renderContactUserConfirmation,
 } from "../infrastructure/email/email-templates";
 import { getSmtpConfig, dispatchEmail, buildMimeMessage, extractEmailAddress } from "../infrastructure/email/smtp-client";
+import { RegistrationSchema } from "../application/validators/schemas";
 
 describe("Anti-Spam & Header Injection Defense", () => {
   it("should strip CRLF characters to prevent SMTP header injection", () => {
@@ -212,3 +213,82 @@ describe("SMTP Client Configuration & Safe Dispatch", () => {
     expect(res.messageId).toContain("mock-");
   });
 });
+
+describe("Registration Server-Side Custom Validation & Schemas", () => {
+  it("should accept valid registration input and sanitize whitespace", () => {
+    const validData = {
+      fullName: "  Pierre-Alain de Courten  ",
+      email: "  PIERRE@GSTAAD.CH  ",
+      phone: "+41 79 123 45 67",
+      registrationType: "playing_member" as const,
+      partySize: 3,
+      dietaryRequirements: "Gluten free picnic",
+    };
+
+    const parsed = RegistrationSchema.safeParse(validData);
+    expect(parsed.success).toBe(true);
+    if (parsed.success) {
+      expect(parsed.data.fullName).toBe("Pierre-Alain de Courten");
+      expect(parsed.data.email).toBe("pierre@gstaad.ch");
+      expect(parsed.data.emergencyContact).toBe("Self / Attendee");
+      expect(parsed.data.partySize).toBe(3);
+    }
+  });
+
+  it("should reject invalid emails", () => {
+    const invalidEmailData = {
+      fullName: "Marc Rossi",
+      email: "not-an-email",
+      phone: "+41 79 123 45 67",
+      registrationType: "spectator" as const,
+      partySize: 1,
+    };
+
+    const parsed = RegistrationSchema.safeParse(invalidEmailData);
+    expect(parsed.success).toBe(false);
+  });
+
+  it("should reject invalid phone numbers", () => {
+    const invalidPhoneData = {
+      fullName: "Marc Rossi",
+      email: "marc@example.ch",
+      phone: "invalid-phone!",
+      registrationType: "spectator" as const,
+      partySize: 1,
+    };
+
+    const parsed = RegistrationSchema.safeParse(invalidPhoneData);
+    expect(parsed.success).toBe(false);
+  });
+
+  it("should reject party size outside 1 to 20 range", () => {
+    const tooLarge = {
+      fullName: "Marc Rossi",
+      email: "marc@example.ch",
+      phone: "+41 79 123 45 67",
+      registrationType: "spectator" as const,
+      partySize: 25,
+    };
+    expect(RegistrationSchema.safeParse(tooLarge).success).toBe(false);
+
+    const tooSmall = {
+      ...tooLarge,
+      partySize: 0,
+    };
+    expect(RegistrationSchema.safeParse(tooSmall).success).toBe(false);
+  });
+
+  it("should reject HTML/script injection in fullName", () => {
+    const maliciousName = {
+      fullName: "Attacker <script>alert(1)</script>",
+      email: "attacker@example.com",
+      phone: "+41 79 123 45 67",
+      registrationType: "spectator" as const,
+      partySize: 1,
+    };
+
+    const parsed = RegistrationSchema.safeParse(maliciousName);
+    expect(parsed.success).toBe(false);
+  });
+});
+
