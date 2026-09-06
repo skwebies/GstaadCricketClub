@@ -155,6 +155,36 @@ export const fr: TranslationSchema = {
     legalNotice:
       "Le Gstaad Cricket Club (GCC) est une association sportive suisse à but non lucratif (Verein selon art. 60 et suivants du Code civil suisse).",
     allRightsReserved: "Tous droits réservés.",
+    privacyPolicy: "Politique de Confidentialité",
+    termsConditions: "Conditions Générales",
+    cookiePolicy: "Politique des Cookies",
+    cookieSettings: "Préférences de Cookies",
+    poweredBy: "Propulsé par",
+  },
+  cookieConsent: {
+    title: "Protection des Données & Gestion des Cookies",
+    description:
+      "Le Gstaad Cricket Club utilise exclusivement des cookies strictement nécessaires au fonctionnement du site, à l'accès sécurisé et au choix de la langue. Conformément à la Loi fédérale sur la protection des données (LPD) et à l'art. 45c LTC, nous n'utilisons aucun cookie publicitaire ou de profilage intrusif.",
+    acceptAll: "Tout accepter",
+    essentialOnly: "Essentiels uniquement",
+    learnMore: "Politique des cookies",
+  },
+  legal: {
+    privacyTitle: "Politique de Confidentialité",
+    privacyKicker: "PROTECTION DES DONNÉES SUISSE (LPD / nLPD)",
+    privacySubtitle:
+      "Informations relatives à la collecte, au traitement et à la protection de vos données personnelles conformément à la nouvelle LPD suisse.",
+    termsTitle: "Conditions Générales & Statuts",
+    termsKicker: "DISPOSITIONS LÉGALES & STATUTS DU CLUB",
+    termsSubtitle:
+      "Règles statutaires, directives de participation au festival et exclusion de responsabilité selon le Code des obligations suisse (CO) et le Code civil (CC).",
+    cookiesTitle: "Politique relative aux Cookies",
+    cookiesKicker: "TRANSPARENCE & ÉQUIPEMENTS TERMINAUX (ART. 45c LTC)",
+    cookiesSubtitle:
+      "Inventaire exhaustif des technologies de session et fonctionnelles déployées sur le portail du Gstaad Cricket Club.",
+    lastUpdated: "En vigueur: Septembre 2026",
+    backToHome: "Retour à l'accueil",
+    tableOfContents: "Sommaire",
   },
   aboutPage: {
     kicker: "NOTRE HISTOIRE",

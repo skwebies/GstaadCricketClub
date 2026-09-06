@@ -156,6 +156,32 @@ export interface TranslationSchema {
     copyright: string;
     legalNotice: string;
     allRightsReserved: string;
+    privacyPolicy: string;
+    termsConditions: string;
+    cookiePolicy: string;
+    cookieSettings: string;
+    poweredBy: string;
+  };
+  cookieConsent: {
+    title: string;
+    description: string;
+    acceptAll: string;
+    essentialOnly: string;
+    learnMore: string;
+  };
+  legal: {
+    privacyTitle: string;
+    privacyKicker: string;
+    privacySubtitle: string;
+    termsTitle: string;
+    termsKicker: string;
+    termsSubtitle: string;
+    cookiesTitle: string;
+    cookiesKicker: string;
+    cookiesSubtitle: string;
+    lastUpdated: string;
+    backToHome: string;
+    tableOfContents: string;
   };
   aboutPage: {
     kicker: string;

@@ -74,4 +74,20 @@ describe("Trilingual Internationalization (i18n) Parity Suite", () => {
     expect(LANGUAGES.map((l) => l.code)).toEqual(["en", "de", "fr"]);
     expect(LANGUAGES.map((l) => l.label)).toEqual(["EN", "DE", "FR"]);
   });
+
+  it("should define required Swiss legal and cookie policy translations in all languages", () => {
+    for (const locale of [en, de, fr]) {
+      expect(locale.footer.privacyPolicy).toBeDefined();
+      expect(locale.footer.termsConditions).toBeDefined();
+      expect(locale.footer.cookiePolicy).toBeDefined();
+      expect(locale.footer.cookieSettings).toBeDefined();
+      expect(locale.footer.poweredBy).toBeDefined();
+      expect(locale.cookieConsent.title).toBeDefined();
+      expect(locale.cookieConsent.acceptAll).toBeDefined();
+      expect(locale.cookieConsent.essentialOnly).toBeDefined();
+      expect(locale.legal.privacyTitle).toBeDefined();
+      expect(locale.legal.termsTitle).toBeDefined();
+      expect(locale.legal.cookiesTitle).toBeDefined();
+    }
+  });
 });

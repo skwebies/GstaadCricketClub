@@ -75,6 +75,7 @@ export const metadata: Metadata = {
 
 import { LanguageProvider } from "@/shared/i18n/LanguageContext";
 import { ToastProvider } from "@/shared/components/common/Toast";
+import { CookieConsent } from "@/shared/components/common/CookieConsent";
 
 export default function RootLayout({
   children,
@@ -149,6 +150,7 @@ export default function RootLayout({
         <LanguageProvider>
           <ToastProvider>
             {children}
+            <CookieConsent />
           </ToastProvider>
         </LanguageProvider>
       </body>

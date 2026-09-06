@@ -7,7 +7,7 @@
  * @module shared/components/marketing
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -17,14 +17,30 @@ import { LanguageSwitcher } from "@/shared/components/common/LanguageSwitcher";
 
 export function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const pathname = usePathname();
   const { dict } = useLanguage();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className="site-header z-30 w-full h-[88px] text-[var(--cream)] flex items-center justify-between px-[5vw] absolute top-0 left-0">
+    <header
+      className={`site-header fixed top-0 left-0 w-full h-[88px] text-[var(--cream)] flex items-center justify-between px-[5vw] z-50 transition-all duration-300 ${
+        isScrolled
+          ? "bg-[#0A1C15]/95 backdrop-blur-md shadow-[0_4px_25px_rgba(0,0,0,0.4)] border-b border-[var(--gold)]/20"
+          : "bg-[#0A1C15]/80 md:bg-transparent backdrop-blur-xs md:backdrop-blur-none border-b border-white/5"
+      }`}
+    >
       <Link href="/" className="brand flex items-center gap-3 tracking-[0.08em] group">
         <div className="relative w-[54px] h-[54px] transition-transform duration-300 group-hover:scale-105">
           <Image

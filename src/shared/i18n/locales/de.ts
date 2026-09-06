@@ -155,6 +155,36 @@ export const de: TranslationSchema = {
     legalNotice:
       "Gstaad Cricket Club (GCC) ist ein offiziell gegründeter, gemeinnütziger Schweizer Sportverein (Verein nach Art. 60ff. ZGB).",
     allRightsReserved: "Alle Rechte vorbehalten.",
+    privacyPolicy: "Datenschutzerklärung",
+    termsConditions: "AGB & Richtlinien",
+    cookiePolicy: "Cookie-Richtlinie",
+    cookieSettings: "Cookie-Einstellungen",
+    poweredBy: "Powered by",
+  },
+  cookieConsent: {
+    title: "Schweizer Datenschutz & Cookie-Einstellungen",
+    description:
+      "Der Gstaad Cricket Club verwendet ausschliesslich technisch notwendige Cookies zur Gewährleistung der Grundfunktionen, sicheren Anmeldung und Sprachauswahl. Gemäss dem Schweizer Datenschutzgesetz (DSG) und FMG Art. 45c setzen wir keine invasiven Werbe- oder Tracking-Cookies ein.",
+    acceptAll: "Alle akzeptieren",
+    essentialOnly: "Nur notwendige",
+    learnMore: "Cookie-Richtlinie",
+  },
+  legal: {
+    privacyTitle: "Datenschutzerklärung",
+    privacyKicker: "SCHWEIZER DATENSCHUTZ (DSG / nDSG)",
+    privacySubtitle:
+      "Informationen zur Erhebung, Verarbeitung und zum Schutz personenbezogener Daten gemäss dem revidierten Schweizer Bundesgesetz über den Datenschutz.",
+    termsTitle: "AGB & Nutzungsbedingungen",
+    termsKicker: "VEREINSSTATUTEN & TEILNAHMEBEDINGUNGEN",
+    termsSubtitle:
+      "Rechtliche Bestimmungen, Festival-Richtlinien und Haftungsausschluss gemäss Schweizerischem Obligationenrecht (OR) und ZGB.",
+    cookiesTitle: "Cookie-Richtlinie",
+    cookiesKicker: "TRANSPARENZ & ENDGERÄTE (FMG ART. 45c)",
+    cookiesSubtitle:
+      "Vollständige Übersicht aller auf dem GCC-Webportal eingesetzten Session- und Funktions-Technologien.",
+    lastUpdated: "Stand: September 2026",
+    backToHome: "Zur Startseite",
+    tableOfContents: "Inhaltsverzeichnis",
   },
   aboutPage: {
     kicker: "UNSERE GESCHICHTE",

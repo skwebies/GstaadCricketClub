@@ -35,7 +35,7 @@ export function Footer() {
         </span>
       </Link>
 
-      <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2 text-[#b8b3a5]">
+      <div className="flex flex-col items-center md:items-start text-center md:text-left gap-2.5 text-[#b8b3a5]">
         <p>
           {dict.footer.brandTagline} ·{" "}
           <Link href="/about" className="text-[var(--gold)] hover:underline">
@@ -54,14 +54,55 @@ export function Footer() {
             {dict.footer.adminPortal}
           </Link>
         </p>
-        <p className="text-xs text-[#9d9787] max-w-xl">
+
+        {/* Legal Links Bar */}
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-2.5 gap-y-1 text-xs text-[#9d9787]">
+          <Link href="/privacy" className="hover:text-[var(--gold)] transition-colors">
+            {dict.footer.privacyPolicy}
+          </Link>
+          <span>·</span>
+          <Link href="/terms" className="hover:text-[var(--gold)] transition-colors">
+            {dict.footer.termsConditions}
+          </Link>
+          <span>·</span>
+          <Link href="/cookie-policy" className="hover:text-[var(--gold)] transition-colors">
+            {dict.footer.cookiePolicy}
+          </Link>
+          <span>·</span>
+          <button
+            type="button"
+            onClick={() => {
+              if (typeof window !== "undefined") {
+                window.dispatchEvent(new CustomEvent("gcc-open-cookie-settings"));
+              }
+            }}
+            className="hover:text-[var(--gold)] transition-colors cursor-pointer underline-offset-2 hover:underline"
+          >
+            {dict.footer.cookieSettings}
+          </button>
+        </div>
+
+        <p className="text-xs text-[#8c8676] max-w-xl">
           {dict.footer.legalNotice}
         </p>
       </div>
 
-      <div className="flex flex-col items-center md:items-end gap-3 text-xs text-[#9d9787]">
+      <div className="flex flex-col items-center md:items-end gap-2.5 text-xs text-[#9d9787]">
         <LanguageSwitcher variant="footer" />
         <span>{dict.footer.affiliated} · {dict.footer.copyright}</span>
+        <div className="flex items-center gap-1.5 text-[0.8rem] pt-0.5">
+          <span>{dict.footer.poweredBy}</span>
+          <a
+            href="https://popcorndigital.ch"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[var(--gold)] hover:underline font-bold transition-colors inline-flex items-center gap-0.5"
+            title="Popcorn Digital (opens in new tab)"
+          >
+            Popcorn Digital
+            <span className="text-[10px] opacity-80 ml-0.5">↗</span>
+          </a>
+        </div>
       </div>
     </footer>
   );
