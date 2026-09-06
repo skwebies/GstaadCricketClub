@@ -46,8 +46,15 @@ const BRAND_COLORS = {
   border: "#E2DDD2",
 };
 
+export const DEFAULT_SITE_URL = "https://gstaadcricketclub.ch";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
+    ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")
+    : DEFAULT_SITE_URL;
+export const LOGO_URL = `${DEFAULT_SITE_URL}/gstaad-cricket-club-crest.png`;
+
 /**
- * Common HTML wrapper layout providing luxury alpine aesthetics.
+ * Common HTML wrapper layout providing luxury alpine aesthetics with official crest logo.
  */
 function wrapHtmlLayout(title: string, content: string): string {
   return `<!DOCTYPE html>
@@ -55,6 +62,8 @@ function wrapHtmlLayout(title: string, content: string): string {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
   <title>${escapeHtml(title)}</title>
   <style>
     body {
@@ -64,51 +73,53 @@ function wrapHtmlLayout(title: string, content: string): string {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       color: ${BRAND_COLORS.ink};
       -webkit-font-smoothing: antialiased;
+      -ms-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      mso-table-lspace: 0pt;
+      mso-table-rspace: 0pt;
+    }
+    td {
+      padding: 0;
+    }
+    img {
+      border: 0;
+      -ms-interpolation-mode: bicubic;
     }
     .wrapper {
       width: 100%;
       table-layout: fixed;
       background-color: ${BRAND_COLORS.paper};
-      padding: 40px 16px;
+      padding: 36px 12px;
     }
     .main {
-      max-width: 600px;
+      max-width: 620px;
       margin: 0 auto;
       background-color: #FFFFFF;
       border: 1px solid ${BRAND_COLORS.border};
       border-top: 5px solid ${BRAND_COLORS.gold};
+      box-shadow: 0 10px 30px rgba(10, 28, 21, 0.06);
     }
     .header {
-      background-color: ${BRAND_COLORS.greenPrimary};
-      padding: 32px 24px;
+      background-color: ${BRAND_COLORS.greenDark};
+      background: linear-gradient(180deg, #071510 0%, #0F382A 100%);
+      padding: 34px 24px 28px;
       text-align: center;
-    }
-    .header h1 {
-      margin: 0;
-      color: #FFFFFF;
-      font-family: Georgia, 'Times New Roman', serif;
-      font-size: 24px;
-      letter-spacing: 0.05em;
-      font-weight: normal;
-    }
-    .header p {
-      margin: 6px 0 0;
-      color: ${BRAND_COLORS.gold};
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      font-weight: bold;
+      border-bottom: 2px solid ${BRAND_COLORS.gold};
     }
     .content {
       padding: 36px 32px;
       font-size: 15px;
-      line-height: 1.6;
+      line-height: 1.65;
       color: ${BRAND_COLORS.ink};
     }
     .content h2 {
       margin: 0 0 16px;
       font-family: Georgia, 'Times New Roman', serif;
-      font-size: 20px;
+      font-size: 21px;
       color: ${BRAND_COLORS.greenPrimary};
       font-weight: normal;
     }
@@ -120,17 +131,19 @@ function wrapHtmlLayout(title: string, content: string): string {
       border: 1px solid ${BRAND_COLORS.border};
     }
     .info-table td {
-      padding: 12px 16px;
+      padding: 13px 18px;
       border-bottom: 1px solid ${BRAND_COLORS.border};
       font-size: 14px;
+      vertical-align: middle;
     }
     .info-table td.label {
-      width: 35%;
-      font-weight: 600;
+      width: 34%;
+      font-weight: 700;
       color: ${BRAND_COLORS.muted};
       text-transform: uppercase;
       font-size: 11px;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.06em;
+      background-color: #F6F4EE;
     }
     .info-table td.value {
       color: ${BRAND_COLORS.ink};
@@ -138,25 +151,36 @@ function wrapHtmlLayout(title: string, content: string): string {
     }
     .badge {
       display: inline-block;
-      padding: 4px 10px;
+      padding: 4px 12px;
       background-color: ${BRAND_COLORS.goldLight};
       color: ${BRAND_COLORS.greenDark};
       font-weight: 700;
-      font-size: 12px;
-      letter-spacing: 0.05em;
+      font-size: 11.5px;
+      letter-spacing: 0.06em;
+      border: 1px solid ${BRAND_COLORS.gold};
+      text-transform: uppercase;
     }
     .footer {
-      background-color: #F7F6F2;
-      padding: 24px 32px;
+      background-color: #F8F7F2;
+      padding: 26px 32px 28px;
       text-align: center;
       border-top: 1px solid ${BRAND_COLORS.border};
       font-size: 12px;
       color: ${BRAND_COLORS.muted};
-      line-height: 1.5;
+      line-height: 1.6;
     }
     .footer a {
       color: ${BRAND_COLORS.greenPrimary};
       text-decoration: underline;
+    }
+    @media only screen and (max-width: 600px) {
+      .content {
+        padding: 24px 18px !important;
+      }
+      .info-table td {
+        padding: 10px 12px !important;
+        font-size: 13px !important;
+      }
     }
   </style>
 </head>
@@ -164,9 +188,26 @@ function wrapHtmlLayout(title: string, content: string): string {
   <div class="wrapper">
     <table class="main" width="100%" cellpadding="0" cellspacing="0" role="presentation">
       <tr>
-        <td class="header">
-          <h1>Gstaad Cricket Club</h1>
-          <p>Cricket for our Community &bull; Bernese Oberland</p>
+        <td class="header" align="center">
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto; text-align: center;">
+            <tr>
+              <td align="center" style="padding-bottom: 14px;">
+                <a href="${SITE_URL}" target="_blank" style="text-decoration: none; display: inline-block;">
+                  <img src="${LOGO_URL}" alt="Gstaad Cricket Club Crest" width="92" height="92" style="display: block; width: 92px; height: 92px; max-width: 92px; margin: 0 auto; border-radius: 50%; border: 2px solid ${BRAND_COLORS.gold}; background-color: #0A1C15; padding: 2px;" border="0" />
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td align="center">
+                <h1 style="margin: 0; color: #FFFFFF; font-family: Georgia, 'Times New Roman', serif; font-size: 23px; line-height: 1.25; letter-spacing: 0.06em; font-weight: normal; text-transform: uppercase;">
+                  Gstaad Cricket Club
+                </h1>
+                <p style="margin: 8px 0 0; color: ${BRAND_COLORS.gold}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.22em; font-weight: 700; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+                  Cricket for our Community &bull; Bernese Oberland
+                </p>
+              </td>
+            </tr>
+          </table>
         </td>
       </tr>
       <tr>
@@ -175,10 +216,26 @@ function wrapHtmlLayout(title: string, content: string): string {
         </td>
       </tr>
       <tr>
-        <td class="footer">
-          <strong>Gstaad Cricket Club</strong><br>
+        <td class="footer" align="center">
+          <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="margin: 0 auto 12px auto; text-align: center;">
+            <tr>
+              <td align="center">
+                <a href="${SITE_URL}" target="_blank" style="text-decoration: none;">
+                  <img src="${LOGO_URL}" alt="GCC Logo" width="42" height="42" style="display: block; width: 42px; height: 42px; margin: 0 auto; border-radius: 50%; border: 1px solid ${BRAND_COLORS.gold}; opacity: 0.9;" border="0" />
+                </a>
+              </td>
+            </tr>
+          </table>
+          <strong style="color: ${BRAND_COLORS.greenDark}; font-size: 13px; letter-spacing: 0.04em;">Gstaad Cricket Club</strong><br>
           Ebnit School Pitch, 3780 Gstaad, Switzerland<br>
-          <a href="https://gstaadcricketclub.ch">www.gstaadcricketclub.ch</a> &bull; info@gstaadcricketclub.ch
+          <span style="font-size: 12px;">
+            <a href="${SITE_URL}" target="_blank" style="color: ${BRAND_COLORS.greenPrimary}; text-decoration: underline; font-weight: 600;">www.gstaadcricketclub.ch</a>
+            &nbsp;&bull;&nbsp;
+            <a href="mailto:info@gstaadcricketclub.ch" style="color: ${BRAND_COLORS.greenPrimary}; text-decoration: none; font-weight: 600;">info@gstaadcricketclub.ch</a>
+          </span>
+          <p style="margin: 12px 0 0; font-size: 10.5px; color: #8A9890; text-transform: uppercase; letter-spacing: 0.08em;">
+            Swiss Non-Profit Sports Club &bull; Saanenland &bull; Bernese Alps
+          </p>
         </td>
       </tr>
     </table>
@@ -192,23 +249,23 @@ function wrapHtmlLayout(title: string, content: string): string {
 // ============================================================================
 
 export function renderRegistrationAdminEmail(data: RegistrationEmailData) {
-  const subject = `[GCC Festival] New Registration: ${sanitizeHeader(data.fullName)} (${data.partySize} attendee${data.partySize > 1 ? "s" : ""})`;
+  const subject = `[GCC Festival] New Reservation: ${sanitizeHeader(data.fullName)} (${data.partySize} attendee${data.partySize > 1 ? "s" : ""})`;
 
   const content = `
     <div style="text-align: center; margin-bottom: 24px;">
       <span style="display: inline-block; background-color: ${BRAND_COLORS.goldLight}; color: ${BRAND_COLORS.greenDark}; padding: 6px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em; border: 1px solid ${BRAND_COLORS.gold};">
-        Festival Attendee Reservation
+        Festival Place Reservation
       </span>
       <h2 style="margin: 14px 0 6px; font-family: Georgia, 'Times New Roman', serif; font-size: 22px; color: ${BRAND_COLORS.greenPrimary};">
-        New Festival Registration
+        New Festival Place Reserved
       </h2>
       <p style="margin: 0; font-size: 13px; color: ${BRAND_COLORS.muted};">
         Gstaad Cricket Festival 2026 &bull; Saturday, 26 September 2026
       </p>
     </div>
 
-    <p style="font-size: 14px; line-height: 1.6; margin-bottom: 20px;">
-      A new registration has been received via the website. Details of the reservation are recorded below:
+    <p style="font-size: 14.5px; line-height: 1.6; margin-bottom: 20px;">
+      A new reservation has been placed through the website reservation form. Complete attendee details are recorded below:
     </p>
     
     <table class="info-table" role="presentation">
@@ -223,7 +280,7 @@ export function renderRegistrationAdminEmail(data: RegistrationEmailData) {
       <tr>
         <td class="label">Phone Number</td>
         <td class="value">
-          ${data.phone ? `<a href="tel:${escapeHtml(data.phone)}" style="color: ${BRAND_COLORS.ink}; text-decoration: none;">${escapeHtml(data.phone)}</a>` : '<span style="color: #999;">Not provided</span>'}
+          ${data.phone ? `<a href="tel:${escapeHtml(data.phone)}" style="color: ${BRAND_COLORS.ink}; font-weight: 600; text-decoration: none;">${escapeHtml(data.phone)}</a>` : '<span style="color: #999;">Not provided</span>'}
         </td>
       </tr>
       <tr>
@@ -231,13 +288,13 @@ export function renderRegistrationAdminEmail(data: RegistrationEmailData) {
         <td class="value"><span class="badge">${escapeHtml(data.registrationType)}</span></td>
       </tr>
       <tr>
-        <td class="label">Number Attending</td>
-        <td class="value"><strong style="font-size: 15px;">${data.partySize} ${data.partySize > 1 ? "Attendees" : "Attendee"}</strong></td>
+        <td class="label">Party / Group Size</td>
+        <td class="value"><strong style="font-size: 15px; color: ${BRAND_COLORS.greenDark};">${data.partySize} ${data.partySize > 1 ? "Attendees" : "Attendee"}</strong></td>
       </tr>
       ${data.dietaryRequirements ? `
       <tr>
         <td class="label">Notes / Requests</td>
-        <td class="value" style="background-color: #FFFDF5; font-style: italic;">${escapeHtml(data.dietaryRequirements)}</td>
+        <td class="value" style="background-color: #FFFDF5; font-style: italic; color: #3A4A42;">${escapeHtml(data.dietaryRequirements)}</td>
       </tr>` : ""}
       ${data.emergencyContact && data.emergencyContact !== data.phone ? `
       <tr>
@@ -245,20 +302,20 @@ export function renderRegistrationAdminEmail(data: RegistrationEmailData) {
         <td class="value">${escapeHtml(data.emergencyContact)}</td>
       </tr>` : ""}
       <tr>
-        <td class="label">Submission Date</td>
+        <td class="label">Received Date</td>
         <td class="value" style="font-size: 12px; color: ${BRAND_COLORS.muted};">${new Date().toUTCString()}</td>
       </tr>
     </table>
 
-    <div style="margin: 28px 0; padding: 16px; background-color: #F8F7F2; border-left: 3px solid ${BRAND_COLORS.gold}; font-size: 13px; line-height: 1.5; color: ${BRAND_COLORS.muted};">
-      <strong style="color: ${BRAND_COLORS.ink}; display: block; margin-bottom: 4px;">Quick Actions:</strong>
-      &bull; <a href="mailto:${escapeHtml(data.email)}?subject=Gstaad%20Cricket%20Festival%202026" style="color: ${BRAND_COLORS.greenPrimary};">Reply via Email</a> &nbsp;|&nbsp;
-      ${data.phone ? `&bull; <a href="tel:${escapeHtml(data.phone)}" style="color: ${BRAND_COLORS.greenPrimary};">Call ${escapeHtml(data.fullName)}</a> &nbsp;|&nbsp;` : ""}
-      &bull; <a href="https://gstaadcricketclub.ch/admin" style="color: ${BRAND_COLORS.greenPrimary};">View in Admin Portal</a>
+    <div style="margin: 28px 0 10px; padding: 18px; background-color: #F8F7F2; border-left: 4px solid ${BRAND_COLORS.gold}; font-size: 13px; line-height: 1.6; color: ${BRAND_COLORS.muted};">
+      <strong style="color: ${BRAND_COLORS.greenDark}; display: block; margin-bottom: 6px; font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em;">Quick Actions:</strong>
+      <a href="mailto:${escapeHtml(data.email)}?subject=Gstaad%20Cricket%20Festival%202026%20Reservation" style="color: ${BRAND_COLORS.greenPrimary}; font-weight: 700; text-decoration: underline;">&bull; Reply via Email</a> &nbsp;&nbsp;|&nbsp;&nbsp;
+      ${data.phone ? `<a href="tel:${escapeHtml(data.phone)}" style="color: ${BRAND_COLORS.greenPrimary}; font-weight: 700; text-decoration: underline;">&bull; Call ${escapeHtml(data.fullName)}</a> &nbsp;&nbsp;|&nbsp;&nbsp;` : ""}
+      <a href="${DEFAULT_SITE_URL}/admin" style="color: ${BRAND_COLORS.greenPrimary}; font-weight: 700; text-decoration: underline;">&bull; Open Admin Portal</a>
     </div>
   `;
 
-  const text = `GSTAAD CRICKET CLUB - NEW FESTIVAL REGISTRATION
+  const text = `GSTAAD CRICKET CLUB - NEW FESTIVAL RESERVATION
 
 A new reservation has been placed on the website for the Gstaad Cricket Festival 2026:
 
@@ -267,10 +324,10 @@ A new reservation has been placed on the website for the Gstaad Cricket Festival
 - Phone: ${data.phone || "Not provided"}
 - Registration Category: ${data.registrationType}
 - Number Attending: ${data.partySize}
-${data.dietaryRequirements ? `- Anything we should know? / Notes: ${data.dietaryRequirements}\n` : ""}${data.emergencyContact ? `- Emergency Contact: ${data.emergencyContact}\n` : ""}
+${data.dietaryRequirements ? `- Notes / Requests: ${data.dietaryRequirements}\n` : ""}${data.emergencyContact ? `- Emergency Contact: ${data.emergencyContact}\n` : ""}
 - Submission Date: ${new Date().toUTCString()}
 
-Manage Registrations: https://gstaadcricketclub.ch/admin
+Manage Registrations in Admin Portal: ${DEFAULT_SITE_URL}/admin
 `;
 
   return { subject, html: wrapHtmlLayout(subject, content), text };

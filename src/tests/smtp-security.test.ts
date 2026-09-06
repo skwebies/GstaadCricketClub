@@ -117,11 +117,13 @@ describe("Email Templates Generator", () => {
     expect(adminEmail.subject).toContain("Lord Charles Spencer");
     expect(adminEmail.html).toContain("Gstaad Cricket Festival 2026");
     expect(adminEmail.html).toContain("VIP Patron");
+    expect(adminEmail.html).toContain("gstaad-cricket-club-crest.png");
     expect(adminEmail.text).toContain("spencer@alps.ch");
 
     const userEmail = renderRegistrationUserConfirmation(regData);
     expect(userEmail.subject).toContain("Reservation Confirmation");
     expect(userEmail.html).toContain("Ebnit School Pitch");
+    expect(userEmail.html).toContain("gstaad-cricket-club-crest.png");
     expect(userEmail.text).toContain("DEAR LORD CHARLES SPENCER");
   });
 
@@ -138,10 +140,12 @@ describe("Email Templates Generator", () => {
     const adminEmail = renderMembershipAdminEmail(memberData);
     expect(adminEmail.subject).toContain("Dr. Beatrix von Greyerz");
     expect(adminEmail.html).toContain("MCC All-Rounder");
+    expect(adminEmail.html).toContain("gstaad-cricket-club-crest.png");
 
     const userEmail = renderMembershipUserConfirmation(memberData);
     expect(userEmail.subject).toContain("Membership Application Received");
     expect(userEmail.html).toContain("Full Playing");
+    expect(userEmail.html).toContain("gstaad-cricket-club-crest.png");
   });
 
   it("should escape potential HTML injection in contact messages", () => {
@@ -157,21 +161,31 @@ describe("Email Templates Generator", () => {
     expect(adminEmail.html).not.toContain("<script>");
     expect(adminEmail.html).toContain("&lt;script&gt;alert(1)&lt;/script&gt;");
     expect(adminEmail.html).toContain("&lt;img src=x onerror=alert(1)&gt;");
+    expect(adminEmail.html).toContain("gstaad-cricket-club-crest.png");
 
     const userEmail = renderContactUserConfirmation(contactData);
     expect(userEmail.html).not.toContain("<script>");
+    expect(userEmail.html).toContain("gstaad-cricket-club-crest.png");
     expect(userEmail.text).toContain("Test <img src=x onerror=alert(1)>");
   });
 });
 
 describe("SMTP Client Configuration & Safe Dispatch", () => {
-  it("should resolve default Plesk mail server parameters", () => {
-    const config = getSmtpConfig();
-    expect(config.host).toBe("gstaadcricketclub.ch");
-    expect(config.port).toBe(465);
-    expect(config.secure).toBe(true);
-    expect(config.user).toBe("info@gstaadcricketclub.ch");
-    expect(config.adminRecipient).toBe("info@gstaadcricketclub.ch");
+  it("should resolve default Plesk mail server parameters and aliases", () => {
+    const originalEnv = { ...process.env };
+    try {
+      process.env.SMTP_PASSWORD = "secret-plesk-password";
+      process.env.SMTP_SERVER = "mail.gstaadcricketclub.ch";
+      const config = getSmtpConfig();
+      expect(config.host).toBe("mail.gstaadcricketclub.ch");
+      expect(config.pass).toBe("secret-plesk-password");
+      expect(config.port).toBe(465);
+      expect(config.secure).toBe(true);
+      expect(config.user).toBe("info@gstaadcricketclub.ch");
+      expect(config.adminRecipient).toBe("info@gstaadcricketclub.ch");
+    } finally {
+      process.env = originalEnv;
+    }
   });
 
   it("should correctly extract raw email address from formatted strings", () => {

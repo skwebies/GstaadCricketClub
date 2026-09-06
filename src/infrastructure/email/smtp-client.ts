@@ -34,14 +34,48 @@ export interface SendMailOptions {
  * Resolves current SMTP configuration from environment variables.
  */
 export function getSmtpConfig(): SmtpConfig {
-  const host = process.env.SMTP_HOST || "gstaadcricketclub.ch";
-  const port = parseInt(process.env.SMTP_PORT || "465", 10);
-  const secure = process.env.SMTP_SECURE ? process.env.SMTP_SECURE === "true" : port === 465;
-  const user = process.env.SMTP_USER || "info@gstaadcricketclub.ch";
-  const pass = process.env.SMTP_PASS || "";
+  const host =
+    process.env.SMTP_HOST ||
+    process.env.SMTP_SERVER ||
+    process.env.MAIL_HOST ||
+    process.env.MAIL_SERVER ||
+    "gstaadcricketclub.ch";
+  const port = parseInt(
+    process.env.SMTP_PORT || process.env.MAIL_PORT || "465",
+    10
+  );
+  const secure = process.env.SMTP_SECURE
+    ? process.env.SMTP_SECURE === "true"
+    : port === 465;
+  const user =
+    process.env.SMTP_USER ||
+    process.env.SMTP_USERNAME ||
+    process.env.EMAIL_USER ||
+    process.env.MAIL_USER ||
+    process.env.SMTP_LOGIN ||
+    "info@gstaadcricketclub.ch";
+  const pass =
+    process.env.SMTP_PASS ||
+    process.env.SMTP_PASSWORD ||
+    process.env.EMAIL_PASS ||
+    process.env.MAIL_PASS ||
+    process.env.EMAIL_PASSWORD ||
+    process.env.SMTP_PWD ||
+    process.env.MAIL_PWD ||
+    "";
   const fromName = process.env.SMTP_FROM_NAME || "Gstaad Cricket Club";
-  const fromAddress = process.env.SMTP_FROM_EMAIL || user;
-  const adminRecipient = process.env.ADMIN_NOTIFICATION_EMAIL || "info@gstaadcricketclub.ch";
+  const fromAddress =
+    process.env.SMTP_FROM_EMAIL ||
+    process.env.SMTP_FROM ||
+    process.env.MAIL_FROM ||
+    process.env.EMAIL_FROM ||
+    user;
+  const adminRecipient =
+    process.env.ADMIN_NOTIFICATION_EMAIL ||
+    process.env.ADMIN_EMAIL ||
+    process.env.NOTIFICATION_EMAIL ||
+    process.env.CONTACT_EMAIL ||
+    "info@gstaadcricketclub.ch";
 
   return {
     host,
@@ -158,8 +192,10 @@ function sendViaNativeSocket(options: SendMailOptions, config: SmtpConfig): Prom
       host: config.host,
       port: config.port,
       timeout: timeoutMs,
-      // In production rejectUnauthorized is true; in dev allow flexibility
-      rejectUnauthorized: process.env.NODE_ENV === "production",
+      // Default rejectUnauthorized to false unless explicitly set to true.
+      // This allows encrypted TLS connections to succeed even when the host's mail
+      // certificate is self-signed by Plesk or issued to the VPS hostname.
+      rejectUnauthorized: process.env.SMTP_REJECT_UNAUTHORIZED === "true",
     };
 
     if (config.secure) {
@@ -197,14 +233,15 @@ function sendViaNativeSocket(options: SendMailOptions, config: SmtpConfig): Prom
       buffer += chunk.toString();
 
       // Check if SMTP command response is complete
-      // Complete response lines start with a 3-digit code followed by space or newline
+      // Complete response lines end with \r\n and start with a 3-digit code followed by space or newline
       const lines = buffer.split("\r\n");
-      const lastCompleteLine = lines[lines.length - 2];
+      if (lines.length < 2) return;
 
+      const lastCompleteLine = lines[lines.length - 2];
       if (!lastCompleteLine) return;
 
-      // In multi-line SMTP responses, intermediate lines have '-' (e.g. 250-AUTH)
-      // The terminating line has a space (e.g. 250 OK)
+      // In multi-line SMTP responses (RFC 5321), intermediate lines have '-' (e.g. 250-AUTH)
+      // The terminating line has a space (e.g. 250 OK or 250 CHUNKING) or code only
       const match = lastCompleteLine.match(/^(\d{3})(?: (.*))?$/);
       if (!match) return;
 
