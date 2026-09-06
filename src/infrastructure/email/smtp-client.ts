@@ -9,6 +9,8 @@
 import tls from "node:tls";
 import net from "node:net";
 import crypto from "node:crypto";
+import { spawn } from "node:child_process";
+import fs from "node:fs";
 
 export interface SmtpConfig {
   host: string;
@@ -330,37 +332,294 @@ function sendViaNativeSocket(options: SendMailOptions, config: SmtpConfig): Prom
 }
 
 /**
- * Universal safe email dispatcher.
- * In development or when SMTP_PASS is unset, logs the email without network requests.
- * In production with SMTP_PASS set, sends directly via native TLS socket over Port 465 SSL.
+ * Tries authenticated SMTPS on Port 465 SSL.
+ * If connecting to domain name fails (e.g. NAT loopback on VPS), retries on 127.0.0.1:465.
  */
-export async function dispatchEmail(options: SendMailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  const config = getSmtpConfig();
+async function sendViaAuthenticatedSmtp(
+  options: SendMailOptions,
+  config: SmtpConfig
+): Promise<{ success: boolean; messageId: string; error?: string }> {
+  try {
+    return await sendViaNativeSocket(options, config);
+  } catch (err1: unknown) {
+    const msg1 = err1 instanceof Error ? err1.message : String(err1);
+    console.warn(`[SMTP Client] Auth SMTP to ${config.host}:${config.port} failed (${msg1}). Trying local loopback...`);
 
-  // If password is not provided (e.g. local development or unit test environment without secrets)
-  if (!config.pass) {
+    if (config.host !== "127.0.0.1" && config.host !== "localhost") {
+      try {
+        const localConfig = { ...config, host: "127.0.0.1" };
+        return await sendViaNativeSocket(options, localConfig);
+      } catch (err2: unknown) {
+        const msg2 = err2 instanceof Error ? err2.message : String(err2);
+        return { success: false, messageId: "", error: `Host: ${msg1}; 127.0.0.1: ${msg2}` };
+      }
+    }
+
+    return { success: false, messageId: "", error: msg1 };
+  }
+}
+
+/**
+ * Dispatches email via local system MTA (/usr/sbin/sendmail binary).
+ * On Linux/Ubuntu with Plesk & Postfix, this deposits mail directly into local Postfix queue
+ * without requiring any network connection, passwords, or SSL certificates.
+ */
+export function sendViaSendmail(
+  mimeData: string,
+  fromAddr: string,
+  recipients: string[]
+): Promise<{ success: boolean; error?: string }> {
+  return new Promise((resolve) => {
+    // Check standard Unix sendmail locations
+    const candidatePaths = [
+      "/usr/sbin/sendmail",
+      "/usr/lib/sendmail",
+      "/sbin/sendmail",
+      "/usr/bin/sendmail",
+      "sendmail",
+    ];
+
+    let binaryPath: string | null = null;
+    for (const p of candidatePaths) {
+      try {
+        if (fs.existsSync(/*turbopackIgnore: true*/ p)) {
+          binaryPath = p;
+          break;
+        }
+      } catch {
+        // continue search
+      }
+    }
+
+    // Default fallback to standard Linux MTA path if existsSync check was restricted
+    if (!binaryPath && process.platform === "linux") {
+      binaryPath = "/usr/sbin/sendmail";
+    }
+
+    if (!binaryPath) {
+      resolve({ success: false, error: "sendmail binary not found on filesystem" });
+      return;
+    }
+
+    try {
+      // -t: read recipients from headers (To, Cc, Bcc)
+      // -i: do not treat '.' alone as end-of-file
+      // -f: set envelope sender address (Bounce/Return-Path)
+      const args = ["-t", "-i", "-f", fromAddr];
+      const child = spawn(/*turbopackIgnore: true*/ binaryPath, args, {
+        stdio: ["pipe", "ignore", "pipe"],
+      });
+
+      let stderr = "";
+      child.stderr?.on("data", (chunk) => {
+        stderr += chunk.toString();
+      });
+
+      child.on("error", (err) => {
+        resolve({ success: false, error: `Sendmail spawn error (${binaryPath}): ${err.message}` });
+      });
+
+      child.on("close", (code) => {
+        if (code === 0) {
+          resolve({ success: true });
+        } else {
+          resolve({ success: false, error: `Sendmail (${binaryPath}) exited with code ${code}: ${stderr.trim()}` });
+        }
+      });
+
+      // Pipe RFC 5322 MIME message into sendmail stdin
+      child.stdin.write(mimeData);
+      child.stdin.end();
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : String(err);
+      resolve({ success: false, error: `Sendmail execution failed: ${msg}` });
+    }
+  });
+}
+
+/**
+ * Direct local Postfix submission on 127.0.0.1:25 without requiring passwords.
+ * Postfix mynetworks allows trusted local loopback delivery directly into Dovecot/Roundcube.
+ */
+export function sendViaLocalSmtp(
+  options: SendMailOptions,
+  config: SmtpConfig
+): Promise<{ success: boolean; error?: string }> {
+  return new Promise((resolve) => {
+    const { raw: mimeData } = buildMimeMessage(options, config);
+    const toList = Array.isArray(options.to) ? options.to : [options.to];
+    const fromAddr = extractEmailAddress(options.from || config.fromAddress);
+
+    const socket = net.connect({ host: "127.0.0.1", port: 25 });
+    const timeoutMs = 8000;
+    socket.setTimeout(timeoutMs);
+
+    let step = 0;
+    let recipientIndex = 0;
+
+    const cleanup = () => {
+      if (!socket.destroyed) socket.destroy();
+    };
+
+    socket.on("timeout", () => {
+      cleanup();
+      resolve({ success: false, error: "Local Postfix (127.0.0.1:25) connection timed out" });
+    });
+
+    socket.on("error", (err) => {
+      cleanup();
+      resolve({ success: false, error: `Local Postfix socket error: ${err.message}` });
+    });
+
+    socket.on("data", (chunk) => {
+      const text = chunk.toString();
+      const match = text.match(/^(\d{3})(?:[ -]|$)/m);
+      if (!match) return;
+      const code = parseInt(match[1], 10);
+
+      try {
+        switch (step) {
+          case 0: // 220 Greeting
+            if (code !== 220) { cleanup(); return resolve({ success: false, error: `Local SMTP greeting: ${text.trim()}` }); }
+            step++;
+            socket.write("EHLO localhost\r\n");
+            break;
+
+          case 1: // 250 EHLO response
+            if (code !== 250) { cleanup(); return resolve({ success: false, error: `Local SMTP EHLO: ${text.trim()}` }); }
+            step++;
+            socket.write(`MAIL FROM:<${fromAddr}>\r\n`);
+            break;
+
+          case 2: // 250 MAIL FROM response
+            if (code !== 250) { cleanup(); return resolve({ success: false, error: `Local SMTP MAIL FROM: ${text.trim()}` }); }
+            step++;
+            const recp = extractEmailAddress(toList[recipientIndex]);
+            socket.write(`RCPT TO:<${recp}>\r\n`);
+            break;
+
+          case 3: // 250 RCPT TO response
+            if (code !== 250 && code !== 251) { cleanup(); return resolve({ success: false, error: `Local SMTP RCPT TO: ${text.trim()}` }); }
+            recipientIndex++;
+            if (recipientIndex < toList.length) {
+              const nextRecp = extractEmailAddress(toList[recipientIndex]);
+              socket.write(`RCPT TO:<${nextRecp}>\r\n`);
+            } else {
+              step++;
+              socket.write("DATA\r\n");
+            }
+            break;
+
+          case 4: // 354 DATA prompt
+            if (code !== 354) { cleanup(); return resolve({ success: false, error: `Local SMTP DATA: ${text.trim()}` }); }
+            step++;
+            socket.write(mimeData + "\r\n.\r\n");
+            break;
+
+          case 5: // 250 Message accepted
+            if (code !== 250) { cleanup(); return resolve({ success: false, error: `Local SMTP DATA accept: ${text.trim()}` }); }
+            step++;
+            socket.write("QUIT\r\n");
+            break;
+
+          case 6: // 221 Bye
+            cleanup();
+            resolve({ success: true });
+            break;
+
+          default:
+            cleanup();
+            resolve({ success: true });
+        }
+      } catch (err: unknown) {
+        cleanup();
+        resolve({ success: false, error: String(err) });
+      }
+    });
+  });
+}
+
+/**
+ * Universal multi-tier safe email dispatcher with self-healing waterfall:
+ * 1. If credentials (SMTP_PASS / SMTP_PASSWORD) are set: Attempts Authenticated SMTPS (Port 465 SSL).
+ * 2. On Linux/Plesk VPS: Attempts local sendmail (/usr/sbin/sendmail -t -i) into Postfix queue (zero credentials needed).
+ * 3. Localhost loopback Postfix (127.0.0.1:25 without authentication).
+ * 4. Fallback mock in test environment.
+ */
+export async function dispatchEmail(
+  options: SendMailOptions
+): Promise<{ success: boolean; messageId?: string; method?: string; error?: string }> {
+  const config = getSmtpConfig();
+  const { raw: mimeData, messageId } = buildMimeMessage(options, config);
+  const toList = Array.isArray(options.to) ? options.to : [options.to];
+  const fromAddr = extractEmailAddress(options.from || config.fromAddress);
+  const deliveryErrors: string[] = [];
+
+  // In test environment without SMTP credentials, bypass network directly
+  if (process.env.NODE_ENV === "test" && !config.pass) {
     console.info(
-      `[SMTP Client] (Mock/Dry-Run) Email not dispatched to remote server (SMTP_PASS not configured). Target: ${options.to}, Subject: "${options.subject}"`
+      `[SMTP Client] (Test Mock) Email simulated for ${JSON.stringify(options.to)}. Subject: "${options.subject}"`
     );
     return {
       success: true,
       messageId: `mock-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
+      method: "mock",
     };
   }
 
-  try {
-    const result = await sendViaNativeSocket(options, config);
-    console.info(`[SMTP Client] Successfully delivered email to ${options.to}. MessageId: ${result.messageId}`);
+  // TIER 1: Authenticated SMTP (if password is provided in environment)
+  if (config.pass) {
+    const smtpRes = await sendViaAuthenticatedSmtp(options, config);
+    if (smtpRes.success) {
+      console.info(
+        `[SMTP Client] Successfully delivered email via Authenticated SMTPS (Port ${config.port}) to ${JSON.stringify(options.to)}. MessageId: ${smtpRes.messageId}`
+      );
+      return { success: true, messageId: smtpRes.messageId, method: "smtp-auth" };
+    }
+    deliveryErrors.push(`Authenticated SMTP (${config.host}:${config.port}): ${smtpRes.error}`);
+  }
+
+  // TIER 2: Local System Sendmail Binary (/usr/sbin/sendmail -t -i -f fromAddr)
+  // On Ubuntu / Plesk servers, this connects directly to Postfix without passwords or network ports.
+  const sendmailRes = await sendViaSendmail(mimeData, fromAddr, toList);
+  if (sendmailRes.success) {
+    console.info(
+      `[SMTP Client] Successfully delivered email via System MTA (sendmail) to ${JSON.stringify(options.to)}. MessageId: ${messageId}`
+    );
+    return { success: true, messageId, method: "sendmail" };
+  }
+  if (sendmailRes.error) {
+    deliveryErrors.push(sendmailRes.error);
+  }
+
+  // TIER 3: Local SMTP Relay on 127.0.0.1:25 (Postfix loopback)
+  const localSmtpRes = await sendViaLocalSmtp(options, config);
+  if (localSmtpRes.success) {
+    console.info(
+      `[SMTP Client] Successfully delivered email via Local Postfix (127.0.0.1:25) to ${JSON.stringify(options.to)}. MessageId: ${messageId}`
+    );
+    return { success: true, messageId, method: "local-smtp-25" };
+  }
+  if (localSmtpRes.error) {
+    deliveryErrors.push(localSmtpRes.error);
+  }
+
+  // TIER 4: Development / Test Mock
+  if (process.env.NODE_ENV !== "production") {
+    console.info(
+      `[SMTP Client] (Development Mock Mode) Local mailers uninstalled on dev machine. Target: ${JSON.stringify(options.to)}, Subject: "${options.subject}"`
+    );
     return {
       success: true,
-      messageId: result.messageId,
-    };
-  } catch (error: unknown) {
-    const errMsg = error instanceof Error ? error.message : String(error);
-    console.error(`[SMTP Client] Failed to send email to ${options.to}:`, errMsg);
-    return {
-      success: false,
-      error: errMsg,
+      messageId: `mock-${Date.now()}-${crypto.randomBytes(4).toString("hex")}`,
+      method: "mock",
     };
   }
+
+  const combinedError = deliveryErrors.join(" | ");
+  console.error(`[SMTP Client] All delivery tiers failed for ${JSON.stringify(options.to)}:`, combinedError);
+  return {
+    success: false,
+    error: combinedError,
+  };
 }

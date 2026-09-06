@@ -56,7 +56,7 @@ export const LOGO_URL = `${DEFAULT_SITE_URL}/gstaad-cricket-club-crest.png`;
 /**
  * Common HTML wrapper layout providing luxury alpine aesthetics with official crest logo.
  */
-function wrapHtmlLayout(title: string, content: string): string {
+export function wrapHtmlLayout(title: string, content: string): string {
   return `<!DOCTYPE html>
 <html lang="en">
 <head>

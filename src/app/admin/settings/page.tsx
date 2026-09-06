@@ -1,12 +1,9 @@
 import { CLUB_CONFIG } from "@/shared/config/club";
+import { EmailDiagnosticsCard } from "@/shared/components/admin/EmailDiagnosticsCard";
 import {
-  Settings,
   ShieldCheck,
   Server,
   Building,
-  Mail,
-  MapPin,
-  ExternalLink,
   Users,
 } from "lucide-react";
 
@@ -120,6 +117,9 @@ export default function AdminSettingsPage() {
           </div>
         </div>
       </div>
+
+      {/* Section 2b: Mail Delivery & Postfix Engine */}
+      <EmailDiagnosticsCard />
 
       {/* Section 3: Committee Leadership Registry */}
       <div className="bg-white p-6 rounded-xl border border-gray-200 shadow-xs space-y-5">
