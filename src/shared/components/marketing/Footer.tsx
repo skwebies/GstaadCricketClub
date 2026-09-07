@@ -56,19 +56,19 @@ export function Footer() {
         </p>
 
         {/* Legal Links Bar */}
-        <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-2.5 gap-y-1 text-xs text-[#9d9787]">
-          <Link href="/privacy" className="hover:text-[var(--gold)] transition-colors">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-1 text-xs text-[#9d9787]">
+          <Link href="/privacy" className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors inline-flex items-center min-h-[36px]">
             {dict.footer.privacyPolicy}
           </Link>
-          <span>·</span>
-          <Link href="/terms" className="hover:text-[var(--gold)] transition-colors">
+          <span className="opacity-50 select-none">·</span>
+          <Link href="/terms" className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors inline-flex items-center min-h-[36px]">
             {dict.footer.termsConditions}
           </Link>
-          <span>·</span>
-          <Link href="/cookie-policy" className="hover:text-[var(--gold)] transition-colors">
+          <span className="opacity-50 select-none">·</span>
+          <Link href="/cookie-policy" className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors inline-flex items-center min-h-[36px]">
             {dict.footer.cookiePolicy}
           </Link>
-          <span>·</span>
+          <span className="opacity-50 select-none">·</span>
           <button
             type="button"
             onClick={() => {
@@ -76,7 +76,7 @@ export function Footer() {
                 window.dispatchEvent(new CustomEvent("gcc-open-cookie-settings"));
               }
             }}
-            className="hover:text-[var(--gold)] transition-colors cursor-pointer underline-offset-2 hover:underline"
+            className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors cursor-pointer underline-offset-2 hover:underline inline-flex items-center min-h-[36px]"
           >
             {dict.footer.cookieSettings}
           </button>
@@ -96,7 +96,7 @@ export function Footer() {
             href="https://popcorndigital.ch"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[var(--gold)] hover:underline font-bold transition-colors inline-flex items-center gap-0.5"
+            className="text-[var(--gold)] hover:underline font-bold transition-colors inline-flex items-center gap-0.5 py-1 px-1 min-h-[32px]"
             title="Popcorn Digital (opens in new tab)"
           >
             Popcorn Digital

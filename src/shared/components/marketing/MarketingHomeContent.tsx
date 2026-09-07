@@ -92,7 +92,7 @@ export function MarketingHomeContent() {
           <div className="hero-actions flex flex-wrap items-center gap-6">
             <Link
               href="#register"
-              className="primary-button bg-[var(--gold)] text-[var(--green-dark)] hover:bg-[var(--gold-hover)] px-7 py-4 font-extrabold text-sm uppercase tracking-wider inline-flex items-center gap-3.5 transition-colors duration-200"
+              className="primary-button bg-[var(--gold)] text-[#03231a] hover:bg-[var(--gold-hover)] px-7 py-4 font-extrabold text-sm uppercase tracking-wider inline-flex items-center gap-3.5 transition-colors duration-200"
             >
               <span>{dict.hero.reserveCta}</span>
               <ArrowRight className="w-4 h-4" />
@@ -207,7 +207,7 @@ export function MarketingHomeContent() {
         </div>
 
         <div className="ball-graphic flex items-center justify-center p-8">
-          <span aria-label="Alpine Cricket Ball" />
+          <span role="img" aria-label="Alpine Cricket Ball" />
         </div>
       </section>
 
@@ -370,11 +370,12 @@ export function MarketingHomeContent() {
                     key={sponsor.name}
                     className={`sponsor-logo ${sponsor.theme}`}
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={sponsor.logo}
                       alt={sponsor.name}
-                      loading="lazy"
+                      width={160}
+                      height={52}
+                      className="object-contain max-h-[52px] w-auto mx-auto"
                     />
                   </div>
                 ))}

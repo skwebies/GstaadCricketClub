@@ -70,7 +70,7 @@ h1 em, h2 em, h3 em {
 }
 
 .eyebrow, .section-kicker {
-  color: var(--gold);
+  color: #8c6d1f;
   text-transform: uppercase;
   letter-spacing: 0.23em;
   font-size: 0.78rem;
@@ -78,7 +78,7 @@ h1 em, h2 em, h3 em {
   display: block;
 }
 
-.section-kicker.light {
+.hero .eyebrow, .section-kicker.light {
   color: var(--gold);
 }
 
