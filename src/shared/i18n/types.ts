@@ -46,6 +46,7 @@ export interface TranslationSchema {
     startValue: string;
     venueLabel: string;
     venueValue: string;
+    venueAddress: string;
     entryLabel: string;
     entryValue: string;
   };

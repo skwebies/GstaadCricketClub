@@ -45,6 +45,9 @@ export function EventStrip() {
             {dict.eventStrip.venueLabel}
           </small>
           <strong>{dict.eventStrip.venueValue}</strong>
+          <span className="font-sans font-medium text-[0.72rem] text-[#062e22c0] leading-tight mt-0.5">
+            {dict.eventStrip.venueAddress}
+          </span>
         </span>
       </div>
 
