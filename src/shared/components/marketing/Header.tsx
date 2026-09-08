@@ -242,10 +242,10 @@ export function Header() {
               </Link>
             </nav>
 
-            {/* Bottom Actions & Tournament Details */}
+            {/* Bottom Actions */}
             <div
               style={{ animationDelay: `${(navLinks.length + 1) * 45}ms` }}
-              className="animate-mobile-item pt-8 pb-4 space-y-4 shrink-0"
+              className="animate-mobile-item pt-8 pb-4 shrink-0"
             >
               <Link
                 href="/#register"
@@ -254,15 +254,6 @@ export function Header() {
               >
                 {dict.nav.registerFree}
               </Link>
-
-              <div className="text-center pt-2 space-y-1">
-                <p className="font-serif text-sm italic text-white/70">
-                  Gstaad Community Cricket Festival
-                </p>
-                <p className="tracking-widest uppercase text-[0.65rem] text-[var(--gold)]/80 font-bold">
-                  Saanen Airport Grounds • August 2026
-                </p>
-              </div>
             </div>
           </div>
         </div>
