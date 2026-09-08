@@ -11,7 +11,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Menu, X, Shield, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight } from "lucide-react";
 import { useLanguage } from "@/shared/i18n/LanguageContext";
 import { LanguageSwitcher } from "@/shared/components/common/LanguageSwitcher";
 
@@ -116,15 +116,6 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          <Link
-            href="/admin"
-            className="hover:text-[var(--gold)] text-white/70 flex items-center gap-1.5 transition-colors duration-200"
-            title="Administrative Portal"
-          >
-            <Shield className="w-3.5 h-3.5 text-[var(--gold)]" />
-            <span>{dict.nav.admin}</span>
-          </Link>
-
           {/* Trilingual Switcher */}
           <LanguageSwitcher variant="header" />
 
@@ -221,25 +212,6 @@ export function Header() {
                 );
               })}
 
-              {/* Admin Portal Link */}
-              <Link
-                href="/admin"
-                onClick={closeMenu}
-                style={{ animationDelay: `${navLinks.length * 45}ms` }}
-                className={`animate-mobile-item flex items-center justify-between py-3.5 px-4 rounded-md text-base border-b border-white/5 transition-all duration-200 group ${
-                  pathname === "/admin"
-                    ? "text-[var(--gold)] bg-white/5 font-medium"
-                    : "text-white/70 hover:text-[var(--gold)] hover:bg-white/5"
-                }`}
-              >
-                <span className="flex items-center gap-2.5">
-                  <Shield className="w-4 h-4 text-[var(--gold)]" />
-                  <span className="font-sans text-xs uppercase font-bold tracking-wider">
-                    {dict.nav.admin}
-                  </span>
-                </span>
-                <ArrowRight className="w-4 h-4 text-[var(--gold)] opacity-50 group-hover:opacity-100 group-hover:translate-x-1 transition-all" />
-              </Link>
             </nav>
 
             {/* Bottom Actions */}

@@ -77,8 +77,10 @@ describe("Mobile Navigation Drawer & Burger Menu Suite", () => {
     expect(linksWithinDrawer.getByRole("link", { name: /^gallery/i })).toBeDefined();
     expect(linksWithinDrawer.getByRole("link", { name: /^membership/i })).toBeDefined();
     expect(linksWithinDrawer.getByRole("link", { name: /^supporters/i })).toBeDefined();
-    expect(linksWithinDrawer.getByRole("link", { name: /admin/i })).toBeDefined();
     expect(linksWithinDrawer.getByRole("link", { name: /register free/i })).toBeDefined();
+
+    // Verify admin link is not present
+    expect(linksWithinDrawer.queryByRole("link", { name: /admin/i })).toBeNull();
   });
 
   it("should close the drawer when clicking the close button", () => {

@@ -48,10 +48,6 @@ export function Footer() {
           ·{" "}
           <Link href="/membership" className="text-[var(--gold)] hover:underline">
             {dict.footer.membership}
-          </Link>{" "}
-          ·{" "}
-          <Link href="/admin" className="text-[var(--gold)] hover:underline">
-            {dict.footer.adminPortal}
           </Link>
         </p>
 
