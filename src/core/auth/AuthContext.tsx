@@ -65,34 +65,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ): Promise<boolean> => {
     setLoading(true);
     try {
-      // Check if matches known demo or domain roles
-      let assignedRole: UserRole = preferredRole || "admin";
-      let fullName = "Club User";
-      let title = "Staff Member";
+      const res = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password: password || "demo-password",
+          role: preferredRole,
+        }),
+      });
 
-      if (email.includes("manager")) {
-        assignedRole = "manager";
-        fullName = DEMO_ACCOUNTS.manager.fullName;
-        title = DEMO_ACCOUNTS.manager.title;
-      } else if (email.includes("staff")) {
-        assignedRole = "staff";
-        fullName = DEMO_ACCOUNTS.staff.fullName;
-        title = DEMO_ACCOUNTS.staff.title;
-      } else {
-        assignedRole = preferredRole || "admin";
-        fullName = DEMO_ACCOUNTS.admin.fullName;
-        title = DEMO_ACCOUNTS.admin.title;
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Authentication failed. Please check credentials.");
       }
 
-      const authUser: AuthUser = {
-        id: `user-${Date.now()}`,
-        email,
-        fullName,
-        role: assignedRole,
-        title,
-      };
+      const authUser: AuthUser = data.user;
+      setUser(authUser);
 
-      saveSession(authUser);
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(authUser));
+      } catch {
+        // Safe fallback
+      }
+
       return true;
     } finally {
       setLoading(false);
@@ -101,17 +98,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const loginAsDemo = async (role: UserRole) => {
     const demo = DEMO_ACCOUNTS[role];
-    const authUser: AuthUser = {
-      id: `demo-${role}`,
-      email: demo.email,
-      fullName: demo.fullName,
-      role: demo.role,
-      title: demo.title,
-    };
-    saveSession(authUser);
+    await login(demo.email, "demo-password", demo.role);
   };
 
   const logout = () => {
+    // 1. Call server logout endpoint to clear HttpOnly signed cookie
+    fetch("/api/auth/logout", { method: "POST" }).catch(() => {});
+
+    // 2. Clear client state
     setUser(null);
     try {
       localStorage.removeItem(STORAGE_KEY);

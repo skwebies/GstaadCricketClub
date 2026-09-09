@@ -1,9 +1,15 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
+import { requireAuth, isAuthError } from "@/infrastructure/security/auth-guard";
+import { sanitizeCsvField } from "@/application/validators/schemas";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  // 1. Enforce authentication and role (Admin, Manager only)
+  const auth = await requireAuth(request, ["admin", "manager"]);
+  if (isAuthError(auth)) return auth;
+
   try {
     const supabase = createAdminClient();
     const { data: registrations, error } = await supabase
@@ -12,7 +18,8 @@ export async function GET() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("[API Export Registrations] Database error:", error.message);
+      return NextResponse.json({ error: "Failed to fetch registrations for export." }, { status: 500 });
     }
 
     const csvHeaders = [
@@ -27,20 +34,21 @@ export async function GET() {
       "Registered At",
     ];
 
+    // Sanitize all cell contents to neutralize CSV Formula Injection (CWE-1236)
     const rows = (registrations || []).map((r) => [
-      `"${r.id}"`,
-      `"${(r.full_name || "").replace(/"/g, '""')}"`,
-      `"${(r.email || "").replace(/"/g, '""')}"`,
-      `"${(r.phone || "").replace(/"/g, '""')}"`,
-      `"${r.registration_type}"`,
-      `"${(r.emergency_contact || "").replace(/"/g, '""')}"`,
-      `"${(r.dietary_requirements || "").replace(/"/g, '""')}"`,
-      `"${((r.events as { title?: string } | null)?.title || "Gstaad Cricket Festival").replace(/"/g, '""')}"`,
-      `"${new Date(r.created_at).toISOString()}"`,
+      sanitizeCsvField(r.id),
+      sanitizeCsvField(r.full_name || ""),
+      sanitizeCsvField(r.email || ""),
+      sanitizeCsvField(r.phone || ""),
+      sanitizeCsvField(r.registration_type || ""),
+      sanitizeCsvField(r.emergency_contact || ""),
+      sanitizeCsvField(r.dietary_requirements || ""),
+      sanitizeCsvField((r.events as { title?: string } | null)?.title || "Gstaad Cricket Festival"),
+      sanitizeCsvField(new Date(r.created_at).toISOString()),
     ]);
 
     const csvContent = [
-      csvHeaders.join(","),
+      csvHeaders.map((h) => `"${h}"`).join(","),
       ...rows.map((row) => row.join(",")),
     ].join("\r\n");
 
@@ -50,10 +58,12 @@ export async function GET() {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": `attachment; filename="gstaad_cricket_festival_registrations_${new Date().toISOString().split("T")[0]}.csv"`,
         "Cache-Control": "no-store, max-age=0",
+        "X-Content-Type-Options": "nosniff",
       },
     });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Export failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[API Export Registrations] Exception:", err);
+    return NextResponse.json({ error: "Export failed." }, { status: 500 });
   }
 }
+

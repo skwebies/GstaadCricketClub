@@ -6,7 +6,7 @@ export const RegistrationSchema = z.object({
     .trim()
     .min(2, "Full name must be at least 2 characters")
     .max(100, "Full name is too long")
-    .refine((val) => !/[<>{}\\]/.test(val), {
+    .refine((val) => !/[<>{}\\]/.test(val) && !/^(javascript|vbscript|data):/i.test(val.trim()), {
       message: "Full name contains invalid characters",
     }),
   email: z
@@ -82,3 +82,28 @@ export const MemberApplicationSchema = z.object({
 });
 
 export type MemberApplicationFormData = z.infer<typeof MemberApplicationSchema>;
+
+/**
+ * UUID identifier validation schema defending against SQLi, Path Traversal, and IDOR attacks.
+ */
+export const UuidSchema = z.string().uuid("Invalid UUID identifier format");
+
+export function isValidUuid(id: string | unknown): boolean {
+  if (typeof id !== "string") return false;
+  return /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
+}
+
+/**
+ * Neutralizes CSV Formula Injection (CWE-1236).
+ * If a cell begins with =, +, -, @, \t, or \r, prepends a single quote to prevent
+ * spreadsheet software (Excel, LibreOffice) from executing malicious formulas.
+ */
+export function sanitizeCsvField(value: unknown): string {
+  if (value === null || value === undefined) return '""';
+  let str = String(value);
+  if (/^[=+\-@\t\r]/.test(str)) {
+    str = `'${str}`;
+  }
+  return `"${str.replace(/"/g, '""')}"`;
+}
+

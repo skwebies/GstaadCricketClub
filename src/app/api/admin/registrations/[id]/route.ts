@@ -1,34 +1,49 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
+import { requireAuth, isAuthError } from "@/infrastructure/security/auth-guard";
+import { isValidUuid } from "@/application/validators/schemas";
 
 export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // 1. Enforce server-side authentication & authorization (Admin, Manager only)
+  const auth = await requireAuth(request, ["admin", "manager"]);
+  if (isAuthError(auth)) return auth;
+
   try {
     const { id } = await params;
-    const supabase = createAdminClient();
 
+    // 2. Strict UUID format validation (SQLi, IDOR, & Path Traversal defense)
+    if (!isValidUuid(id)) {
+      return NextResponse.json(
+        { error: "Invalid registration identifier." },
+        { status: 400 }
+      );
+    }
+
+    const supabase = createAdminClient();
     const { error } = await supabase
       .from("event_registrations")
       .delete()
       .eq("id", id);
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("[API Registration DELETE] Database error:", error.message);
+      return NextResponse.json({ error: "Failed to delete registration record." }, { status: 500 });
     }
 
-    // Log to audit log with correct table columns
+    // 3. Security Audit Logging
     await supabase.from("audit_logs").insert({
       action: "registration.deleted",
       entity: "event_registrations",
       entity_id: id,
-      details: { deleted_at: new Date().toISOString(), by: "admin" },
+      details: { deleted_at: new Date().toISOString(), by: auth.user.email, role: auth.user.role },
     });
 
     return NextResponse.json({ success: true });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to delete";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[API Registration DELETE] Exception:", err);
+    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
   }
 }

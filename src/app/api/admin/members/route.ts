@@ -1,10 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/infrastructure/supabase/admin";
 import { normalizeMemberTier } from "@/core/domain/entities/Member";
+import { requireAuth, isAuthError } from "@/infrastructure/security/auth-guard";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  // 1. Enforce server-side authentication & authorization (Admin, Manager)
+  const auth = await requireAuth(request, ["admin", "manager"]);
+  if (isAuthError(auth)) return auth;
+
   try {
     const supabase = createAdminClient();
     const { data: members, error } = await supabase
@@ -13,17 +18,22 @@ export async function GET() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("[API Members GET] Database error:", error.message);
+      return NextResponse.json({ error: "Failed to retrieve member roster." }, { status: 500 });
     }
 
     return NextResponse.json({ members });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to fetch members";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[API Members GET] Exception:", err);
+    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
   }
 }
 
 export async function POST(request: NextRequest) {
+  // 1. Enforce server-side authentication & authorization (Admin, Manager)
+  const auth = await requireAuth(request, ["admin", "manager"]);
+  if (isAuthError(auth)) return auth;
+
   try {
     const body = await request.json();
     const { full_name, email, phone, tier, handicap_or_experience, notes } = body;
@@ -41,32 +51,33 @@ export async function POST(request: NextRequest) {
     const { data: member, error } = await supabase
       .from("members")
       .insert({
-        full_name,
-        email: email.toLowerCase().trim(),
-        phone,
+        full_name: String(full_name).trim().slice(0, 100),
+        email: String(email).toLowerCase().trim().slice(0, 100),
+        phone: String(phone).trim().slice(0, 30),
         tier: canonicalTier,
-        handicap_or_experience: handicap_or_experience || null,
-        notes: notes || null,
+        handicap_or_experience: handicap_or_experience ? String(handicap_or_experience).slice(0, 200) : null,
+        notes: notes ? String(notes).slice(0, 500) : null,
         status: "active",
       })
       .select()
       .single();
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("[API Members POST] Database error:", error.message);
+      return NextResponse.json({ error: "Failed to create member record." }, { status: 500 });
     }
 
-    // Log action
+    // Security Audit Logging
     await supabase.from("audit_logs").insert({
       action: "member.created",
       entity: "members",
       entity_id: member.id,
-      details: { member_name: full_name, tier, by: "admin" },
+      details: { email: member.email, tier: canonicalTier, by: auth.user.email },
     });
 
-    return NextResponse.json({ member }, { status: 201 });
+    return NextResponse.json({ member });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to create member";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[API Members POST] Exception:", err);
+    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
   }
 }

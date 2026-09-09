@@ -6,10 +6,15 @@ import { SubmitContactMessageUseCase } from "@/application/use-cases/SubmitConta
 import { isHoneypotTriggered, getClientIp } from "@/infrastructure/security/anti-spam";
 import { checkRateLimit } from "@/infrastructure/security/rate-limiter";
 import { EmailService } from "@/infrastructure/email/email-service";
+import { requireAuth, isAuthError } from "@/infrastructure/security/auth-guard";
 
 export const dynamic = "force-dynamic";
 
-export async function GET() {
+export async function GET(request: Request) {
+  // 1. Protect inquiry messages from unauthorized public extraction
+  const auth = await requireAuth(request, ["admin", "manager"]);
+  if (isAuthError(auth)) return auth;
+
   try {
     const supabase = createAdminClient();
     const { data: messages, error } = await supabase
@@ -18,13 +23,14 @@ export async function GET() {
       .order("created_at", { ascending: false });
 
     if (error) {
-      return NextResponse.json({ error: error.message }, { status: 500 });
+      console.error("[API Contact GET] Database error:", error.message);
+      return NextResponse.json({ error: "Failed to fetch inquiries." }, { status: 500 });
     }
 
     return NextResponse.json({ messages });
   } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : "Failed to fetch inquiries";
-    return NextResponse.json({ error: message }, { status: 500 });
+    console.error("[API Contact GET] Exception:", err);
+    return NextResponse.json({ error: "An unexpected error occurred." }, { status: 500 });
   }
 }
 
