@@ -83,7 +83,7 @@ export const CLUB_CONFIG = {
     "Lynes Narayanan",
     "Sonali Narayanan",
     "Ueli Schwander",
-    "Verene Schwander",
+    "Verena Schwander",
   ],
   executiveBoard: [
     {
