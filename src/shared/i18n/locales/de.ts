@@ -156,12 +156,13 @@ export const de: TranslationSchema = {
     affiliated: "Mitglied bei Cricket Switzerland",
     copyright: "© 2026 Gstaad Cricket Club",
     legalNotice:
-      "Gstaad Cricket Club (GCC) ist ein offiziell gegründeter, gemeinnütziger Schweizer Sportverein (Verein nach Art. 60ff. ZGB).",
+      "Ein Schweizer Sportverein gegründet nach Art. 60ff. des Schweizerischen Zivilgesetzbuches (ZGB).",
     allRightsReserved: "Alle Rechte vorbehalten.",
     privacyPolicy: "Datenschutzerklärung",
     termsConditions: "AGB & Richtlinien",
     cookiePolicy: "Cookie-Richtlinie",
     cookieSettings: "Cookie-Einstellungen",
+    impressum: "Impressum",
     poweredBy: "Powered by",
   },
   cookieConsent: {
@@ -185,6 +186,10 @@ export const de: TranslationSchema = {
     cookiesKicker: "TRANSPARENZ & ENDGERÄTE (FMG ART. 45c)",
     cookiesSubtitle:
       "Vollständige Übersicht aller auf dem GCC-Webportal eingesetzten Session- und Funktions-Technologien.",
+    impressumTitle: "Impressum / Rechtliche Hinweise",
+    impressumKicker: "RECHTLICHE ANGABEN & IMPRESSUM",
+    impressumSubtitle:
+      "Informationen über den Betreiber von gstaadcricketclub.ch gemäss Schweizer Recht.",
     lastUpdated: "Stand: September 2026",
     backToHome: "Zur Startseite",
     tableOfContents: "Inhaltsverzeichnis",

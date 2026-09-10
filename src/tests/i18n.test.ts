@@ -81,6 +81,7 @@ describe("Trilingual Internationalization (i18n) Parity Suite", () => {
       expect(locale.footer.termsConditions).toBeDefined();
       expect(locale.footer.cookiePolicy).toBeDefined();
       expect(locale.footer.cookieSettings).toBeDefined();
+      expect(locale.footer.impressum).toBeDefined();
       expect(locale.footer.poweredBy).toBeDefined();
       expect(locale.cookieConsent.title).toBeDefined();
       expect(locale.cookieConsent.acceptAll).toBeDefined();
@@ -88,6 +89,7 @@ describe("Trilingual Internationalization (i18n) Parity Suite", () => {
       expect(locale.legal.privacyTitle).toBeDefined();
       expect(locale.legal.termsTitle).toBeDefined();
       expect(locale.legal.cookiesTitle).toBeDefined();
+      expect(locale.legal.impressumTitle).toBeDefined();
     }
   });
 });

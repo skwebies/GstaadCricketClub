@@ -163,6 +163,7 @@ export interface TranslationSchema {
     termsConditions: string;
     cookiePolicy: string;
     cookieSettings: string;
+    impressum: string;
     poweredBy: string;
   };
   cookieConsent: {
@@ -182,6 +183,9 @@ export interface TranslationSchema {
     cookiesTitle: string;
     cookiesKicker: string;
     cookiesSubtitle: string;
+    impressumTitle: string;
+    impressumKicker: string;
+    impressumSubtitle: string;
     lastUpdated: string;
     backToHome: string;
     tableOfContents: string;

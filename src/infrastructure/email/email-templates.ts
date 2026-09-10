@@ -239,7 +239,7 @@ export function wrapHtmlLayout(title: string, content: string): string {
             <a href="mailto:info@gstaadcricketclub.ch" style="color: ${BRAND_COLORS.greenPrimary}; text-decoration: none; font-weight: 600;">info@gstaadcricketclub.ch</a>
           </span>
           <p style="margin: 12px 0 0; font-size: 10.5px; color: #8A9890; text-transform: uppercase; letter-spacing: 0.08em;">
-            Swiss Non-Profit Sports Club &bull; Saanenland &bull; Bernese Alps
+            Swiss Sporting Association (Art. 60ff. ZGB) &bull; Saanenland &bull; Bernese Alps
           </p>
         </td>
       </tr>

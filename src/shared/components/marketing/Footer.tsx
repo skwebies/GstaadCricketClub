@@ -53,6 +53,10 @@ export function Footer() {
 
         {/* Legal Links Bar */}
         <div className="flex flex-wrap items-center justify-center md:justify-start gap-1 text-xs text-[#9d9787]">
+          <Link href="/impressum" className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors inline-flex items-center min-h-[36px]">
+            {dict.footer.impressum}
+          </Link>
+          <span className="opacity-50 select-none">·</span>
           <Link href="/privacy" className="py-1.5 px-2 hover:text-[var(--gold)] transition-colors inline-flex items-center min-h-[36px]">
             {dict.footer.privacyPolicy}
           </Link>

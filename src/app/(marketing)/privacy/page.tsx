@@ -70,7 +70,7 @@ export default function PrivacyPolicyPage() {
             <div className="p-5 bg-white rounded-lg border border-gray-200 font-mono text-xs space-y-2 text-gray-800">
               <div>
                 <div className="font-bold text-sm text-[var(--green-dark)] font-serif">Gstaad Cricket Club (GCC)</div>
-                <div className="text-gray-600">Non-Profit Sporting Association (Verein nach Art. 60ff. ZGB)</div>
+                <div className="text-gray-600">A Swiss sporting association established under Articles 60 ff. of the Swiss Civil Code (Verein nach Art. 60ff. ZGB)</div>
               </div>
 
               <div className="pt-2 border-t border-gray-100 space-y-0.5">

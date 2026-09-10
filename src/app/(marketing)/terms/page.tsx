@@ -51,10 +51,10 @@ export default function TermsAndConditionsPage() {
           <div className="p-6 bg-[#F8F7F2] border-l-4 border-[var(--gold)] rounded-r-xl border-t border-r border-b border-[#E2DDD2] shadow-xs">
             <h3 className="font-serif text-lg font-bold text-[var(--green-dark)] mb-2 flex items-center gap-2">
               <BookOpen className="w-4 h-4 text-[var(--gold)]" />
-              Swiss Non-Profit Association (Verein)
+              Swiss Sporting Association (Verein nach Art. 60ff. ZGB)
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 leading-normal">
-              Gstaad Cricket Club (GCC) is constituted as a non-profit association pursuant to <strong>Articles 60 to 79 of the Swiss Civil Code (ZGB)</strong>, domiciled in Saanenland, Canton of Bern, Switzerland (registered postal address: Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland). The club operates in full accordance with its adopted statutes and Swiss association law.
+              Gstaad Cricket Club (GCC) is a Swiss sporting association established under <strong>Articles 60 et seq. of the Swiss Civil Code (ZGB)</strong>, domiciled in the Municipality of Saanen, Canton of Bern, Switzerland (registered postal address: Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland). The club operates in full accordance with its adopted statutes and Swiss association law.
             </p>
           </div>
 
