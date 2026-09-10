@@ -8,7 +8,7 @@
  */
 
 import Link from "next/link";
-import { ArrowLeft, Scale, ShieldAlert, BookOpen, MapPin, Award } from "lucide-react";
+import { ArrowLeft, Scale, ShieldAlert, BookOpen, MapPin, Award, Info } from "lucide-react";
 import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function TermsAndConditionsPage() {
@@ -47,6 +47,14 @@ export default function TermsAndConditionsPage() {
       {/* 2. LEGAL TERMS CONTENT */}
       <section className="py-16 px-[8vw]">
         <div className="max-w-4xl mx-auto space-y-12 text-[var(--ink)] leading-relaxed">
+          {/* Authoritative Language Notice */}
+          <div className="p-4 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
+            <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+            <div>
+              <strong>Language Notice:</strong> This English text constitutes the official and authoritative Terms &amp; Conditions of Gstaad Cricket Club. Formal German and French translations are currently being finalized. Incomplete or automated translations are not displayed as final legal text.
+            </div>
+          </div>
+
           {/* Association Status Box */}
           <div className="p-6 bg-[#F8F7F2] border-l-4 border-[var(--gold)] rounded-r-xl border-t border-r border-b border-[#E2DDD2] shadow-xs">
             <h3 className="font-serif text-lg font-bold text-[var(--green-dark)] mb-2 flex items-center gap-2">
@@ -64,7 +72,7 @@ export default function TermsAndConditionsPage() {
               1. Scope &amp; Application
             </h2>
             <p className="text-sm text-gray-700">
-              These Terms &amp; Conditions govern the use of the official website (<a href="https://gstaadcricketclub.ch" className="text-[var(--green)] hover:underline">gstaadcricketclub.ch</a>), registration and attendance at the annual Gstaad Cricket Festival, membership applications, and all associated sporting engagements organized by the Gstaad Cricket Club.
+              These Terms &amp; Conditions govern the use of the official website (<a href="https://www.gstaadcricketclub.ch" className="text-[var(--green)] hover:underline">www.gstaadcricketclub.ch</a>), registration and attendance at the annual Gstaad Cricket Festival, membership applications, and all associated sporting engagements organized by the Gstaad Cricket Club.
             </p>
             <p className="text-sm text-gray-700">
               By reserving a place, submitting an inquiry, or applying for membership, you accept these terms unconditionally.
@@ -117,22 +125,25 @@ export default function TermsAndConditionsPage() {
               4. Association Membership &amp; Dues
             </h2>
             <p className="text-sm text-gray-700">
-              Applications for club membership (Adult, Youth, Family, or Patron) are reviewed and approved by the Club Committee in accordance with GCC Statutes:
+              Applications for club membership (Adult, Junior, Family, or Patron) are reviewed and approved by the Executive Board in accordance with GCC Statutes:
             </p>
             <ul className="list-disc pl-5 text-xs sm:text-sm text-gray-700 space-y-2">
-              <li>Membership is granted upon committee ratification and settlement of annual membership dues.</li>
+              <li>Membership is granted upon Executive Board ratification and settlement of annual membership dues.</li>
               <li>Members are entitled to participate in coaching clinics, social fixtures, and annual general meetings.</li>
-              <li>Resignation from membership must be communicated in writing prior to the end of the club fiscal year.</li>
+              <li>Resignation from membership must be communicated to the Board in writing.</li>
             </ul>
           </div>
 
-          {/* Section 5: Intellectual Property */}
+          {/* Section 5: Intellectual Property & Permissions */}
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2">
-              5. Intellectual Property &amp; Trademarks
+              5. Intellectual Property, Trademarks &amp; Permissions
             </h2>
             <p className="text-sm text-gray-700">
-              The official Gstaad Cricket Club crest, club name, domain, graphics, photographs, and digital assets are the exclusive intellectual property of Gstaad Cricket Club. Any unauthorized commercial reproduction, modification, or distribution without prior written consent is prohibited.
+              Donor names, sponsor logos, club photographs, and Cricket Switzerland branding are published exclusively with prior permission.
+            </p>
+            <p className="text-sm text-gray-700">
+              The official Gstaad Cricket Club crest, club name, domain, graphics, photographs, and digital assets are the intellectual property of Gstaad Cricket Club or their respective rights holders. Any unauthorized commercial reproduction, modification, or distribution without prior written consent is prohibited.
             </p>
           </div>
 

@@ -8,7 +8,7 @@
  */
 
 import { useState } from "react";
-import { ArrowRight, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, AlertCircle, Loader2, ShieldCheck, Camera, Users, HeartHandshake, Info } from "lucide-react";
 import { useLanguage } from "@/shared/i18n/LanguageContext";
 import { useToast } from "@/shared/components/common/Toast";
 
@@ -24,6 +24,14 @@ export function RegistrationForm() {
     partySize: 1,
     emergencyContact: "",
     message: "",
+    isMinor: false,
+    guardianName: "",
+    guardianRelationship: "Parent",
+    consentChildParticipation: false,
+    consentEmergencyContact: true,
+    consentMedicalInfo: false,
+    consentPhotography: false,
+    consentSocialMedia: false,
     botField: "",
   });
 
@@ -36,7 +44,7 @@ export function RegistrationForm() {
   /**
    * Custom field-level validator with localized error messaging
    */
-  const validateField = (field: string, value: string | number): string | null => {
+  const validateField = (field: string, value: string | number | boolean | undefined): string | null => {
     switch (field) {
       case "name": {
         const val = String(value || "").trim();
@@ -96,7 +104,7 @@ export function RegistrationForm() {
     });
   };
 
-  const handleChange = (field: string, value: string | number) => {
+  const handleChange = (field: string, value: string | number | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (touched[field]) {
       const errorMsg = validateField(field, value);
@@ -130,9 +138,36 @@ export function RegistrationForm() {
     const partyErr = validateField("partySize", formData.partySize);
     if (partyErr) validationErrors.partySize = partyErr;
 
+    const isMinorActive = formData.isMinor || formData.participantType === "Child with guardian";
+    if (isMinorActive) {
+      if (!formData.guardianName.trim() || formData.guardianName.trim().length < 2) {
+        validationErrors.guardianName = "Parent or legal guardian name is required.";
+      }
+      if (!formData.consentChildParticipation) {
+        validationErrors.consentChildParticipation = "Parental or legal guardian consent is required for a child to participate.";
+      }
+    }
+
+    if (!formData.consentEmergencyContact) {
+      validationErrors.consentEmergencyContact = "Emergency contact consent is required for participant safety.";
+    }
+
+    if (formData.message.trim().length > 0 && !formData.consentMedicalInfo) {
+      validationErrors.consentMedicalInfo = "Consent to process medical, allergy or accessibility notes is required when providing notes.";
+    }
+
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
-      setTouched({ name: true, email: true, phone: true, partySize: true });
+      setTouched({
+        name: true,
+        email: true,
+        phone: true,
+        partySize: true,
+        guardianName: isMinorActive,
+        consentChildParticipation: isMinorActive,
+        consentEmergencyContact: true,
+        consentMedicalInfo: formData.message.trim().length > 0,
+      });
       showToast({
         type: "error",
         title: dict.registration.toastErrorTitle,
@@ -165,6 +200,14 @@ export function RegistrationForm() {
           emergencyContact: formData.emergencyContact || formData.phone || "Self / Attendee",
           dietaryRequirements: formData.message.trim() || undefined,
           notes: formData.message.trim() || undefined,
+          isMinor: isMinorActive,
+          guardianName: isMinorActive ? formData.guardianName.trim() : undefined,
+          guardianRelationship: isMinorActive ? formData.guardianRelationship : undefined,
+          consentChildParticipation: formData.consentChildParticipation,
+          consentEmergencyContact: formData.consentEmergencyContact,
+          consentMedicalInfo: formData.consentMedicalInfo,
+          consentPhotography: formData.consentPhotography,
+          consentSocialMedia: formData.consentSocialMedia,
           botField: formData.botField,
         }),
       });
@@ -190,6 +233,14 @@ export function RegistrationForm() {
         partySize: 1,
         emergencyContact: "",
         message: "",
+        isMinor: false,
+        guardianName: "",
+        guardianRelationship: "Parent",
+        consentChildParticipation: false,
+        consentEmergencyContact: true,
+        consentMedicalInfo: false,
+        consentPhotography: false,
+        consentSocialMedia: false,
         botField: "",
       });
 
@@ -424,6 +475,124 @@ export function RegistrationForm() {
             </div>
           </div>
 
+          {/* Minor Attendee / Guardian Section */}
+          <div className="mb-6 p-4 rounded-lg bg-[#fbf9f4] border border-[#e6e2d8]">
+            <div className="flex items-center justify-between mb-2">
+              <label htmlFor="reg_is_minor" className="flex items-center gap-2 cursor-pointer select-none">
+                <input
+                  id="reg_is_minor"
+                  type="checkbox"
+                  checked={formData.isMinor || formData.participantType === "Child with guardian"}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setFormData((prev) => ({
+                      ...prev,
+                      isMinor: checked,
+                      participantType: checked ? "Child with guardian" : (prev.participantType === "Child with guardian" ? "Individual" : prev.participantType),
+                    }));
+                  }}
+                  className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] cursor-pointer"
+                />
+                <span className="text-xs font-bold uppercase tracking-wider text-[var(--ink)]">
+                  Registration involves a participant under 18
+                </span>
+              </label>
+              {(formData.isMinor || formData.participantType === "Child with guardian") && (
+                <span className="text-[0.68rem] bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">
+                  Guardian Consent Required
+                </span>
+              )}
+            </div>
+
+            {(formData.isMinor || formData.participantType === "Child with guardian") && (
+              <div className="mt-4 pt-3 border-t border-[#e2ddd2] space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label
+                      htmlFor="reg_guardian_name"
+                      className="block text-[0.72rem] uppercase font-bold tracking-wider text-[var(--ink)]"
+                    >
+                      Parent / Legal Guardian Full Name <span className="text-red-600">*</span>
+                    </label>
+                    <input
+                      id="reg_guardian_name"
+                      type="text"
+                      required
+                      placeholder="Guardian full name"
+                      value={formData.guardianName}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, guardianName: e.target.value }))}
+                      className={`mt-1.5 w-full bg-white border min-h-[44px] px-3 text-sm text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)] ${
+                        errors.guardianName && touched.guardianName ? "border-red-500 bg-red-50/20" : "border-[#c9ccc8]"
+                      }`}
+                    />
+                    {errors.guardianName && touched.guardianName && (
+                      <p className="mt-1 text-xs text-red-600 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" />
+                        <span>{errors.guardianName}</span>
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label
+                      htmlFor="reg_guardian_rel"
+                      className="block text-[0.72rem] uppercase font-bold tracking-wider text-[var(--ink)]"
+                    >
+                      Relationship to Minor
+                    </label>
+                    <select
+                      id="reg_guardian_rel"
+                      value={formData.guardianRelationship}
+                      onChange={(e) => setFormData((prev) => ({ ...prev, guardianRelationship: e.target.value }))}
+                      className="mt-1.5 w-full bg-white border border-[#c9ccc8] min-h-[44px] px-3 text-sm text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)] cursor-pointer"
+                    >
+                      <option value="Parent">Parent (Mother / Father)</option>
+                      <option value="Legal Guardian">Legal Guardian</option>
+                      <option value="Authorized Family Member">Authorized Family Member</option>
+                    </select>
+                  </div>
+                </div>
+
+                <label className="flex items-start gap-2.5 pt-1 cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={formData.consentChildParticipation}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, consentChildParticipation: e.target.checked }))}
+                    className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] mt-0.5 cursor-pointer shrink-0"
+                  />
+                  <span className="text-xs text-gray-700 leading-normal">
+                    <strong>Participation by a child:</strong> As parent or legal guardian, I give permission for the participant(s) under 18 to attend and participate in Gstaad Cricket Club coaching and matches under adult supervision. <span className="text-red-600">*</span>
+                  </span>
+                </label>
+                {errors.consentChildParticipation && touched.consentChildParticipation && (
+                  <p className="text-xs text-red-600 flex items-center gap-1">
+                    <AlertCircle className="w-3 h-3" />
+                    <span>{errors.consentChildParticipation}</span>
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Emergency Contact Detail */}
+          <div className="mb-5">
+            <label
+              htmlFor="reg_emergency"
+              className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]"
+            >
+              Emergency Contact Name &amp; Phone <span className="font-normal text-[#555d59] normal-case">(optional if same as above)</span>
+            </label>
+            <input
+              id="reg_emergency"
+              type="text"
+              name="emergencyContact"
+              placeholder="e.g. Maria Rossi (+41 79 987 65 43)"
+              value={formData.emergencyContact}
+              onChange={(e) => setFormData((prev) => ({ ...prev, emergencyContact: e.target.value }))}
+              className="mt-2 w-full min-h-[46px] px-4 text-sm font-normal text-[var(--ink)] bg-[#fdfcf8] border border-[#c9ccc8] focus:border-[var(--gold)] focus:ring-2 focus:ring-[var(--gold)]"
+            />
+          </div>
+
           {/* Notes / Special Requirements */}
           <div className="mb-6">
             <label
@@ -443,6 +612,89 @@ export function RegistrationForm() {
               onChange={(e) => handleChange("message", e.target.value)}
               className="mt-2 w-full bg-[#fdfcf8] border border-[#c9ccc8] p-4 text-base font-normal tracking-normal text-[var(--ink)] focus:outline-none focus:ring-2 focus:ring-[var(--gold)] focus:border-[var(--gold)] resize-y"
             ></textarea>
+          </div>
+
+          {/* Unbundled Consents & Permissions */}
+          <div className="mb-8 p-5 rounded-lg bg-[#faf8f4] border border-[#e5e0d3] space-y-4">
+            <div>
+              <h4 className="font-serif text-base text-[var(--green-dark)] font-normal flex items-center gap-2">
+                <ShieldCheck className="w-4 h-4 text-[var(--gold)]" />
+                <span>Statutory Consents &amp; Permissions</span>
+              </h4>
+              <p className="text-xs text-gray-600 mt-1">
+                In compliance with the Swiss Federal Act on Data Protection (nDSG / FADP), consents are unbundled and chosen individually.
+              </p>
+            </div>
+
+            <div className="space-y-3 pt-2 border-t border-gray-200 text-xs text-gray-700">
+              {/* Consent: Emergency Contact */}
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={formData.consentEmergencyContact}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, consentEmergencyContact: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] mt-0.5 cursor-pointer shrink-0"
+                />
+                <div>
+                  <strong>Emergency contact information:</strong> I consent to the collection and use of emergency contact information to ensure safety and respond to any medical incident during club activities. <span className="text-red-600">*</span>
+                </div>
+              </label>
+              {errors.consentEmergencyContact && touched.consentEmergencyContact && (
+                <p className="text-xs text-red-600 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  <span>{errors.consentEmergencyContact}</span>
+                </p>
+              )}
+
+              {/* Consent: Medical / Allergy / Accessibility */}
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={formData.consentMedicalInfo}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, consentMedicalInfo: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] mt-0.5 cursor-pointer shrink-0"
+                />
+                <div>
+                  <strong>Medical, allergy or accessibility information:</strong> I consent to designated club officers processing relevant health, allergy, or accessibility notes solely for safety and first-aid preparedness. {formData.message.trim().length > 0 && <span className="text-red-600">* (required when notes are provided)</span>}
+                </div>
+              </label>
+              {errors.consentMedicalInfo && touched.consentMedicalInfo && (
+                <p className="text-xs text-red-600 flex items-center gap-1">
+                  <AlertCircle className="w-3 h-3" />
+                  <span>{errors.consentMedicalInfo}</span>
+                </p>
+              )}
+
+              {/* Consent: Photography & Video (OPTIONAL) */}
+              <label className="flex items-start gap-2.5 cursor-pointer select-none pt-1">
+                <input
+                  type="checkbox"
+                  checked={formData.consentPhotography}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, consentPhotography: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] mt-0.5 cursor-pointer shrink-0"
+                />
+                <div>
+                  <strong>Photography and video (Optional):</strong> I consent to photographs and video recordings being taken during club activities for club archival and training purposes.
+                </div>
+              </label>
+
+              {/* Consent: Publication on Website and Social Media (OPTIONAL) */}
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={formData.consentSocialMedia}
+                  onChange={(e) => setFormData((prev) => ({ ...prev, consentSocialMedia: e.target.checked }))}
+                  className="w-4 h-4 rounded border-gray-300 text-[var(--gold)] focus:ring-[var(--gold)] mt-0.5 cursor-pointer shrink-0"
+                />
+                <div>
+                  <strong>Publication of images on the website and social media (Optional):</strong> I consent to club photographs or videos featuring me / my child being published on the official club website and verified social media channels.
+                </div>
+              </label>
+            </div>
+
+            <div className="p-3 bg-amber-50/70 border-l-2 border-amber-500 text-[0.72rem] text-amber-900 leading-normal">
+              <strong>Optional Consent Notice:</strong> Photography and media publication consent is strictly optional and is not combined with general registration acceptance. You are warmly welcome to participate regardless of your photo consent choice.
+            </div>
           </div>
 
           <button

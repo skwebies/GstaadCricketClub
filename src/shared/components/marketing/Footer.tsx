@@ -3,7 +3,7 @@
 /**
  * @file Footer.tsx
  * @description Swiss luxury footer with localized navigation links, language selector,
- * non-profit legal status acknowledgment, and Swiss sports federation affiliation.
+ * statutory legal status acknowledgment under Art. 60 ff. ZGB, and Swiss sports federation affiliation.
  * @module shared/components/marketing
  */
 

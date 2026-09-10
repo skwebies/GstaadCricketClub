@@ -32,6 +32,33 @@ export const RegistrationSchema = z.object({
     .or(z.literal(""))
     .transform((val) => (val && val.trim().length >= 3 ? val.trim() : "Self / Attendee")),
   notes: z.string().max(500).optional().or(z.literal("")),
+  // Minor & Legal Guardian Consent
+  isMinor: z.boolean().default(false),
+  guardianName: z.string().max(100).optional().or(z.literal("")),
+  guardianRelationship: z.string().max(50).optional().or(z.literal("")),
+  // Unbundled statutory consent options
+  consentChildParticipation: z.boolean().default(false),
+  consentEmergencyContact: z.boolean().default(true),
+  consentMedicalInfo: z.boolean().default(false),
+  consentPhotography: z.boolean().default(false), // STRICTLY OPTIONAL
+  consentSocialMedia: z.boolean().default(false), // STRICTLY OPTIONAL
+}).superRefine((data, ctx) => {
+  if (data.isMinor) {
+    if (!data.guardianName || data.guardianName.trim().length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Parent or legal guardian name is required for registrations involving a person under 18",
+        path: ["guardianName"],
+      });
+    }
+    if (!data.consentChildParticipation) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Parental or legal guardian consent is required for a child to participate",
+        path: ["consentChildParticipation"],
+      });
+    }
+  }
 });
 
 export type RegistrationFormData = z.infer<typeof RegistrationSchema>;

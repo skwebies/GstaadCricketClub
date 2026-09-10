@@ -50,7 +50,7 @@ const BRAND_COLORS = {
   border: "#E2DDD2",
 };
 
-export const DEFAULT_SITE_URL = "https://gstaadcricketclub.ch";
+export const DEFAULT_SITE_URL = "https://www.gstaadcricketclub.ch";
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL && !process.env.NEXT_PUBLIC_SITE_URL.includes("localhost")
     ? process.env.NEXT_PUBLIC_SITE_URL.replace(/\/$/, "")

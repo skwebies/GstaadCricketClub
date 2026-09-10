@@ -304,5 +304,36 @@ describe("Registration Server-Side Custom Validation & Schemas", () => {
     const parsed = RegistrationSchema.safeParse(maliciousName);
     expect(parsed.success).toBe(false);
   });
+
+  it("should require guardian name and child participation consent when isMinor is true", () => {
+    const minorWithoutGuardian = {
+      fullName: "Junior Player",
+      email: "junior@example.ch",
+      phone: "+41 79 123 45 67",
+      registrationType: "playing_member" as const,
+      partySize: 1,
+      isMinor: true,
+      guardianName: "",
+      consentChildParticipation: false,
+    };
+    const parsedFail = RegistrationSchema.safeParse(minorWithoutGuardian);
+    expect(parsedFail.success).toBe(false);
+
+    const validMinor = {
+      ...minorWithoutGuardian,
+      guardianName: "Linda Narayanan",
+      guardianRelationship: "Parent",
+      consentChildParticipation: true,
+      consentEmergencyContact: true,
+      consentPhotography: false, // strictly optional
+    };
+    const parsedSuccess = RegistrationSchema.safeParse(validMinor);
+    expect(parsedSuccess.success).toBe(true);
+    if (parsedSuccess.success) {
+      expect(parsedSuccess.data.isMinor).toBe(true);
+      expect(parsedSuccess.data.guardianName).toBe("Linda Narayanan");
+      expect(parsedSuccess.data.consentPhotography).toBe(false);
+    }
+  });
 });
 

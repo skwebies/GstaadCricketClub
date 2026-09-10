@@ -65,6 +65,14 @@ export async function POST(request: Request) {
       dietaryRequirements: body.dietaryRequirements || body.message || "",
       emergencyContact: body.emergencyContact || body.phone || "Self / Attendee",
       notes: body.notes || body.message || "",
+      isMinor: Boolean(body.isMinor || body.participantType === "Child with guardian"),
+      guardianName: body.guardianName,
+      guardianRelationship: body.guardianRelationship,
+      consentChildParticipation: Boolean(body.consentChildParticipation),
+      consentEmergencyContact: body.consentEmergencyContact !== undefined ? Boolean(body.consentEmergencyContact) : true,
+      consentMedicalInfo: Boolean(body.consentMedicalInfo),
+      consentPhotography: Boolean(body.consentPhotography),
+      consentSocialMedia: Boolean(body.consentSocialMedia),
     });
 
     if (!validationResult.success) {

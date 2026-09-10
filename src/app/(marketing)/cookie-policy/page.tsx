@@ -53,6 +53,14 @@ export default function CookiePolicyPage() {
       {/* 2. COOKIE POLICY CONTENT */}
       <section className="py-16 px-[8vw]">
         <div className="max-w-4xl mx-auto space-y-12 text-[var(--ink)] leading-relaxed">
+          {/* Authoritative Language Notice */}
+          <div className="p-4 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
+            <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+            <div>
+              <strong>Language Notice:</strong> This English text constitutes the official and authoritative Cookie Policy of Gstaad Cricket Club. Formal German and French translations are currently being finalized. Incomplete or automated translations are not displayed as final legal text.
+            </div>
+          </div>
+
           {/* Transparency Summary Banner */}
           <div className="p-6 bg-[#F8F7F2] border-l-4 border-[var(--gold)] rounded-r-xl border-t border-r border-b border-[#E2DDD2] shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>

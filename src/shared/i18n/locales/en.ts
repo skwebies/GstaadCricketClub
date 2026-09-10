@@ -156,7 +156,7 @@ export const en: TranslationSchema = {
     affiliated: "Affiliated to Cricket Switzerland",
     copyright: "© 2026 Gstaad Cricket Club",
     legalNotice:
-      "A Swiss sporting association established under Articles 60 ff. of the Swiss Civil Code.",
+      "Gstaad Cricket Club is a Swiss sporting association established pursuant to Articles 60 et seq. of the Swiss Civil Code. The club is not operated for profit.",
     allRightsReserved: "All rights reserved.",
     privacyPolicy: "Privacy Policy",
     termsConditions: "Terms & Conditions",

@@ -156,7 +156,7 @@ export const de: TranslationSchema = {
     affiliated: "Mitglied bei Cricket Switzerland",
     copyright: "© 2026 Gstaad Cricket Club",
     legalNotice:
-      "Ein Schweizer Sportverein gegründet nach Art. 60ff. des Schweizerischen Zivilgesetzbuches (ZGB).",
+      "Der Gstaad Cricket Club ist ein Schweizer Sportverein im Sinne von Art. 60 ff. ZGB. Der Verein verfolgt keinen Erwerbszweck.",
     allRightsReserved: "Alle Rechte vorbehalten.",
     privacyPolicy: "Datenschutzerklärung",
     termsConditions: "AGB & Richtlinien",

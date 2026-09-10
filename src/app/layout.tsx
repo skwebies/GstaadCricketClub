@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://gstaadcricketclub.ch"),
+  metadataBase: new URL("https://www.gstaadcricketclub.ch"),
   title: {
     default: "Gstaad Cricket Club | Cricket for Our Community",
     template: "%s | Gstaad Cricket Club",
@@ -30,14 +30,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_CH",
-    url: "https://gstaadcricketclub.ch",
+    url: "https://www.gstaadcricketclub.ch",
     siteName: "Gstaad Cricket Club",
     title: "Gstaad Cricket Club | Cricket for Our Community",
     description:
       "A free day of cricket for children, adults, families and complete beginners in Gstaad on 26 September 2026.",
     images: [
       {
-        url: "/og-image.png",
+        url: "https://www.gstaadcricketclub.ch/og-image.png",
         width: 1200,
         height: 630,
         alt: "Gstaad Cricket Club Crest and Swiss Alps",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: "Gstaad Cricket Club",
     description:
       "A free day of cricket for children, adults, families and complete beginners in Gstaad on 26 September 2026.",
-    images: ["/og-image.png"],
+    images: ["https://www.gstaadcricketclub.ch/og-image.png"],
   },
   robots: {
     index: true,
@@ -88,10 +88,10 @@ export default function RootLayout({
     "@graph": [
       {
         "@type": "SportsClub",
-        "@id": "https://gstaadcricketclub.ch/#organization",
+        "@id": "https://www.gstaadcricketclub.ch/#organization",
         "name": "Gstaad Cricket Club",
-        "url": "https://gstaadcricketclub.ch",
-        "logo": "https://gstaadcricketclub.ch/gstaad-cricket-club-crest.png",
+        "url": "https://www.gstaadcricketclub.ch",
+        "logo": "https://www.gstaadcricketclub.ch/gstaad-cricket-club-crest.png",
         "sport": "Cricket",
         "telephone": "+41 79 786 25 31",
         "address": {
@@ -108,7 +108,7 @@ export default function RootLayout({
       },
       {
         "@type": "SportsEvent",
-        "@id": "https://gstaadcricketclub.ch/#festival",
+        "@id": "https://www.gstaadcricketclub.ch/#festival",
         "name": "Gstaad Cricket Festival 2026",
         "description": "A free day of cricket for children, adults, families and complete beginners in Gstaad.",
         "startDate": "2026-09-26T11:00:00+02:00",
@@ -128,7 +128,7 @@ export default function RootLayout({
         },
         "isAccessibleForFree": true,
         "organizer": {
-          "@id": "https://gstaadcricketclub.ch/#organization"
+          "@id": "https://www.gstaadcricketclub.ch/#organization"
         }
       }
     ]

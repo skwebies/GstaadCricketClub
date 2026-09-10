@@ -63,14 +63,22 @@ export default function ImpressumPage() {
       {/* 2. MAIN CONTENT BODY */}
       <section className="py-16 px-[8vw]">
         <div className="max-w-4xl mx-auto space-y-12 text-[var(--ink)] leading-relaxed">
+          {/* Authoritative Language Notice */}
+          <div className="p-4 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
+            <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
+            <div>
+              <strong>Language Notice:</strong> This English text constitutes the official and authoritative Legal Notice / Impressum of Gstaad Cricket Club. Formal German and French translations are currently being finalized and will be published upon adoption by the Board. Incomplete or automated translations are not displayed as final legal text.
+            </div>
+          </div>
+
           {/* Executive Overview Card */}
           <div className="p-6 bg-[#F8F7F2] border-l-4 border-[var(--gold)] rounded-r-xl border-t border-r border-b border-[#E2DDD2] shadow-xs">
             <h3 className="font-serif text-lg font-bold text-[var(--green-dark)] mb-2 flex items-center gap-2">
               <FileCheck className="w-5 h-5 text-[var(--gold)]" />
-              Information concerning the operator of gstaadcricketclub.ch
+              Information concerning the operator of www.gstaadcricketclub.ch
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 leading-normal">
-              In accordance with Swiss legal requirements and professional governance standards, this page discloses the formal identity, legal status, authorized representation, and administrative contact channels of the Gstaad Cricket Club.
+              In accordance with Swiss legal requirements and professional governance standards, this page discloses the formal identity, statutory legal status, authorized representation, and administrative contact channels of the Gstaad Cricket Club.
             </p>
           </div>
 
@@ -85,14 +93,17 @@ export default function ImpressumPage() {
                 <strong className="block text-base font-serif text-[var(--green-dark)]">
                   Gstaad Cricket Club
                 </strong>
-                <span className="text-gray-600 block mt-0.5">
-                  A Swiss sporting association established under Articles 60 et seq. of the Swiss Civil Code (ZGB)
+                <span className="text-gray-700 block mt-1 leading-relaxed">
+                  Gstaad Cricket Club is a Swiss sporting association established pursuant to Articles 60 et seq. of the Swiss Civil Code. The club is not operated for profit.
+                </span>
+                <span className="text-xs text-gray-500 block mt-1">
+                  The club is not registered in the Commercial Register and has not received tax-exempt status.
                 </span>
               </div>
 
               <div className="pt-3 border-t border-gray-100 space-y-1">
                 <span className="text-xs uppercase tracking-wider font-bold text-gray-500 block">
-                  Postal &amp; Registered Address
+                  Postal &amp; Official Address
                 </span>
                 <div className="font-mono text-xs text-gray-700 leading-relaxed">
                   Gstaad Cricket Club<br />
@@ -102,49 +113,63 @@ export default function ImpressumPage() {
                 </div>
               </div>
 
-              <div className="pt-3 border-t border-gray-100 text-xs text-gray-600">
-                <strong>Legal Domicile:</strong> Municipality of Saanen, Canton of Bern, Switzerland
+              <div className="pt-3 border-t border-gray-100 text-xs text-gray-600 space-y-0.5">
+                <div><strong>Legal Domicile:</strong> Municipality of Saanen, Canton of Bern, Switzerland</div>
               </div>
             </div>
           </div>
 
           {/* Section: Authorized Representation & Editorial Responsibility */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Represented by */}
-            <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
-              <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
-                <UserCheck className="w-4 h-4" />
-                <span>Represented by</span>
+          <div className="space-y-4">
+            <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
+              <UserCheck className="w-5 h-5 text-[var(--gold)]" />
+              <span>Authorized Representation (Executive Board)</span>
+            </h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* President */}
+              <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
+                <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
+                  <UserCheck className="w-4 h-4" />
+                  <span>President</span>
+                </div>
+                <div>
+                  <strong className="block text-base font-serif text-[var(--ink)]">
+                    Sathya Narayanan
+                  </strong>
+                  <span className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-medium inline-block mt-1">
+                    Legally Elected Board Member (Founding Minutes)
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 pt-1 leading-relaxed">
+                  Authorized representative and president responsible for editorial direction and information published on www.gstaadcricketclub.ch.
+                </p>
               </div>
-              <div>
-                <strong className="block text-base font-serif text-[var(--ink)]">
-                  Sathya Narayanan
-                </strong>
-                <span className="text-xs text-[#5c6d66] block">
-                  President, Gstaad Cricket Club
-                </span>
+
+              {/* Treasurer */}
+              <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
+                <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
+                  <Scale className="w-4 h-4" />
+                  <span>Treasurer</span>
+                </div>
+                <div>
+                  <strong className="block text-base font-serif text-[var(--ink)]">
+                    Linda Narayanan
+                  </strong>
+                  <span className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-medium inline-block mt-1">
+                    Legally Elected Board Member (Founding Minutes)
+                  </span>
+                </div>
+                <p className="text-xs text-gray-500 pt-1 leading-relaxed">
+                  Legally elected treasurer overseeing financial governance, donor contributions, and fiscal compliance.
+                </p>
               </div>
-              <p className="text-xs text-gray-500 pt-1 leading-relaxed">
-                Authorized representative acting in accordance with the club&apos;s adopted statutes.
-              </p>
             </div>
 
-            {/* Responsible for Website Content */}
-            <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
-              <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
-                <Scale className="w-4 h-4" />
-                <span>Responsible for Website Content</span>
-              </div>
-              <div>
-                <strong className="block text-base font-serif text-[var(--ink)]">
-                  Sathya Narayanan
-                </strong>
-                <span className="text-xs text-[#5c6d66] block">
-                  President, Gstaad Cricket Club
-                </span>
-              </div>
-              <p className="text-xs text-gray-500 pt-1 leading-relaxed">
-                Responsible for editorial direction and information published on gstaadcricketclub.ch.
+            <div className="p-4 bg-[#fbf9f4] border border-[#e5e0d3] rounded-lg text-xs text-gray-600 space-y-1">
+              <strong>Statutory Recording Notice:</strong>
+              <p>
+                The legally elected board members currently recorded in the founding minutes are Sathya Narayanan (President) and Linda Narayanan (Treasurer). Thineskumar Thilakanathan and Usman Ali Sheikh serve as appointed club officers and operational team members, but are not legally elected board members unless their election is formally recorded.
               </p>
             </div>
           </div>
@@ -253,15 +278,18 @@ export default function ImpressumPage() {
             </p>
           </div>
 
-          {/* Section: Copyright */}
+          {/* Section: Copyright & Permissions */}
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <Copyright className="w-5 h-5 text-[var(--gold)]" />
-              <span>Copyright</span>
+              <span>Copyright &amp; Permissions</span>
             </h2>
             <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
               <p>
-                Unless otherwise stated, the text, club crest, graphics, photographs and other content on this website belong to Gstaad Cricket Club or are used with the permission of their respective owners.
+                <strong>Permissions Notice:</strong> Donor names, sponsor logos, club photographs, and Cricket Switzerland branding are published exclusively with permission from the respective individuals, corporate partners, and the national federation.
+              </p>
+              <p>
+                Unless otherwise stated, the text, club crest, graphics, photographs and digital assets on this website belong to Gstaad Cricket Club or are used with permission.
               </p>
               <p>
                 Content may not be reproduced, modified, distributed or used commercially without prior written permission. Statutory exceptions to copyright remain unaffected.

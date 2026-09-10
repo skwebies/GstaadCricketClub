@@ -1,8 +1,7 @@
 import type { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL || "https://gstaadcricketclub.ch";
+  const baseUrl = "https://www.gstaadcricketclub.ch";
   const now = new Date();
 
   return [
