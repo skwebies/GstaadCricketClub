@@ -78,7 +78,7 @@ export function Footer() {
           </button>
         </div>
 
-        <p className="text-xs text-[#8c8676] max-w-xl">
+        <p className="text-xs text-[#c0baa9] max-w-xl">
           {dict.footer.legalNotice}
         </p>
       </div>

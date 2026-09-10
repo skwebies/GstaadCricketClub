@@ -431,7 +431,7 @@ export function RegistrationForm() {
               className="block text-[0.74rem] uppercase font-extrabold tracking-[0.09em] text-[var(--ink)]"
             >
               {dict.registration.notesLabel}{" "}
-              <span className="font-normal text-[#7d8581] normal-case">{dict.registration.optional}</span>
+              <span className="font-normal text-[#555d59] normal-case">{dict.registration.optional}</span>
             </label>
             <textarea
               id="reg_notes"

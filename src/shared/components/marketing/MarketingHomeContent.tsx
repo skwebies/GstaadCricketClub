@@ -251,7 +251,7 @@ export function MarketingHomeContent() {
                     <div className="flex items-center justify-between mb-3">
                       <span
                         className={`text-[0.72rem] font-extrabold tracking-[0.16em] uppercase block ${
-                          plan.featured ? "text-[var(--gold)]" : "text-[#7c857f]"
+                          plan.featured ? "text-[var(--gold)]" : "text-[#545e58]"
                         }`}
                       >
                         {plan.title}
@@ -264,12 +264,16 @@ export function MarketingHomeContent() {
                         Select &rarr;
                       </span>
                     </div>
-                    <strong className="font-serif text-[2.1rem] font-normal block leading-none mb-1">
+                    <strong
+                      className={`font-serif text-[2.1rem] font-normal block leading-none mb-1 ${
+                        plan.featured ? "text-white" : "text-[var(--ink)]"
+                      }`}
+                    >
                       {plan.price}
                     </strong>
                     <small
                       className={`text-xs block ${
-                        plan.featured ? "text-[#d8d4c7]" : "text-[#7c857f]"
+                        plan.featured ? "text-[#d8d4c7]" : "text-[#545e58]"
                       }`}
                     >
                       {plan.period}
@@ -279,7 +283,7 @@ export function MarketingHomeContent() {
                   <div className="mt-4 pt-3 border-t border-black/5 flex flex-col justify-between">
                     <p
                       className={`text-xs leading-relaxed ${
-                        plan.featured ? "text-[#d8d4c7]" : "text-[#6c7973]"
+                        plan.featured ? "text-[#d8d4c7]" : "text-[#4b5550]"
                       }`}
                     >
                       {plan.description}
@@ -330,13 +334,13 @@ export function MarketingHomeContent() {
           {/* Section Header: Title & Lead in Balanced 2-Column Row */}
           <div className="grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-16 items-start pb-10 border-b border-[#c7bea7]/60 mb-12">
             <div className="supporters-heading">
-              <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-3 block">
+              <span className="section-kicker text-[#7d5d14] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-3 block">
                 {dict.supporters.kicker}
               </span>
               <h2 className="font-serif text-[clamp(2.8rem,5vw,4.8rem)] leading-[0.94] font-normal text-[var(--ink)]">
                 {dict.supporters.title}
                 <br />
-                <em className="text-[var(--gold)] italic">{dict.supporters.titleEm}</em>
+                <em className="text-[#856319] italic">{dict.supporters.titleEm}</em>
               </h2>
             </div>
 
@@ -355,11 +359,11 @@ export function MarketingHomeContent() {
             {/* COLUMN 1: FOUNDING SPONSORS */}
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-[#c7bea7] pb-3">
-                <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
+                <span className="supporters-label text-[#625942] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
                   <Building2 className="w-4 h-4 text-[var(--gold)]" />
                   {dict.supporters.foundingSponsors}
                 </span>
-                <span className="text-[0.68rem] text-[#82785f] uppercase tracking-wider font-semibold">
+                <span className="text-[0.68rem] text-[#625942] uppercase tracking-wider font-semibold">
                   Official Partners
                 </span>
               </div>
@@ -404,11 +408,11 @@ export function MarketingHomeContent() {
             {/* COLUMN 2: COMMUNITY DONORS */}
             <div className="space-y-6">
               <div className="flex items-center justify-between border-b border-[#c7bea7] pb-3">
-                <span className="supporters-label text-[#82785f] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
+                <span className="supporters-label text-[#625942] tracking-[0.19em] uppercase text-[0.72rem] font-extrabold flex items-center gap-2">
                   <Users className="w-4 h-4 text-[var(--gold)]" />
                   {dict.supporters.communityDonors}
                 </span>
-                <span className="text-[0.68rem] text-[#82785f] uppercase tracking-wider font-semibold">
+                <span className="text-[0.68rem] text-[#625942] uppercase tracking-wider font-semibold">
                   Founding Patrons
                 </span>
               </div>
@@ -464,7 +468,7 @@ export function MarketingHomeContent() {
       <section className="registration-section bg-[var(--cream)] py-24 md:py-32 px-[8vw]" id="register">
         <div className="grid grid-cols-1 lg:grid-cols-[0.82fr_1.18fr] gap-12 lg:gap-[9vw] items-start">
           <div className="registration-copy">
-            <span className="section-kicker text-[var(--gold)] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
+            <span className="section-kicker text-[#7d5d14] uppercase tracking-[0.23em] text-[0.78rem] font-extrabold mb-4 block">
               {dict.registration.kicker}
             </span>
             <h2 className="font-serif text-[clamp(3.2rem,6vw,6rem)] leading-[0.93] font-normal text-[var(--ink)] mb-6">
