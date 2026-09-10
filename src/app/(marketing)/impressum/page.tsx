@@ -5,6 +5,7 @@
  * @description Swiss law compliant Legal Notice & Impressum (Rechtliche Angaben)
  * specifying website operator, legal form under Art. 60 ff. ZGB, representation,
  * postal address, contact details, venue distinction, and disclaimers.
+ * Fully localized across English, German, and French.
  * @module app/(marketing)/impressum
  */
 
@@ -29,6 +30,7 @@ import { useLanguage } from "@/shared/i18n/LanguageContext";
 
 export default function ImpressumPage() {
   const { dict } = useLanguage();
+  const page = dict.impressumPage;
 
   return (
     <div className="bg-[var(--paper)]">
@@ -55,7 +57,7 @@ export default function ImpressumPage() {
 
           <div className="mt-6 inline-flex items-center gap-2 text-xs text-[var(--gold)] font-mono bg-black/25 px-3.5 py-1.5 rounded-full border border-[var(--gold)]/30">
             <ShieldCheck className="w-3.5 h-3.5" />
-            <span>{dict.legal.lastUpdated} · Swiss Civil Code (Art. 60ff. ZGB)</span>
+            <span>{dict.legal.lastUpdated} · {page.lawSubtitle}</span>
           </div>
         </div>
       </section>
@@ -63,22 +65,14 @@ export default function ImpressumPage() {
       {/* 2. MAIN CONTENT BODY */}
       <section className="py-16 px-[8vw]">
         <div className="max-w-4xl mx-auto space-y-12 text-[var(--ink)] leading-relaxed">
-          {/* Authoritative Language Notice */}
-          <div className="p-4 bg-amber-50/80 border border-amber-200 rounded-lg text-xs text-amber-900 flex items-start gap-2.5">
-            <Info className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-            <div>
-              <strong>Language Notice:</strong> This English text constitutes the official and authoritative Legal Notice / Impressum of Gstaad Cricket Club. Formal German and French translations are currently being finalized and will be published upon adoption by the Board. Incomplete or automated translations are not displayed as final legal text.
-            </div>
-          </div>
-
           {/* Executive Overview Card */}
           <div className="p-6 bg-[#F8F7F2] border-l-4 border-[var(--gold)] rounded-r-xl border-t border-r border-b border-[#E2DDD2] shadow-xs">
             <h3 className="font-serif text-lg font-bold text-[var(--green-dark)] mb-2 flex items-center gap-2">
               <FileCheck className="w-5 h-5 text-[var(--gold)]" />
-              Information concerning the operator of www.gstaadcricketclub.ch
+              {page.overviewHeading}
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 leading-normal">
-              In accordance with Swiss legal requirements and professional governance standards, this page discloses the formal identity, statutory legal status, authorized representation, and administrative contact channels of the Gstaad Cricket Club.
+              {page.overviewText}
             </p>
           </div>
 
@@ -86,7 +80,7 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <Building2 className="w-5 h-5 text-[var(--gold)]" />
-              <span>Website Operator</span>
+              <span>{page.operatorHeading}</span>
             </h2>
             <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 text-sm text-gray-800 shadow-2xs">
               <div>
@@ -94,16 +88,16 @@ export default function ImpressumPage() {
                   Gstaad Cricket Club
                 </strong>
                 <span className="text-gray-700 block mt-1 leading-relaxed">
-                  Gstaad Cricket Club is a Swiss sporting association established pursuant to Articles 60 et seq. of the Swiss Civil Code. The club is not operated for profit.
+                  {page.operatorDesc}
                 </span>
                 <span className="text-xs text-gray-500 block mt-1">
-                  The club is not registered in the Commercial Register and has not received tax-exempt status.
+                  {page.operatorTaxNotice}
                 </span>
               </div>
 
               <div className="pt-3 border-t border-gray-100 space-y-1">
                 <span className="text-xs uppercase tracking-wider font-bold text-gray-500 block">
-                  Postal &amp; Official Address
+                  {page.postalAddressLabel}
                 </span>
                 <div className="font-mono text-xs text-gray-700 leading-relaxed">
                   Gstaad Cricket Club<br />
@@ -114,7 +108,7 @@ export default function ImpressumPage() {
               </div>
 
               <div className="pt-3 border-t border-gray-100 text-xs text-gray-600 space-y-0.5">
-                <div><strong>Legal Domicile:</strong> Municipality of Saanen, Canton of Bern, Switzerland</div>
+                <div><strong>{page.legalDomicileLabel}:</strong> {page.legalDomicileValue}</div>
               </div>
             </div>
           </div>
@@ -123,7 +117,7 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <UserCheck className="w-5 h-5 text-[var(--gold)]" />
-              <span>Authorized Representation (Executive Board)</span>
+              <span>{page.representationHeading}</span>
             </h2>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -131,18 +125,18 @@ export default function ImpressumPage() {
               <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
                 <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
                   <UserCheck className="w-4 h-4" />
-                  <span>President</span>
+                  <span>{page.presidentRole}</span>
                 </div>
                 <div>
                   <strong className="block text-base font-serif text-[var(--ink)]">
                     Sathya Narayanan
                   </strong>
                   <span className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-medium inline-block mt-1">
-                    Legally Elected Board Member (Founding Minutes)
+                    {page.presidentStatus}
                   </span>
                 </div>
                 <p className="text-xs text-gray-500 pt-1 leading-relaxed">
-                  Authorized representative and president responsible for editorial direction and information published on www.gstaadcricketclub.ch.
+                  {page.presidentBio}
                 </p>
               </div>
 
@@ -150,27 +144,25 @@ export default function ImpressumPage() {
               <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 shadow-2xs">
                 <div className="flex items-center gap-2 text-[var(--gold)] font-bold text-xs uppercase tracking-wider">
                   <Scale className="w-4 h-4" />
-                  <span>Treasurer</span>
+                  <span>{page.treasurerRole}</span>
                 </div>
                 <div>
                   <strong className="block text-base font-serif text-[var(--ink)]">
                     Linda Narayanan
                   </strong>
                   <span className="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded font-medium inline-block mt-1">
-                    Legally Elected Board Member (Founding Minutes)
+                    {page.treasurerStatus}
                   </span>
                 </div>
                 <p className="text-xs text-gray-500 pt-1 leading-relaxed">
-                  Legally elected treasurer overseeing financial governance, donor contributions, and fiscal compliance.
+                  {page.treasurerBio}
                 </p>
               </div>
             </div>
 
             <div className="p-4 bg-[#fbf9f4] border border-[#e5e0d3] rounded-lg text-xs text-gray-600 space-y-1">
-              <strong>Statutory Recording Notice:</strong>
-              <p>
-                The legally elected board members currently recorded in the founding minutes are Sathya Narayanan (President) and Linda Narayanan (Treasurer). Thineskumar Thilakanathan and Usman Ali Sheikh serve as appointed club officers and operational team members, but are not legally elected board members unless their election is formally recorded.
-              </p>
+              <strong>{page.statutoryNoticeTitle}</strong>
+              <p>{page.statutoryNoticeText}</p>
             </div>
           </div>
 
@@ -178,13 +170,13 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <Mail className="w-5 h-5 text-[var(--gold)]" />
-              <span>Contact</span>
+              <span>{page.contactHeading}</span>
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
               <div className="p-5 bg-white rounded-lg border border-gray-200 space-y-1 shadow-2xs">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
                   <Phone className="w-3.5 h-3.5" />
-                  Telephone
+                  {page.phoneLabel}
                 </div>
                 <a
                   href="tel:+41797862531"
@@ -197,7 +189,7 @@ export default function ImpressumPage() {
               <div className="p-5 bg-white rounded-lg border border-gray-200 space-y-1 shadow-2xs">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
                   <Mail className="w-3.5 h-3.5" />
-                  Email
+                  {page.emailLabel}
                 </div>
                 <a
                   href="mailto:info@gstaadcricketclub.ch"
@@ -210,7 +202,7 @@ export default function ImpressumPage() {
               <div className="p-5 bg-white rounded-lg border border-gray-200 space-y-1 shadow-2xs">
                 <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[var(--gold)]">
                   <Globe className="w-3.5 h-3.5" />
-                  Official Website
+                  {page.websiteLabel}
                 </div>
                 <a
                   href="https://www.gstaadcricketclub.ch"
@@ -226,12 +218,12 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <MapPin className="w-5 h-5 text-[var(--gold)]" />
-              <span>Event Venue</span>
+              <span>{page.venueHeading}</span>
             </h2>
             <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-3 text-sm text-gray-800 shadow-2xs">
               <div>
                 <strong className="block text-base font-serif text-[var(--ink)]">
-                  Gstaad Cricket Festival
+                  {page.festivalName}
                 </strong>
                 <div className="font-mono text-xs text-gray-700 mt-1 leading-relaxed">
                   OSZ Ebnit Gstaad<br />
@@ -244,9 +236,9 @@ export default function ImpressumPage() {
               <div className="p-3.5 bg-amber-50/70 border-l-4 border-amber-500 rounded-r text-xs text-amber-900 leading-relaxed font-medium">
                 <div className="flex items-center gap-1.5 font-bold mb-0.5">
                   <Info className="w-4 h-4 text-amber-600" />
-                  Venue Distinction Notice:
+                  {page.venueNoticeLabel}
                 </div>
-                The event venue is not the postal or legal address of Gstaad Cricket Club.
+                {page.venueNoticeText}
               </div>
             </div>
           </div>
@@ -255,15 +247,11 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <ShieldAlert className="w-5 h-5 text-[var(--gold)]" />
-              <span>Disclaimer</span>
+              <span>{page.disclaimerHeading}</span>
             </h2>
             <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
-              <p>
-                Gstaad Cricket Club takes reasonable care to ensure that the information published on this website is accurate and up to date. However, the club does not guarantee that all information is complete, accurate or continuously available.
-              </p>
-              <p>
-                To the extent permitted by Swiss law, Gstaad Cricket Club accepts no liability for loss or damage arising from access to, use of, or reliance on information provided through this website. Liability for intentional misconduct, gross negligence or any liability that cannot legally be excluded remains unaffected.
-              </p>
+              <p>{page.disclaimerP1}</p>
+              <p>{page.disclaimerP2}</p>
             </div>
           </div>
 
@@ -271,10 +259,10 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <ExternalLink className="w-5 h-5 text-[var(--gold)]" />
-              <span>External Links</span>
+              <span>{page.linksHeading}</span>
             </h2>
             <p className="text-sm text-gray-700 leading-relaxed">
-              This website may contain links to third-party websites. Gstaad Cricket Club has no control over the content, availability or data-protection practices of those websites and accepts no responsibility for them. Responsibility for linked content lies with the respective website operator.
+              {page.linksText}
             </p>
           </div>
 
@@ -282,18 +270,17 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <Copyright className="w-5 h-5 text-[var(--gold)]" />
-              <span>Copyright &amp; Permissions</span>
+              <span>{page.copyrightHeading}</span>
             </h2>
             <div className="space-y-3 text-sm text-gray-700 leading-relaxed">
               <p>
-                <strong>Permissions Notice:</strong> Donor names, sponsor logos, club photographs, and Cricket Switzerland branding are published exclusively with permission from the respective individuals, corporate partners, and the national federation.
+                <strong>{page.permissionsNotice.split(":")[0]}:</strong>{" "}
+                {page.permissionsNotice.includes(":")
+                  ? page.permissionsNotice.substring(page.permissionsNotice.indexOf(":") + 1).trim()
+                  : page.permissionsNotice}
               </p>
-              <p>
-                Unless otherwise stated, the text, club crest, graphics, photographs and digital assets on this website belong to Gstaad Cricket Club or are used with permission.
-              </p>
-              <p>
-                Content may not be reproduced, modified, distributed or used commercially without prior written permission. Statutory exceptions to copyright remain unaffected.
-              </p>
+              <p>{page.copyrightP1}</p>
+              <p>{page.copyrightP2}</p>
             </div>
           </div>
 
@@ -301,16 +288,16 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <ShieldCheck className="w-5 h-5 text-[var(--gold)]" />
-              <span>Data Protection</span>
+              <span>{page.dataProtectionHeading}</span>
             </h2>
             <p className="text-sm text-gray-700 leading-relaxed">
-              Information about the collection and processing of personal data is available in the{" "}
+              {page.dataProtectionP1}{" "}
               <Link href="/privacy" className="text-[var(--green)] font-semibold underline hover:text-[var(--gold)] transition-colors">
-                Privacy Policy
+                {page.privacyPolicyLink}
               </Link>
-              . Information concerning cookies and similar technologies is available in the{" "}
+              .{" "}
               <Link href="/cookie-policy" className="text-[var(--green)] font-semibold underline hover:text-[var(--gold)] transition-colors">
-                Cookie Policy
+                {page.cookiePolicyLink}
               </Link>
               .
             </p>
@@ -320,14 +307,12 @@ export default function ImpressumPage() {
           <div className="space-y-4">
             <h2 className="font-serif text-2xl text-[var(--green-dark)] font-normal border-b border-gray-200 pb-2 flex items-center gap-2.5">
               <Scale className="w-5 h-5 text-[var(--gold)]" />
-              <span>Applicable Law</span>
+              <span>{page.applicableLawHeading}</span>
             </h2>
             <div className="p-6 bg-white rounded-lg border border-gray-200 space-y-2 text-sm text-gray-800 shadow-2xs">
-              <p>
-                This Legal Notice is governed by Swiss law. Any mandatory statutory rights and places of jurisdiction remain unaffected.
-              </p>
+              <p>{page.applicableLawText}</p>
               <div className="pt-3 border-t border-gray-100 text-xs text-gray-500 font-mono">
-                Last updated: September 2026
+                {page.lastUpdatedText}
               </div>
             </div>
           </div>

@@ -284,4 +284,62 @@ export const en: TranslationSchema = {
     exportCsv: "Export CSV",
     newMember: "New Member",
   },
+  impressumPage: {
+    lawSubtitle: "Swiss Civil Code (Art. 60ff. ZGB)",
+    overviewHeading: "Information concerning the operator of www.gstaadcricketclub.ch",
+    overviewText:
+      "In accordance with Swiss legal requirements and professional governance standards, this page discloses the formal identity, statutory legal status, authorized representation, and administrative contact channels of the Gstaad Cricket Club.",
+    operatorHeading: "Website Operator",
+    operatorDesc:
+      "Gstaad Cricket Club is a Swiss sporting association established pursuant to Articles 60 et seq. of the Swiss Civil Code. The club is not operated for profit.",
+    operatorTaxNotice:
+      "The club is not registered in the Commercial Register and has not received tax-exempt status.",
+    postalAddressLabel: "Postal & Official Address",
+    legalDomicileLabel: "Legal Domicile",
+    legalDomicileValue: "Municipality of Saanen, Canton of Bern, Switzerland",
+    representationHeading: "Authorized Representation (Executive Board)",
+    presidentRole: "President",
+    presidentStatus: "Legally Elected Board Member (Founding Minutes)",
+    presidentBio:
+      "Authorized representative and president responsible for editorial direction and information published on www.gstaadcricketclub.ch.",
+    treasurerRole: "Treasurer",
+    treasurerStatus: "Legally Elected Board Member (Founding Minutes)",
+    treasurerBio:
+      "Legally elected treasurer overseeing financial governance, donor contributions, and fiscal compliance.",
+    statutoryNoticeTitle: "Statutory Recording Notice:",
+    statutoryNoticeText:
+      "The legally elected board members currently recorded in the founding minutes are Sathya Narayanan (President) and Linda Narayanan (Treasurer). Thineskumar Thilakanathan and Usman Ali Sheikh serve as appointed club officers and operational team members, but are not legally elected board members unless their election is formally recorded.",
+    contactHeading: "Contact",
+    phoneLabel: "Telephone",
+    emailLabel: "Email",
+    websiteLabel: "Official Website",
+    venueHeading: "Event Venue",
+    festivalName: "Gstaad Cricket Festival",
+    venueNoticeLabel: "Venue Distinction Notice:",
+    venueNoticeText: "The event venue is not the postal or legal address of Gstaad Cricket Club.",
+    disclaimerHeading: "Disclaimer",
+    disclaimerP1:
+      "Gstaad Cricket Club takes reasonable care to ensure that the information published on this website is accurate and up to date. However, the club does not guarantee that all information is complete, accurate or continuously available.",
+    disclaimerP2:
+      "To the extent permitted by Swiss law, Gstaad Cricket Club accepts no liability for loss or damage arising from access to, use of, or reliance on information provided through this website. Liability for intentional misconduct, gross negligence or any liability that cannot legally be excluded remains unaffected.",
+    linksHeading: "External Links",
+    linksText:
+      "This website may contain links to third-party websites. Gstaad Cricket Club has no control over the content, availability or data-protection practices of those websites and accepts no responsibility for them. Responsibility for linked content lies with the respective website operator.",
+    copyrightHeading: "Copyright & Permissions",
+    permissionsNotice:
+      "Permissions Notice: Donor names, sponsor logos, club photographs, and Cricket Switzerland branding are published exclusively with permission from the respective individuals, corporate partners, and the national federation.",
+    copyrightP1:
+      "Unless otherwise stated, the text, club crest, graphics, photographs and digital assets on this website belong to Gstaad Cricket Club or are used with permission.",
+    copyrightP2:
+      "Content may not be reproduced, modified, distributed or used commercially without prior written permission. Statutory exceptions to copyright remain unaffected.",
+    dataProtectionHeading: "Data Protection",
+    dataProtectionP1:
+      "Information about the collection and processing of personal data is available in the Privacy Policy. Information concerning cookies and similar technologies is available in the Cookie Policy.",
+    privacyPolicyLink: "Privacy Policy",
+    cookiePolicyLink: "Cookie Policy",
+    applicableLawHeading: "Applicable Law",
+    applicableLawText:
+      "This Legal Notice is governed by Swiss law. Any mandatory statutory rights and places of jurisdiction remain unaffected.",
+    lastUpdatedText: "Last updated: September 2026",
+  },
 };

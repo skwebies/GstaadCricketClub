@@ -284,4 +284,62 @@ export const fr: TranslationSchema = {
     exportCsv: "Exporter CSV",
     newMember: "Nouveau membre",
   },
+  impressumPage: {
+    lawSubtitle: "Code civil suisse (art. 60 et suivants CC)",
+    overviewHeading: "Informations concernant l'exploitant de www.gstaadcricketclub.ch",
+    overviewText:
+      "Conformément aux exigences légales suisses et aux règles de bonne gouvernance, cette page présente l'identité formelle, le statut juridique statutaire, la représentation autorisée et les coordonnées administratives du Gstaad Cricket Club.",
+    operatorHeading: "Exploitant du site Internet",
+    operatorDesc:
+      "Le Gstaad Cricket Club est une association sportive suisse régie par les articles 60 et suivants du Code civil suisse. Le club ne poursuit aucun but lucratif.",
+    operatorTaxNotice:
+      "Le club n'est pas inscrit au registre du commerce et ne bénéficie pas du statut d'exonération fiscale.",
+    postalAddressLabel: "Adresse postale & officielle",
+    legalDomicileLabel: "Siège juridique",
+    legalDomicileValue: "Commune de Saanen, Canton de Berne, Suisse",
+    representationHeading: "Représentation autorisée (Comité de direction)",
+    presidentRole: "Président",
+    presidentStatus: "Membre du comité légalement élu (procès-verbal de fondation)",
+    presidentBio:
+      "Représentant habilité et président responsable de la ligne éditoriale et des informations publiées sur www.gstaadcricketclub.ch.",
+    treasurerRole: "Trésorière",
+    treasurerStatus: "Membre du comité légalement élu (procès-verbal de fondation)",
+    treasurerBio:
+      "Trésorière légalement élue chargée de la gestion financière, des dons et de la conformité fiscale.",
+    statutoryNoticeTitle: "Remarque relative aux statuts et à l'inscription:",
+    statutoryNoticeText:
+      "Les membres du comité légalement élus actuellement inscrits dans le procès-verbal de fondation sont Sathya Narayanan (Président) et Linda Narayanan (Trésorière). Thineskumar Thilakanathan et Usman Ali Sheikh interviennent en qualité de responsables de club et membres de l'équipe opérationnelle, mais ne sont pas membres élus du comité tant que leur élection n'a pas été formellement enregistrée.",
+    contactHeading: "Contact",
+    phoneLabel: "Téléphone",
+    emailLabel: "E-mail",
+    websiteLabel: "Site officiel",
+    venueHeading: "Lieu de la manifestation",
+    festivalName: "Gstaad Cricket Festival",
+    venueNoticeLabel: "Remarque concernant le lieu de la manifestation:",
+    venueNoticeText: "Le lieu de la manifestation n'est pas l'adresse postale ou juridique du Gstaad Cricket Club.",
+    disclaimerHeading: "Exclusion de responsabilité",
+    disclaimerP1:
+      "Le Gstaad Cricket Club apporte un soin raisonnable à l'exactitude et à l'actualité des informations publiées sur ce site Internet. Toutefois, le club ne garantit ni l'exhaustivité, ni l'absence d'erreurs, ni la disponibilité continue de ces informations.",
+    disclaimerP2:
+      "Dans la mesure autorisée par le droit suisse, le Gstaad Cricket Club décline toute responsabilité pour les dommages résultant de l'accès à ce site, de son utilisation ou de la confiance accordée à son contenu. La responsabilité en cas de faute intentionnelle, de négligence grave ou toute responsabilité ne pouvant être légalement exclue demeure réservée.",
+    linksHeading: "Liens externes",
+    linksText:
+      "Ce site Internet peut contenir des liens vers des sites tiers. Le Gstaad Cricket Club n'exerce aucun contrôle sur le contenu, la disponibilité ou les pratiques en matière de protection des données de ces sites et décline toute responsabilité à leur égard. La responsabilité des contenus liés incombe exclusivement à l'exploitant concerné.",
+    copyrightHeading: "Droits d'auteur & autorisations",
+    permissionsNotice:
+      "Avis relatif aux autorisations: Les noms des donateurs, les logos des sponsors, les photographies du club et l'identité visuelle de Cricket Switzerland sont publiés exclusivement avec l'autorisation préalable des personnes, partenaires et de la fédération nationale concernés.",
+    copyrightP1:
+      "Sauf mention contraire, les textes, l'armoirie du club, les graphismes, photographies et ressources numériques de ce site sont la propriété du Gstaad Cricket Club ou sont utilisés avec autorisation.",
+    copyrightP2:
+      "Toute reproduction, modification, diffusion ou exploitation commerciale sans autorisation écrite préalable est interdite. Les exceptions légales au droit d'auteur demeurent réservées.",
+    dataProtectionHeading: "Protection des données",
+    dataProtectionP1:
+      "Les informations relatives à la collecte et au traitement des données personnelles sont détaillées dans la Politique de Confidentialité. Les informations relatives aux cookies et technologies similaires sont disponibles dans la Politique relative aux Cookies.",
+    privacyPolicyLink: "Politique de Confidentialité",
+    cookiePolicyLink: "Politique relative aux Cookies",
+    applicableLawHeading: "Droit applicable",
+    applicableLawText:
+      "Les présentes mentions légales sont régies par le droit suisse. Les droits impératifs et fors légaux demeurent réservés.",
+    lastUpdatedText: "Dernière mise à jour: Septembre 2026",
+  },
 };
