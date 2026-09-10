@@ -48,7 +48,7 @@ export function CookieConsent() {
     try {
       localStorage.setItem(STORAGE_KEY, level);
       // Also store lightweight cookie for 1 year
-      document.cookie = `${STORAGE_KEY}=${level}; path=/; max-age=31536000; SameSite=Lax`;
+      document.cookie = `${STORAGE_KEY}=${level}; path=/; max-age=31536000; SameSite=Lax; Secure`;
     } catch {
       // Fallback if local storage restricted
     }
