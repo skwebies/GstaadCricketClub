@@ -231,7 +231,8 @@ export function wrapHtmlLayout(title: string, content: string): string {
             </tr>
           </table>
           <strong style="color: ${BRAND_COLORS.greenDark}; font-size: 13px; letter-spacing: 0.04em;">Gstaad Cricket Club</strong><br>
-          OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland<br>
+          Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland<br>
+          <span style="font-size: 11px; color: #8A9890;">Festival Venue: OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad</span><br>
           <span style="font-size: 12px;">
             <a href="${SITE_URL}" target="_blank" style="color: ${BRAND_COLORS.greenPrimary}; text-decoration: underline; font-weight: 600;">www.gstaadcricketclub.ch</a>
             &nbsp;&bull;&nbsp;

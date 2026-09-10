@@ -799,10 +799,28 @@ export default function ContactPage() {
 
           <div className="space-y-4 text-sm">
             <div className="flex items-start gap-3.5 p-5 bg-white border border-[#e4decf] shadow-2xs">
+              <Building2 className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
+              <div>
+                <strong className="block text-[var(--ink)] font-serif text-base mb-1">
+                  Postal &amp; Registered Address
+                </strong>
+                <span className="text-[#5c6d66] block font-medium">
+                  Gstaad Cricket Club
+                </span>
+                <span className="text-[#5c6d66] block text-xs">
+                  Undere Waldmattenstrasse 11
+                </span>
+                <span className="text-[#7d8b84] text-xs">
+                  3778 Schönried, Switzerland
+                </span>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3.5 p-5 bg-white border border-[#e4decf] shadow-2xs">
               <MapPin className="w-5 h-5 text-[var(--gold)] shrink-0 mt-0.5" />
               <div>
                 <strong className="block text-[var(--ink)] font-serif text-base mb-1">
-                  Event Ground &amp; Pitch
+                  Festival Venue (Event Ground &amp; Pitch)
                 </strong>
                 <span className="text-[#5c6d66] block">
                   OSZ Ebnit Gstaad

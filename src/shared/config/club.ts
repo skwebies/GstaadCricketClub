@@ -115,9 +115,20 @@ export const CLUB_CONFIG = {
       bio: "Youth Development Officer directing grassroots coaching programs, school clinics, and junior talent pathways.",
     },
   ],
+  postalAddress: {
+    name: "Gstaad Cricket Club",
+    street: "Undere Waldmattenstrasse 11",
+    postalCode: "3778",
+    locality: "Schönried",
+    country: "Switzerland",
+    countryCode: "CH",
+    full: "Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland",
+  },
   contact: {
     email: "info@gstaadcricketclub.ch",
     phone: "+41 79 786 25 31",
-    location: "OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland",
+    postalAddress: "Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland",
+    festivalVenue: "OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland",
+    location: "Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland",
   },
 } as const;

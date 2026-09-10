@@ -54,7 +54,7 @@ export default function TermsAndConditionsPage() {
               Swiss Non-Profit Association (Verein)
             </h3>
             <p className="text-xs sm:text-sm text-gray-700 leading-normal">
-              Gstaad Cricket Club (GCC) is constituted as a non-profit association pursuant to <strong>Articles 60 to 79 of the Swiss Civil Code (ZGB)</strong>, domiciled in Saanen/Gstaad, Canton of Bern, Switzerland. The club operates in full accordance with its adopted statutes and Swiss association law.
+              Gstaad Cricket Club (GCC) is constituted as a non-profit association pursuant to <strong>Articles 60 to 79 of the Swiss Civil Code (ZGB)</strong>, domiciled in Saanenland, Canton of Bern, Switzerland (registered postal address: Undere Waldmattenstrasse 11, 3778 Schönried, Switzerland). The club operates in full accordance with its adopted statutes and Swiss association law.
             </p>
           </div>
 
@@ -77,7 +77,7 @@ export default function TermsAndConditionsPage() {
               2. Festival Attendance &amp; Venue Guidelines
             </h2>
             <p className="text-sm text-gray-700">
-              The Gstaad Cricket Festival 2026 is hosted as a free community celebration at the OSZ Ebnit Grounds (Rumpleregässli 8, 3780 Gstaad). The following rules apply:
+              The Gstaad Cricket Festival 2026 is hosted as a free community celebration at the Festival venue: <strong>OSZ Ebnit Grounds (Rumpleregässli 8, 3780 Gstaad)</strong>. The following rules apply:
             </p>
             <ul className="list-disc pl-5 text-xs sm:text-sm text-gray-700 space-y-2">
               <li>

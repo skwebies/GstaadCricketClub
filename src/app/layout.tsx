@@ -96,9 +96,9 @@ export default function RootLayout({
         "telephone": "+41 79 786 25 31",
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Rumpleregässli 8",
-          "addressLocality": "Gstaad",
-          "postalCode": "3780",
+          "streetAddress": "Undere Waldmattenstrasse 11",
+          "addressLocality": "Schönried",
+          "postalCode": "3778",
           "addressCountry": "CH"
         },
         "memberOf": {

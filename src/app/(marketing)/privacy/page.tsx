@@ -67,14 +67,31 @@ export default function PrivacyPolicyPage() {
             <p className="text-sm text-gray-700">
               The data controller responsible for the processing of personal data on this website and in connection with club operations is:
             </p>
-            <div className="p-5 bg-white rounded-lg border border-gray-200 font-mono text-xs space-y-1 text-gray-800">
-              <div className="font-bold text-sm text-[var(--green-dark)] font-serif">Gstaad Cricket Club (GCC)</div>
-              <div>Non-Profit Sporting Association (Verein nach Art. 60ff. ZGB)</div>
-              <div>OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland</div>
-              <div>Telephone Contact: <a href="tel:+41797862531" className="text-[var(--gold)] font-bold hover:underline">+41 79 786 25 31</a></div>
-              <div>Affiliation: Cricket Switzerland</div>
-              <div>Electronic Contact: <a href="mailto:info@gstaadcricketclub.ch" className="text-[var(--gold)] font-bold hover:underline">info@gstaadcricketclub.ch</a></div>
-              <div>Official Website: <a href="https://gstaadcricketclub.ch" className="text-[var(--green)] hover:underline">https://gstaadcricketclub.ch</a></div>
+            <div className="p-5 bg-white rounded-lg border border-gray-200 font-mono text-xs space-y-2 text-gray-800">
+              <div>
+                <div className="font-bold text-sm text-[var(--green-dark)] font-serif">Gstaad Cricket Club (GCC)</div>
+                <div className="text-gray-600">Non-Profit Sporting Association (Verein nach Art. 60ff. ZGB)</div>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100 space-y-0.5">
+                <div className="font-bold text-gray-900 mb-0.5">Postal &amp; Registered Address:</div>
+                <div>Gstaad Cricket Club</div>
+                <div>Undere Waldmattenstrasse 11</div>
+                <div>3778 Schönried</div>
+                <div>Switzerland</div>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100">
+                <div className="font-bold text-gray-900 mb-0.5">Festival venue:</div>
+                <div>OSZ Ebnit Gstaad, Rumpleregässli 8, 3780 Gstaad, Switzerland</div>
+              </div>
+
+              <div className="pt-2 border-t border-gray-100 space-y-1">
+                <div>Telephone Contact: <a href="tel:+41797862531" className="text-[var(--gold)] font-bold hover:underline">+41 79 786 25 31</a></div>
+                <div>Affiliation: Cricket Switzerland</div>
+                <div>Electronic Contact: <a href="mailto:info@gstaadcricketclub.ch" className="text-[var(--gold)] font-bold hover:underline">info@gstaadcricketclub.ch</a></div>
+                <div>Official Website: <a href="https://gstaadcricketclub.ch" className="text-[var(--green)] hover:underline">https://gstaadcricketclub.ch</a></div>
+              </div>
             </div>
           </div>
 
@@ -93,7 +110,7 @@ export default function PrivacyPolicyPage() {
                   Festival Reservations
                 </div>
                 <p className="text-xs text-gray-600">
-                  Full name, email address, telephone number, attending party/group size, dietary or accessibility notes, and emergency contact details for attendee safety at OSZ Ebnit Gstaad.
+                  Full name, email address, telephone number, attending party/group size, dietary or accessibility notes, and emergency contact details for attendee safety at the festival venue (OSZ Ebnit Gstaad).
                 </p>
               </div>
 
