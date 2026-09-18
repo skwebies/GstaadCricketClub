@@ -112,9 +112,11 @@ export default function RootLayout({
         "name": "Gstaad Cricket Festival 2026",
         "description": "A free day of cricket for children, adults, families and complete beginners in Gstaad.",
         "startDate": "2026-09-26T11:00:00+02:00",
-        "endDate": "2026-09-26T18:00:00+02:00",
         "eventStatus": "https://schema.org/EventScheduled",
         "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+        "image": [
+          "https://www.gstaadcricketclub.ch/og-image.png"
+        ],
         "location": {
           "@type": "Place",
           "name": "OSZ Ebnit Gstaad",
@@ -127,6 +129,13 @@ export default function RootLayout({
           }
         },
         "isAccessibleForFree": true,
+        "offers": {
+          "@type": "Offer",
+          "url": "https://gstaadcricketclub.ch/#register",
+          "price": 0,
+          "priceCurrency": "CHF",
+          "availability": "https://schema.org/InStock"
+        },
         "organizer": {
           "@id": "https://www.gstaadcricketclub.ch/#organization"
         }
